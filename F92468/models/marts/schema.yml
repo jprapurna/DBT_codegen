@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: Update operation on W_CLAIM_CD_BUR_SCD3_U using data from the update strategy expression.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: Update_Strategy_Expression_78066
+        description: Expression used to determine the update strategy for claims data.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['DD_UPDATE']
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: Insert operation into W_CLAIM_CD_BUR_SCD3_I using routed data and row identifiers.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: o_Flag
+        description: Flag indicating the operation type ('I' for insert, 'U' for update).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'U']
+      - name: CDM_INSERT_DT
+        description: Timestamp of when the data was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: Timestamp of when the data was last updated.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: TGT_TABLE_NAME
+        description: Name of the target table for the insert operation.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_mplt_CDM_ROW_WID')
+              field: TABLE_NAME
+      - name: ROW_WID
+        description: Unique row identifier for the inserted data.
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_Output
+    description: Final output model writing data to the target table using calculated row identifiers.
+    meta:
+      owner: data_engineering_team
+      domain: data_output
+    config:
+      materialized: table
+    tags: ['output', 'final']
+    columns:
+      - name: ROW_WID
+        description: Unique row identifier for the output data.
+        tests:
+          - not_null
+          - unique

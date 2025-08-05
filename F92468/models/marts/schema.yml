@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: Update operation on W_CLAIM_CD_BUR_SCD3_U, utilizing data from the update strategy.
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: Update_Strategy_Expression_78066
+        description: Expression used for update strategy in claims processing.
+        tests:
+          - not_null
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: Insert operation on W_CLAIM_CD_BUR_SCD3_I, combining data from multiple sources for insertion.
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: TGT_TABLE_NAME
+        description: Target table name for insertion operations.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_mplt_CDM_ROW_WID')
+              field: TGT_TABLE_NAME
+      - name: ROW_WID
+        description: Row identifier for the target table.
+        tests:
+          - not_null
+          - unique
+      - name: o_Flag
+        description: Flag indicating the type of operation (Insert/Update).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'U']
+      - name: CDM_INSERT_DT
+        description: Date of insertion into the CDM.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: Date of update in the CDM.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+  - name: fct_Output
+    description: Final output model writing data to the target table.
+    meta:
+      owner: data_team
+      domain: data_output
+    config:
+      materialized: table
+    tags: ['output', 'final']
+    columns:
+      - name: V1
+        description: Calculated value V1 based on input variables.
+        tests:
+          - not_null
+      - name: V2
+        description: Calculated value V2 incremented from V1.
+        tests:
+          - not_null
+      - name: ROW_WID
+        description: Row identifier for the output data.
+        tests:
+          - not_null
+          - unique

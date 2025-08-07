@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: Update operation on the table W_CLAIM_CD_BUR_SCD3_U.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: Update_Strategy_Expression_78066
+        description: Update strategy expression derived from the EXP_Flag model.
+        tests:
+          - not_null
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: Insert data into the table W_CLAIM_CD_BUR_SCD3_I based on the flag condition.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: TGT_TABLE_NAME
+        description: Target table name for insertion.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_mplt_CDM_ROW_WID')
+              field: TGT_TABLE_NAME
+      - name: ROW_WID
+        description: Row identifier for the inserted data.
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_Output
+    description: Write data to the target table using calculated ROW_WID.
+    meta:
+      owner: data_team
+      domain: output
+    config:
+      materialized: table
+    tags: ['output', 'write']
+    columns:
+      - name: V1
+        description: Intermediate variable used in ROW_WID calculation.
+        tests:
+          - not_null
+      - name: V2
+        description: Incremental variable used in ROW_WID calculation.
+        tests:
+          - not_null
+      - name: ROW_WID
+        description: Calculated row identifier for output data.
+        tests:
+          - not_null
+          - unique

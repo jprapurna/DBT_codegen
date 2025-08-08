@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: Update operation on the table W_CLAIM_CD_BUR_SCD3_U.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: INTEGRATION_ID
+        description: Unique identifier for integration.
+        tests:
+          - not_null
+          - unique
+      - name: LKP_INTEGRATION_ID
+        description: Lookup integration identifier.
+        tests:
+          - not_null
+      - name: o_Flag
+        description: Operation flag indicating the type of update.
+        tests:
+          - accepted_values:
+              values: ['I', 'U', 'NC']
+      - name: BATCH_ID
+        description: Identifier for the batch process.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000
+      - name: Update_Strategy_Expression_78066
+        description: Strategy expression for update operations.
+        tests:
+          - accepted_values:
+              values: ['DD_UPDATE']
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: Insert data into the table W_CLAIM_CD_BUR_SCD3_I.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: TGT_TABLE_NAME
+        description: Target table name for insertion.
+        tests:
+          - not_null
+      - name: ROW_WID
+        description: Row identifier for the target table.
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_Output
+    description: Write data to the target table.
+    meta:
+      owner: data_team
+      domain: output
+    config:
+      materialized: table
+    tags: ['output', 'write']
+    columns:
+      - name: TGT_TABLE_NAME
+        description: Target table name for output.
+        tests:
+          - not_null
+      - name: ROW_WID
+        description: Row identifier for the output table.
+        tests:
+          - not_null
+          - unique

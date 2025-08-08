@@ -1,0 +1,99 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: Update operation on W_CLAIM_CD_BUR_SCD3_U table, processing claims data with update strategy.
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: POLICY_STATE
+        description: The state where the policy is issued.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['CA', 'NY', 'TX', 'FL', 'OTHER']
+      - name: BUR
+        description: Business unit responsible for the policy.
+        tests:
+          - not_null
+      - name: INTEGRATION_ID
+        description: Identifier for integration mapping based on policy state.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_EXP_BUR')
+              field: INTEGRATION_ID
+      - name: Update_Strategy_Expression_78066
+        description: Expression indicating the update strategy for the record.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['DD_UPDATE']
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: Insert operation on W_CLAIM_CD_BUR_SCD3_I table, processing claims data for new entries.
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: POLICY_STATE
+        description: The state where the policy is issued.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['CA', 'NY', 'TX', 'FL', 'OTHER']
+      - name: BUR
+        description: Business unit responsible for the policy.
+        tests:
+          - not_null
+      - name: INTEGRATION_ID
+        description: Identifier for integration mapping based on policy state.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_EXP_BUR')
+              field: INTEGRATION_ID
+      - name: ROW_WID
+        description: Unique row identifier for the insert operation.
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_Output
+    description: Final output model writing data to the target table with calculated ROW_WID.
+    meta:
+      owner: data_team
+      domain: data_output
+    config:
+      materialized: table
+    tags: ['output', 'final']
+    columns:
+      - name: POLICY_STATE
+        description: The state where the policy is issued.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['CA', 'NY', 'TX', 'FL', 'OTHER']
+      - name: BUR
+        description: Business unit responsible for the policy.
+        tests:
+          - not_null
+      - name: INTEGRATION_ID
+        description: Identifier for integration mapping based on policy state.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_EXP_BUR')
+              field: INTEGRATION_ID
+      - name: ROW_WID
+        description: Unique row identifier for the output operation.
+        tests:
+          - not_null
+          - unique

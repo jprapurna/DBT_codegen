@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: Update operation on W_CLAIM_CD_BUR_SCD3_U, utilizing data from the int_UPD_BUR model.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: in_INTEGRATION_ID
+        description: Integration ID for the update operation.
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('int_EXP_Flag')
+              field: INTEGRATION_ID
+      - name: LKP_INTEGRATION_ID
+        description: Lookup Integration ID used for matching records.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_LKP_W_CLAIM_CD_BUR_SCD3')
+              field: lkp_INTEGRATION_ID
+      - name: o_Flag
+        description: Operational flag indicating the type of update.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'U', 'NC']
+      - name: BATCH_ID
+        description: Batch ID associated with the update operation.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000
+      - name: Update_Strategy_Expression_78066
+        description: Expression defining the update strategy.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['DD_UPDATE']
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: Insert operation on W_CLAIM_CD_BUR_SCD3_I, combining data from int_rtr_CLM_INSERT_UPD and int_mplt_CDM_ROW_WID models.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: o_Flag
+        description: Operational flag indicating the type of insert.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'U']
+      - name: CDM_INSERT_DT
+        description: Timestamp of when the data was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: Timestamp of the last update to the data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: TGT_TABLE_NAME
+        description: Name of the target table for the insert operation.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_mplt_CDM_ROW_WID')
+              field: TGT_TABLE_NAME
+
+  - name: fct_Output
+    description: Final output model writing data to the target table, sourced from int_exp_ROW_WID.
+    meta:
+      owner: data_team
+      domain: general
+    config:
+      materialized: table
+    tags: ['output', 'final']
+    columns:
+      - name: TGT_TABLE_NAME
+        description: Name of the target table for the output operation.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_exp_ROW_WID')
+              field: TGT_TABLE_NAME
+      - name: ROW_WID
+        description: Row identifier for the output data.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000

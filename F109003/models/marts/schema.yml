@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: Update operation on the table W_CLAIM_CD_BUR_SCD3_U.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: Update_Strategy_Expression_78066
+        description: Expression indicating the update strategy.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['DD_UPDATE']
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: Insert data into the table W_CLAIM_CD_BUR_SCD3_I.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: o_Flag
+        description: Flag indicating the operation type ('I' for insert, 'U' for update).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'U']
+      - name: CDM_INSERT_DT
+        description: Timestamp of the insert operation.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: Timestamp of the update operation.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: TGT_TABLE_NAME
+        description: Name of the target table.
+        tests:
+          - not_null
+
+  - name: fct_Output
+    description: Write data to the target table.
+    meta:
+      owner: data_team
+      domain: output
+    config:
+      materialized: table
+    tags: ['output']
+    columns:
+      - name: ROW_WID
+        description: Row identifier for the output data.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_unique

@@ -1,0 +1,76 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source tables for GENAI_POWER_BI database
+    database: GENAI_POWER_BI
+    schema: CDM
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Table containing policy state and source information
+        identifier: SQ_CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: Business unit reference
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim codes and business unit references
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row wide identifier
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Lookup integration identifier
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: New business unit reference
+            tests:
+              - not_null
+
+      - name: lkp_CDM_BATCH_CTRLID
+        description: Lookup table for batch control identifiers
+        identifier: lkp_CDM_BATCH_CTRLID
+
+        columns:
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch identifier
+            tests:
+              - not_null
+              - unique
+
+      - name: lkp_MAX_ROW_WID
+        description: Lookup table for maximum row wide identifiers
+        identifier: lkp_MAX_ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Row wide identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null

@@ -1,0 +1,129 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: This model performs update operations on the table W_CLAIM_CD_BUR_SCD3_U using data from the update strategy.
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: in_integration_id
+        description: Integration ID used for lookup and update operations.
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('int_CDH_GW_BUR')
+              field: integration_id
+      - name: lkp_integration_id
+        description: Lookup integration ID from the source data.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_CDH_GW_BUR')
+              field: lkp_integration_id
+      - name: o_flag
+        description: Operation flag indicating the type of update ('I', 'NC', 'U').
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'NC', 'U']
+      - name: batch_id
+        description: Batch ID associated with the update operation.
+        tests:
+          - not_null
+      - name: o_flag1
+        description: Duplicate of the operation flag for internal processing.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'NC', 'U']
+      - name: update_strategy_expression_78066
+        description: Expression defining the update strategy.
+        tests:
+          - not_null
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: This model inserts data into the table W_CLAIM_CD_BUR_SCD3_I using calculated row IDs and router logic.
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: tgt_table_name
+        description: Target table name for the insert operation.
+        tests:
+          - not_null
+      - name: v1
+        description: Intermediate variable used in row ID calculation.
+        tests:
+          - not_null
+      - name: v2
+        description: Intermediate variable used in row ID calculation.
+        tests:
+          - not_null
+      - name: row_wid
+        description: Calculated row ID for insertion.
+        tests:
+          - not_null
+          - unique
+      - name: o_flag
+        description: Operation flag indicating the type of insert ('I', 'NC', 'U').
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'NC', 'U']
+      - name: cdm_insert_dt
+        description: Timestamp of the insert operation.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: cdm_update_dt
+        description: Timestamp of the last update operation.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: insert
+        description: Boolean flag indicating if the record should be inserted.
+        tests:
+          - not_null
+          - accepted_values:
+              values: [True, False]
+      - name: update
+        description: Boolean flag indicating if the record should be updated.
+        tests:
+          - not_null
+          - accepted_values:
+              values: [True, False]
+
+  - name: fct_Output
+    description: This model writes data to the target table using calculated row IDs.
+    meta:
+      owner: data_team
+      domain: data_output
+    config:
+      materialized: table
+    tags: ['output', 'write']
+    columns:
+      - name: tgt_table_name
+        description: Target table name for the output operation.
+        tests:
+          - not_null
+      - name: v1
+        description: Intermediate variable used in row ID calculation.
+        tests:
+          - not_null
+      - name: v2
+        description: Intermediate variable used in row ID calculation.
+        tests:
+          - not_null
+      - name: row_wid
+        description: Calculated row ID for output.
+        tests:
+          - not_null
+          - unique

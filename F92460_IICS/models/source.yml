@@ -1,0 +1,76 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source for CDM schema in GENAI_POWER_BI database
+    database: GENAI_POWER_BI
+    schema: CDM
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Table containing policy state and BUR information
+        identifier: SQ_CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: BUR information
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Source name
+            tests:
+              - not_null
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim CD BUR SCD3
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row WID
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Lookup integration ID
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: Lookup new BUR
+            tests:
+              - not_null
+
+      - name: lkp_CDM_BATCH_CTRLID
+        description: Lookup table for CDM batch control ID
+        identifier: lkp_CDM_BATCH_CTRLID
+
+        columns:
+          - name: SOURCE_NAME
+            description: Source name
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch ID
+            tests:
+              - not_null
+              - unique
+
+      - name: lkp_MAX_ROW_WID
+        description: Lookup table for maximum row WID
+        identifier: lkp_MAX_ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Maximum row WID
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Table name
+            tests:
+              - not_null

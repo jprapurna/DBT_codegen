@@ -1,76 +1,2485 @@
 version: 2
 
 sources:
-  - name: genai_power_bi
-    description: Source tables for GENAI Power BI
-    database: GENAI_POWER_BI
-    schema: CDM
-
+  - name: WRK_BIRP_NISS_APRM_DETL
+    description: Data related to New York and New Jersey policy limits and coverage attributes.
+    database: PowerExchange_For_Snowflake
+    schema: staging
     tables:
-      - name: SQ_CDH_GW_BUR
-        description: Table containing policy state and source information
-        identifier: SQ_CDH_GW_BUR
-
+      - name: WRK_BIRP_NISS_APRM_DETL
+        description: Detailed information on policy limits and coverage attributes.
+        identifier: WRK_BIRP_NISS_APRM_DETL
         columns:
-          - name: POLICY_STATE
-            description: State of the policy
+          - name: NISS_APRM_DETL_SK
+            description: Surrogate key for the detail record.
             tests:
               - not_null
               - unique
-          - name: BUR
-            description: Business unit reference
+          - name: CLNDR_YR
+            description: Calendar year of the record.
             tests:
               - not_null
-          - name: SOURCE_NAME
-            description: Name of the source
+          - name: CALL_YR
+            description: Year of the call.
+            tests:
+              - not_null
+          - name: NAIC_CMPNY_CD
+            description: NAIC company code.
+            tests:
+              - not_null
+          - name: NISS_CMPNY_CD
+            description: NISS company code.
+            tests:
+              - not_null
+          - name: ST_NM
+            description: State name.
+            tests:
+              - not_null
+          - name: ST_CD
+            description: State code.
+            tests:
+              - not_null
+          - name: NISS_ST_CD
+            description: NISS state code.
+            tests:
+              - not_null
+          - name: ST_ABBR
+            description: State abbreviation.
+            tests:
+              - not_null
+          - name: ACCTNG_LOB
+            description: Accounting line of business.
+            tests:
+              - not_null
+          - name: CVG_TYP_CD
+            description: Coverage type code.
+            tests:
+              - not_null
+          - name: CVG_AMT
+            description: Coverage amount.
+            tests:
+              - not_null
+          - name: BI_LMT
+            description: Bodily injury limit.
+            tests:
+              - not_null
+          - name: GA_ADDED_AT_FAULT_IND
+            description: Indicator for added at fault.
+            tests:
+              - not_null
+          - name: FA2_PLCY_IND
+            description: FA2 policy indicator.
+            tests:
+              - not_null
+          - name: UM_UMI_STACKING
+            description: UM/UMI stacking indicator.
+            tests:
+              - not_null
+          - name: PIP_WVR_WL_IND
+            description: PIP waiver WL indicator.
+            tests:
+              - not_null
+          - name: PIP_MED_SEC_IND
+            description: PIP medical security indicator.
+            tests:
+              - not_null
+          - name: PIP_LOSS_INCOME_IND
+            description: PIP loss income indicator.
+            tests:
+              - not_null
+          - name: MI_PPO_IND
+            description: MI PPO indicator.
+            tests:
+              - not_null
+          - name: PRD_GRP_CD
+            description: Product group code.
+            tests:
+              - not_null
+          - name: NJ_HLTH_INSR_PRIM
+            description: NJ health insurance primary indicator.
+            tests:
+              - not_null
+          - name: NJ_EXTR_PIP_PKG
+            description: NJ extra PIP package indicator.
+            tests:
+              - not_null
+          - name: NJ_RESDNC_RLTNSHP_PIP_IND
+            description: NJ residence relationship PIP indicator.
+            tests:
+              - not_null
+          - name: NY_SSL_IND
+            description: NY SSL indicator.
+            tests:
+              - not_null
+          - name: NY_FULL_CVG_GLASS_COMP_IND
+            description: NY full coverage glass comp indicator.
+            tests:
+              - not_null
+          - name: GRGNG_ZIP_5
+            description: Garaging ZIP code.
+            tests:
+              - not_null
+          - name: NISS_TERR_CD
+            description: NISS territory code.
+            tests:
+              - not_null
+          - name: RATNG_CMPY_CD
+            description: Rating company code.
+            tests:
+              - not_null
+          - name: MLT_CAR_IND
+            description: Multi-car indicator.
+            tests:
+              - not_null
+          - name: RT_CLS
+            description: Rating class.
+            tests:
+              - not_null
+          - name: AGE
+            description: Age of the driver.
+            tests:
+              - not_null
+          - name: GENDR
+            description: Gender of the driver.
+            tests:
+              - not_null
+          - name: MRTL_STAT
+            description: Marital status of the driver.
+            tests:
+              - not_null
+          - name: AUTO_USE_CD
+            description: Auto use code.
+            tests:
+              - not_null
+          - name: MILES_TO_WRK
+            description: Miles to work.
+            tests:
+              - not_null
+          - name: GOOD_STDNT_IND
+            description: Good student indicator.
+            tests:
+              - not_null
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator.
+            tests:
+              - not_null
+          - name: SOI_TYP
+            description: SOI type.
+            tests:
+              - not_null
+          - name: PHY_DMG_IND
+            description: Physical damage indicator.
+            tests:
+              - not_null
+          - name: NJ_RATD_PNTS
+            description: NJ rated points.
+            tests:
+              - not_null
+          - name: VEH_MDL_YR
+            description: Vehicle model year.
+            tests:
+              - not_null
+          - name: NJ_EXCPTION_CD
+            description: NJ exception code.
+            tests:
+              - not_null
+          - name: NJ_FGVN_PNTS
+            description: NJ forgiven points.
+            tests:
+              - not_null
+          - name: PASSV_RESTRA_DISC
+            description: Passive restraint discount.
+            tests:
+              - not_null
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator.
+            tests:
+              - not_null
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator.
+            tests:
+              - not_null
+          - name: ANTI_THFT_DISC
+            description: Anti-theft discount.
+            tests:
+              - not_null
+          - name: DAY_TM_RUN_LIGHTS
+            description: Daytime running lights indicator.
+            tests:
+              - not_null
+          - name: LMT_TORT
+            description: Limited tort indicator.
+            tests:
+              - not_null
+          - name: ANNL_STMNT_LOB_CD
+            description: Annual statement line of business code.
+            tests:
+              - not_null
+          - name: CVG_TYP_IND
+            description: Coverage type indicator.
+            tests:
+              - not_null
+          - name: CVG_EXPS_VAL
+            description: Coverage expense value.
+            tests:
+              - not_null
+          - name: TTL_WRITTN_PREM_AMT
+            description: Total written premium amount.
+            tests:
+              - not_null
+          - name: LINE_CD
+            description: Line code.
+            tests:
+              - not_null
+          - name: ACCDNT_YR
+            description: Accident year.
+            tests:
+              - not_null
+          - name: NISS_CVG_CD
+            description: NISS coverage code.
+            tests:
+              - not_null
+          - name: RTNG_ZNE_CD
+            description: Rating zone code.
+            tests:
+              - not_null
+          - name: TERM_ZNE_CD
+            description: Term zone code.
+            tests:
+              - not_null
+          - name: NISS_CLASS_CD
+            description: NISS class code.
+            tests:
+              - not_null
+          - name: NISS_ELIG_PNTS_CD
+            description: NISS eligible points code.
+            tests:
+              - not_null
+          - name: NISS_AGE_GRP_CD
+            description: NISS age group code.
+            tests:
+              - not_null
+          - name: NISS_CMMCL_IND_CD
+            description: NISS commercial indicator code.
+            tests:
+              - not_null
+          - name: NISS_EXCPN_CD
+            description: NISS exception code.
+            tests:
+              - not_null
+          - name: NISS_FGVNS_CD
+            description: NISS forgiven code.
+            tests:
+              - not_null
+          - name: NISS_PASSV_RESTRA_CD
+            description: NISS passive restraint code.
+            tests:
+              - not_null
+          - name: NISS_DEFNS_DRVR_CRD_CD
+            description: NISS defensive driver credit code.
+            tests:
+              - not_null
+          - name: NISS_ANTI_THFT_DVC_CD
+            description: NISS anti-theft device code.
+            tests:
+              - not_null
+          - name: NISS_DAY_TM_RUN_LAMPS_DISC_CD
+            description: NISS daytime running lamps discount code.
+            tests:
+              - not_null
+          - name: NISS_PLCY_LMT_CD
+            description: NISS policy limit code.
+            tests:
+              - not_null
+          - name: NISS_DEDUC_CD
+            description: NISS deductible code.
+            tests:
+              - not_null
+          - name: NISS_SSL_LIAB_CD
+            description: NISS SSL liability code.
+            tests:
+              - not_null
+          - name: NISS_SUBLOB_CD
+            description: NISS subline of business code.
+            tests:
+              - not_null
+          - name: NISS_TYP_LOSS_CD
+            description: NISS type of loss code.
+            tests:
+              - not_null
+          - name: NISS_LIAB_OR_NO_FAULT_CD
+            description: NISS liability or no fault code.
+            tests:
+              - not_null
+          - name: NISS_ANNL_STMNT_LOB_CD
+            description: NISS annual statement line of business code.
+            tests:
+              - not_null
+          - name: NISS_PD_LOSS
+            description: NISS paid loss.
+            tests:
+              - not_null
+          - name: NISS_PD_ALLOC_ADJUS_EXPNS
+            description: NISS paid allocated adjustment expenses.
+            tests:
+              - not_null
+          - name: NISS_OUTSTNDG_LOSS
+            description: NISS outstanding loss.
+            tests:
+              - not_null
+          - name: NISS_NO_PD_CLMS
+            description: NISS number of paid claims.
+            tests:
+              - not_null
+          - name: NISS_NO_OUTSTND_CLMS
+            description: NISS number of outstanding claims.
+            tests:
+              - not_null
+          - name: RSVD_NISS_USE
+            description: Reserved for NISS use.
+            tests:
+              - not_null
+          - name: NISS_RSVD_CMPNY_USE
+            description: NISS reserved company use.
+            tests:
+              - not_null
+          - name: NISS_MNFCTRS_MDL_YR
+            description: NISS manufacturers model year.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+          - name: NJ_NO_LWST_LMT_IND
+            description: NJ no lowest limit indicator.
+            tests:
+              - not_null
+          - name: NJ_NMD_DRVR_EXCL_IND
+            description: NJ named driver exclusion indicator.
+            tests:
+              - not_null
+          - name: EXPS_VAL_ROLLED
+            description: Expenses value rolled.
+            tests:
+              - not_null
+          - name: CVG_CNT_IND
+            description: Coverage count indicator.
+            tests:
+              - not_null
+          - name: CVG_CNT
+            description: Coverage count.
+            tests:
+              - not_null
+          - name: CVG_CD_SK
+            description: Coverage code surrogate key.
+            tests:
+              - not_null
+          - name: CVG_ATTR_SK
+            description: Coverage attribute surrogate key.
+            tests:
+              - not_null
+          - name: REC_DROP_IND
+            description: Record drop indicator.
+            tests:
+              - not_null
+          - name: REC_DROP_RSN_DESC
+            description: Record drop reason description.
+            tests:
+              - not_null
+          - name: REC_EXCPN_IND
+            description: Record exception indicator.
+            tests:
+              - not_null
+          - name: REC_EXCPN_RSN_DESC
+            description: Record exception reason description.
+            tests:
+              - not_null
+          - name: CVG_ATTR_CHCKSUM
+            description: Coverage attribute checksum.
+            tests:
+              - not_null
+          - name: COMP_DED
+            description: Comprehensive deductible.
+            tests:
+              - not_null
+          - name: COLL_DED
+            description: Collision deductible.
+            tests:
+              - not_null
+          - name: PLCY_CNTRCT_NUM
+            description: Policy contract number.
+            tests:
+              - not_null
+          - name: UNIT_NUM
+            description: Unit number.
+            tests:
+              - not_null
+          - name: EFF_DT
+            description: Effective date.
+            tests:
+              - not_null
+          - name: NUM_OF_CARS_IN_HH
+            description: Number of cars in household.
+            tests:
+              - not_null
+          - name: RDRVR_DT_OF_BRTH
+            description: Driver date of birth.
+            tests:
+              - not_null
+          - name: TERM_STRT_DT
+            description: Term start date.
+            tests:
+              - not_null
+          - name: SRC_SYS_CD
+            description: Source system code.
+            tests:
+              - not_null
+          - name: DERIVED_RDRVR_AGE
+            description: Derived driver age.
+            tests:
+              - not_null
+          - name: FINAL_RDRVR_AGE
+            description: Final driver age.
+            tests:
+              - not_null
+          - name: PNI_AGE
+            description: PNI age.
+            tests:
+              - not_null
+          - name: LOB
+            description: Line of business.
+            tests:
+              - not_null
+          - name: PRINCIPAL_OPRT
+            description: Principal operator.
+            tests:
+              - not_null
+          - name: SOURCE_IND_DERIVED
+            description: Source indicator derived.
             tests:
               - not_null
 
-      - name: LKP_W_CLAIM_CD_BUR_SCD3
-        description: Lookup table for claim codes and business unit references
-        identifier: LKP_W_CLAIM_CD_BUR_SCD3
-
+  - name: DIM_AG_TRANS_TYP_PLCY
+    description: Dimension table for transaction type policy.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_TRANS_TYP_PLCY
+        description: Transaction type policy dimension.
+        identifier: DIM_AG_TRANS_TYP_PLCY
         columns:
-          - name: LKP_ROW_WID
-            description: Lookup row identifier
+          - name: TRANS_TYP_PLCY_SK
+            description: Surrogate key for transaction type policy.
             tests:
               - not_null
               - unique
-          - name: LKP_INTEGRATION_ID
-            description: Integration identifier for lookup
+          - name: TRANS_TYP_PLCY_CD
+            description: Transaction type policy code.
             tests:
               - not_null
-          - name: LKP_NEW_BUR
-            description: New business unit reference in lookup
+          - name: TRANS_TYP_PLCY_DESC
+            description: Description of transaction type policy.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
             tests:
               - not_null
 
-      - name: lkp_CDM_BATCH_CTRLID
-        description: Lookup table for batch control identifiers
-        identifier: lkp_CDM_BATCH_CTRLID
-
+  - name: WRK_BIRP_NISS_APRM_FINAL
+    description: Final table for NISS APRM processing.
+    database: FDR
+    schema: staging
+    tables:
+      - name: WRK_BIRP_NISS_APRM_FINAL
+        description: Final processing table for NISS APRM.
+        identifier: WRK_BIRP_NISS_APRM_FINAL
         columns:
-          - name: SOURCE_NAME
-            description: Name of the source
-            tests:
-              - not_null
-          - name: BATCH_ID
-            description: Identifier for the batch
+          - name: NISS_APRM_FINAL_SK
+            description: Surrogate key for the final record.
             tests:
               - not_null
               - unique
+          - name: CLNDR_YR
+            description: Calendar year of the record.
+            tests:
+              - not_null
+          - name: CALL_YR
+            description: Year of the call.
+            tests:
+              - not_null
+          - name: NISS_CMPNY_CD
+            description: NISS company code.
+            tests:
+              - not_null
+          - name: ST_NM
+            description: State name.
+            tests:
+              - not_null
+          - name: ST_CD
+            description: State code.
+            tests:
+              - not_null
+          - name: ST_ABBR
+            description: State abbreviation.
+            tests:
+              - not_null
+          - name: NISS_ST_CD
+            description: NISS state code.
+            tests:
+              - not_null
 
-      - name: lkp_MAX_ROW_WID
-        description: Lookup table for maximum row identifiers
-        identifier: lkp_MAX_ROW_WID
-
+  - name: DIM_AG_FARMR_GEO_ST
+    description: Dimension table for farmer geographic state.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_FARMR_GEO_ST
+        description: Farmer geographic state dimension.
+        identifier: DIM_AG_FARMR_GEO_ST
         columns:
-          - name: ROW_WID
-            description: Row identifier
+          - name: FARMR_GEO_ST_SK
+            description: Surrogate key for farmer geographic state.
             tests:
               - not_null
               - unique
-          - name: TABLE_NAME
-            description: Name of the table
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute.
+            tests:
+              - not_null
+          - name: ST_CD
+            description: State code.
+            tests:
+              - not_null
+          - name: ST_NM
+            description: State name.
+            tests:
+              - not_null
+          - name: ZONE
+            description: Zone.
+            tests:
+              - not_null
+          - name: CORE_29_IND
+            description: Core 29 indicator.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+
+  - name: DIM_AG_MINI_SOI
+    description: Dimension table for mini SOI.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_MINI_SOI
+        description: Mini SOI dimension.
+        identifier: DIM_AG_MINI_SOI
+        columns:
+          - name: MINI_SOI_SK
+            description: Surrogate key for mini SOI.
+            tests:
+              - not_null
+              - unique
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute.
+            tests:
+              - not_null
+          - name: VEH_TYP_CD
+            description: Vehicle type code.
+            tests:
+              - not_null
+          - name: VEH_TYP_DESC
+            description: Vehicle type description.
+            tests:
+              - not_null
+          - name: SOI_CTGY
+            description: SOI category.
+            tests:
+              - not_null
+          - name: VEH_USE_CD
+            description: Vehicle use code.
+            tests:
+              - not_null
+          - name: MCA_PNT_CNT_RNGE
+            description: MCA point count range.
+            tests:
+              - not_null
+          - name: ANN_MIL_RNGE
+            description: Annual mileage range.
+            tests:
+              - not_null
+          - name: CAR_SYM_RNGE
+            description: Car symbol range.
+            tests:
+              - not_null
+          - name: RDRVR_AGE_RNGE
+            description: Driver age range.
+            tests:
+              - not_null
+          - name: RATE_CLS_CD
+            description: Rate class code.
+            tests:
+              - not_null
+          - name: OCCUPTN_CD
+            description: Occupation code.
+            tests:
+              - not_null
+          - name: OCCUPTN_DESC
+            description: Occupation description.
+            tests:
+              - not_null
+          - name: OCCUPTN_CD_PRGM
+            description: Occupation code program.
+            tests:
+              - not_null
+          - name: COLL_DED
+            description: Collision deductible.
+            tests:
+              - not_null
+          - name: CA_PNTD_IND
+            description: CA pointed indicator.
+            tests:
+              - not_null
+          - name: GRP_DISC_IND
+            description: Group discount indicator.
+            tests:
+              - not_null
+          - name: NEW_CAR_CRED_IND
+            description: New car credit indicator.
+            tests:
+              - not_null
+          - name: RETRMNT_CMNTY_DISC_IND
+            description: Retirement community discount indicator.
+            tests:
+              - not_null
+          - name: VEH_USE_SURCHRG_IND
+            description: Vehicle use surcharge indicator.
+            tests:
+              - not_null
+          - name: LXRY_VEH_IND
+            description: Luxury vehicle indicator.
+            tests:
+              - not_null
+          - name: FULL_CVG_IND
+            description: Full coverage indicator.
+            tests:
+              - not_null
+          - name: YTHFL_RDRVR_IND
+            description: Youthful driver indicator.
+            tests:
+              - not_null
+          - name: GOOD_DRVR_IND
+            description: Good driver indicator.
+            tests:
+              - not_null
+          - name: GOOD_STDNT_IND
+            description: Good student indicator.
+            tests:
+              - not_null
+          - name: YES_IND
+            description: Yes indicator.
+            tests:
+              - not_null
+          - name: MAT_DRVR_DISC_IND
+            description: Mature driver discount indicator.
+            tests:
+              - not_null
+          - name: SAFE_DRVNG_DISC_IND
+            description: Safe driving discount indicator.
+            tests:
+              - not_null
+          - name: COMPRE_WTHT_COLL_SURCHRG_IND
+            description: Comprehensive without collision surcharge indicator.
+            tests:
+              - not_null
+          - name: ERLY_SHOPPNG_DISC_IND
+            description: Early shopping discount indicator.
+            tests:
+              - not_null
+          - name: EFT_IND
+            description: EFT indicator.
+            tests:
+              - not_null
+          - name: PD_IN_FULL_IND
+            description: Paid in full indicator.
+            tests:
+              - not_null
+          - name: NON_FIG_HO_CRED_IND
+            description: Non-fig HO credit indicator.
+            tests:
+              - not_null
+          - name: TRNSFR_DISC_IND
+            description: Transfer discount indicator.
+            tests:
+              - not_null
+          - name: MLT_CAR_IND
+            description: Multi-car indicator.
+            tests:
+              - not_null
+          - name: MLT_LINE_IND
+            description: Multi-line indicator.
+            tests:
+              - not_null
+          - name: NEW_HH_IND
+            description: New household indicator.
+            tests:
+              - not_null
+          - name: SUM_SOI_CHK_SUM
+            description: Sum SOI checksum.
+            tests:
+              - not_null
+          - name: SUM_SOI_SK
+            description: Sum SOI surrogate key.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+          - name: CA_SNR_DRVR_DISC_IND
+            description: CA senior driver discount indicator.
+            tests:
+              - not_null
+          - name: CA_STDNT_AWAY_IND
+            description: CA student away indicator.
+            tests:
+              - not_null
+
+  - name: DIM_AG_MINI_PLCY
+    description: Dimension table for mini policy.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_MINI_PLCY
+        description: Mini policy dimension.
+        identifier: DIM_AG_MINI_PLCY
+        columns:
+          - name: MINI_PLCY_SK
+            description: Surrogate key for mini policy.
+            tests:
+              - not_null
+              - unique
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute.
+            tests:
+              - not_null
+          - name: MKT_TIER_FA2
+            description: Market tier FA2.
+            tests:
+              - not_null
+          - name: PAY_PLAN_CD
+            description: Pay plan code.
+            tests:
+              - not_null
+          - name: PAY_PLAN_DESC
+            description: Pay plan description.
+            tests:
+              - not_null
+          - name: PERSTNCY_YRS_RNGE
+            description: Persistency years range.
+            tests:
+              - not_null
+          - name: PNI_AGE_RNGE
+            description: PNI age range.
+            tests:
+              - not_null
+          - name: TERM_LNGTH_MNTHS
+            description: Term length in months.
+            tests:
+              - not_null
+          - name: CMPY_CD
+            description: Company code.
+            tests:
+              - not_null
+          - name: CMPY_DESC
+            description: Company description.
+            tests:
+              - not_null
+          - name: RATNG_CMPY_CD
+            description: Rating company code.
+            tests:
+              - not_null
+          - name: RATNG_CMPY_DESC
+            description: Rating company description.
+            tests:
+              - not_null
+          - name: FIRST_PRTY_CRED_TIER_MDL_C
+            description: First party credit tier model C.
+            tests:
+              - not_null
+          - name: LIAB_CRED_TIER_MDL_A
+            description: Liability credit tier model A.
+            tests:
+              - not_null
+          - name: PD_CRED_TIER_MDL_D
+            description: PD credit tier model D.
+            tests:
+              - not_null
+          - name: UW_TIER_CD
+            description: Underwriting tier code.
+            tests:
+              - not_null
+          - name: DAYS_LPS_CD
+            description: Days lapse code.
+            tests:
+              - not_null
+          - name: PRI_INS_NAIC_CMPY_CD
+            description: Primary insurance NAIC company code.
+            tests:
+              - not_null
+          - name: PRI_CARR_TYP
+            description: Primary carrier type.
+            tests:
+              - not_null
+          - name: PRI_BI_LMT_AMT
+            description: Primary BI limit amount.
+            tests:
+              - not_null
+          - name: PRI_BI_LMT_CD
+            description: Primary BI limit code.
+            tests:
+              - not_null
+          - name: BI_LMT
+            description: Bodily injury limit.
+            tests:
+              - not_null
+          - name: COMPRE_WTHT_COLL_SURCHRG_IND
+            description: Comprehensive without collision surcharge indicator.
+            tests:
+              - not_null
+          - name: ERLY_SHOPPNG_DISC_IND
+            description: Early shopping discount indicator.
+            tests:
+              - not_null
+          - name: EFT_IND
+            description: EFT indicator.
+            tests:
+              - not_null
+          - name: PD_IN_FULL_IND
+            description: Paid in full indicator.
+            tests:
+              - not_null
+          - name: MLT_CAR_IND
+            description: Multi-car indicator.
+            tests:
+              - not_null
+          - name: MLT_LINE_IND
+            description: Multi-line indicator.
+            tests:
+              - not_null
+          - name: NEW_HH_IND
+            description: New household indicator.
+            tests:
+              - not_null
+          - name: NON_FIG_HO_CRED_IND
+            description: Non-fig HO credit indicator.
+            tests:
+              - not_null
+          - name: TRNSFR_DISC_IND
+            description: Transfer discount indicator.
+            tests:
+              - not_null
+          - name: FA2_PLCY_IND
+            description: FA2 policy indicator.
+            tests:
+              - not_null
+          - name: YTHFL_PNI_IND
+            description: Youthful PNI indicator.
+            tests:
+              - not_null
+          - name: DPS_IND
+            description: DPS indicator.
+            tests:
+              - not_null
+          - name: GRP_DISC_IND
+            description: Group discount indicator.
+            tests:
+              - not_null
+          - name: NEW_CAR_CRED_IND
+            description: New car credit indicator.
+            tests:
+              - not_null
+          - name: RETRMNT_CMNTY_DISC_IND
+            description: Retirement community discount indicator.
+            tests:
+              - not_null
+          - name: VEH_USE_SURCHRG_IND
+            description: Vehicle use surcharge indicator.
+            tests:
+              - not_null
+          - name: GOOD_DRVR_IND
+            description: Good driver indicator.
+            tests:
+              - not_null
+          - name: GOOD_STDNT_IND
+            description: Good student indicator.
+            tests:
+              - not_null
+          - name: YES_IND
+            description: Yes indicator.
+            tests:
+              - not_null
+          - name: MAT_DRVR_DISC_IND
+            description: Mature driver discount indicator.
+            tests:
+              - not_null
+          - name: SAFE_DRVNG_DISC_IND
+            description: Safe driving discount indicator.
+            tests:
+              - not_null
+          - name: SUM_PLCY_CHK_SUM
+            description: Sum policy checksum.
+            tests:
+              - not_null
+          - name: SUM_PLCY_SK
+            description: Sum policy surrogate key.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+          - name: CA_SNR_DRVR_DISC_IND
+            description: CA senior driver discount indicator.
+            tests:
+              - not_null
+          - name: CA_STDNT_AWAY_IND
+            description: CA student away indicator.
+            tests:
+              - not_null
+
+  - name: DIM_AG_PLCY_ENH
+    description: Dimension table for policy enhancements.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_PLCY_ENH
+        description: Policy enhancements dimension.
+        identifier: DIM_AG_PLCY_ENH
+        columns:
+          - name: PLCY_ENH_SK
+            description: Surrogate key for policy enhancements.
+            tests:
+              - not_null
+              - unique
+          - name: PLCY_ID_SK
+            description: Policy ID surrogate key.
+            tests:
+              - not_null
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp.
+            tests:
+              - not_null
+          - name: SRC_EFF_DT
+            description: Source effective date.
+            tests:
+              - not_null
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record.
+            tests:
+              - not_null
+          - name: CIF_CD
+            description: CIF code.
+            tests:
+              - not_null
+          - name: CIF_CD_DESC
+            description: CIF code description.
+            tests:
+              - not_null
+          - name: E_PLCY_IND
+            description: E policy indicator.
+            tests:
+              - not_null
+          - name: E_PLCY_SRC_CD
+            description: E policy source code.
+            tests:
+              - not_null
+          - name: E_PLCY_SRC_CD_DESC
+            description: E policy source code description.
+            tests:
+              - not_null
+          - name: DISTNT_STDNT_DISC_IND
+            description: Distant student discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_MTRC_DISC_IND
+            description: Auto specialty metric discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_BOAT_WC_DISC_IND
+            description: Auto specialty boat WC discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_OFFRD_OTH_DISC_IND
+            description: Auto specialty offered other discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_MTRHM_TRLR_DISC_IND
+            description: Auto specialty motorhome trailer discount indicator.
+            tests:
+              - not_null
+          - name: DRVR_IMPRV_DISC_IND
+            description: Driver improvement discount indicator.
+            tests:
+              - not_null
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+
+  - name: FACT_AG_WRITTN_PREM_CVG_LVL
+    description: Fact table for written premium coverage level.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: FACT_AG_WRITTN_PREM_CVG_LVL
+        description: Written premium coverage level fact table.
+        identifier: FACT_AG_WRITTN_PREM_CVG_LVL
+        columns:
+          - name: ON_OFF_PREM_SK
+            description: Surrogate key for on/off premium.
+            tests:
+              - not_null
+              - unique
+          - name: REGSTR_PER_SK
+            description: Registration period surrogate key.
+            tests:
+              - not_null
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp.
+            tests:
+              - not_null
+          - name: TRANS_DT_SK
+            description: Transaction date surrogate key.
+            tests:
+              - not_null
+          - name: DNSTRM_DT_SK
+            description: Downstream date surrogate key.
+            tests:
+              - not_null
+          - name: EFF_DT_SK
+            description: Effective date surrogate key.
+            tests:
+              - not_null
+          - name: TERM_STRT_DT_SK
+            description: Term start date surrogate key.
+            tests:
+              - not_null
+          - name: FISC_PER_SK
+            description: Fiscal period surrogate key.
+            tests:
+              - not_null
+          - name: ADJ_PER_SK
+            description: Adjustment period surrogate key.
+            tests:
+              - not_null
+          - name: PLCY_PER_SK
+            description: Policy period surrogate key.
+            tests:
+              - not_null
+          - name: TRANS_TYP_SK
+            description: Transaction type surrogate key.
+            tests:
+              - not_null
+          - name: TRANS_TYP_PLCY_SK
+            description: Transaction type policy surrogate key.
+            tests:
+              - not_null
+          - name: MINI_HH_SK
+            description: Mini household surrogate key.
+            tests:
+              - not_null
+          - name: MINI_PLCY_SK
+            description: Mini policy surrogate key.
+            tests:
+              - not_null
+          - name: MINI_SOI_SK
+            description: Mini SOI surrogate key.
+            tests:
+              - not_null
+          - name: MINI_CVG_SK
+            description: Mini coverage surrogate key.
+            tests:
+              - not_null
+          - name: MINI_AGT_SK
+            description: Mini agent surrogate key.
+            tests:
+              - not_null
+          - name: MINI_RDRVR_SK
+            description: Mini driver surrogate key.
+            tests:
+              - not_null
+          - name: HH_SK
+            description: Household surrogate key.
+            tests:
+              - not_null
+          - name: PLCY_SK
+            description: Policy surrogate key.
+            tests:
+              - not_null
+          - name: SOI_SK
+            description: SOI surrogate key.
+            tests:
+              - not_null
+          - name: CVG_SK
+            description: Coverage surrogate key.
+            tests:
+              - not_null
+          - name: PNI_SK
+            description: PNI surrogate key.
+            tests:
+              - not_null
+          - name: AGT_SK
+            description: Agent surrogate key.
+            tests:
+              - not_null
+          - name: RDRVR_SK
+            description: Driver surrogate key.
+            tests:
+              - not_null
+          - name: FARMR_GEO_DISTR_SK
+            description: Farmer geographic district surrogate key.
+            tests:
+              - not_null
+          - name: RATED_GEO_SK
+            description: Rated geographic surrogate key.
+            tests:
+              - not_null
+          - name: DNSTRM_REGSTR_PER_SK
+            description: Downstream registration period surrogate key.
+            tests:
+              - not_null
+          - name: DNSTRM_FISC_PER_SK
+            description: Downstream fiscal period surrogate key.
+            tests:
+              - not_null
+          - name: MINI_PNI_SK
+            description: Mini PNI surrogate key.
+            tests:
+              - not_null
+          - name: DC_VER_IND_CVG
+            description: DC verification indicator coverage.
+            tests:
+              - not_null
+          - name: DC_VER_IND_SOI
+            description: DC verification indicator SOI.
+            tests:
+              - not_null
+          - name: DC_VER_IND_PLCY
+            description: DC verification indicator policy.
+            tests:
+              - not_null
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record.
+            tests:
+              - not_null
+          - name: PLCY_KOR_CD
+            description: Policy KOR code.
+            tests:
+              - not_null
+          - name: UNIT_KOR_CD
+            description: Unit KOR code.
+            tests:
+              - not_null
+          - name: WRITTN_PREM_AMT
+            description: Written premium amount.
+            tests:
+              - not_null
+          - name: TTL_WRITTN_PREM_AMT
+            description: Total written premium amount.
+            tests:
+              - not_null
+          - name: UNCAP_WRITTN_PREM_AMT
+            description: Uncapped written premium amount.
+            tests:
+              - not_null
+          - name: ALLOC_TDC_AMT
+            description: Allocated TDC amount.
+            tests:
+              - not_null
+          - name: ALLOC_MANL_ADJ_AMT
+            description: Allocated manual adjustment amount.
+            tests:
+              - not_null
+          - name: ALLOC_ASGN_RSK_INSTL_FEE_AMT
+            description: Allocated assigned risk installation fee amount.
+            tests:
+              - not_null
+          - name: ALLOC_EP_WRIT_OFF_AMT
+            description: Allocated EP write-off amount.
+            tests:
+              - not_null
+          - name: CVG_EXPS_VAL
+            description: Coverage expense value.
+            tests:
+              - not_null
+          - name: PLCY_FEE_AMT
+            description: Policy fee amount.
+            tests:
+              - not_null
+          - name: DRVR_FILNG_FEE_AMT
+            description: Driver filing fee amount.
+            tests:
+              - not_null
+          - name: REINST_FEE_AMT
+            description: Reinstatement fee amount.
+            tests:
+              - not_null
+          - name: PREM_CAP_FCTR
+            description: Premium cap factor.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+          - name: FULL_TERM_PREM_AMT
+            description: Full term premium amount.
+            tests:
+              - not_null
+          - name: PLCY_ENH_SK
+            description: Policy enhancement surrogate key.
+            tests:
+              - not_null
+          - name: SOI_ENH_SK
+            description: SOI enhancement surrogate key.
+            tests:
+              - not_null
+          - name: REGSTR_CUST_SGMTN_SK
+            description: Registration customer segmentation surrogate key.
+            tests:
+              - not_null
+          - name: TERM_CUST_SGMTN_SK
+            description: Term customer segmentation surrogate key.
+            tests:
+              - not_null
+          - name: REGSTR_CUST_SGMTN_V2_SK
+            description: Registration customer segmentation V2 surrogate key.
+            tests:
+              - not_null
+          - name: TERM_CUST_SGMTN_V2_SK
+            description: Term customer segmentation V2 surrogate key.
+            tests:
+              - not_null
+          - name: FL_HURR_CAT_FUND_AMT
+            description: FL hurricane catastrophe fund amount.
+            tests:
+              - not_null
+          - name: FL_CPIC_REG_ASSMNT_AMT
+            description: FL CPIC regular assessment amount.
+            tests:
+              - not_null
+          - name: FL_CPIC_EMERG_SURCHRG_AMT
+            description: FL CPIC emergency surcharge amount.
+            tests:
+              - not_null
+          - name: FL_IGA_REG_AMT
+            description: FL IGA regular amount.
+            tests:
+              - not_null
+          - name: FL_IGA_EMERG_AMT
+            description: FL IGA emergency amount.
+            tests:
+              - not_null
+
+  - name: DIM_AG_SOI
+    description: Dimension table for SOI.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_SOI
+        description: SOI dimension.
+        identifier: DIM_AG_SOI
+        columns:
+          - name: SOI_SK
+            description: Surrogate key for SOI.
+            tests:
+              - not_null
+              - unique
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute.
+            tests:
+              - not_null
+          - name: SOI_ID
+            description: SOI ID.
+            tests:
+              - not_null
+          - name: VIN
+            description: Vehicle identification number.
+            tests:
+              - not_null
+          - name: VEH_INCEPT_DT
+            description: Vehicle inception date.
+            tests:
+              - not_null
+          - name: UNIT_NUM
+            description: Unit number.
+            tests:
+              - not_null
+
+  - name: DIM_AG_CVG
+    description: Dimension table for coverage.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_CVG
+        description: Coverage dimension.
+        identifier: DIM_AG_CVG
+        columns:
+          - name: CVG_SK
+            description: Surrogate key for coverage.
+            tests:
+              - not_null
+              - unique
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute.
+            tests:
+              - not_null
+          - name: ACCTNG_LOB
+            description: Accounting line of business.
+            tests:
+              - not_null
+          - name: LOB
+            description: Line of business.
+            tests:
+              - not_null
+          - name: CVG_TYP_CD
+            description: Coverage type code.
+            tests:
+              - not_null
+          - name: CVG_TYP_DESC
+            description: Coverage type description.
+            tests:
+              - not_null
+          - name: DED_PCT
+            description: Deductible percentage.
+            tests:
+              - not_null
+          - name: MINI_CVG_SK
+            description: Mini coverage surrogate key.
+            tests:
+              - not_null
+          - name: MINI_CVG_CHK_SUM
+            description: Mini coverage checksum.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+
+  - name: DIM_AG_PLCY
+    description: Dimension table for policy.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_PLCY
+        description: Policy dimension.
+        identifier: DIM_AG_PLCY
+        columns:
+          - name: PLCY_SK
+            description: Surrogate key for policy.
+            tests:
+              - not_null
+              - unique
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute.
+            tests:
+              - not_null
+          - name: PLCY_ID_SK
+            description: Policy ID surrogate key.
+            tests:
+              - not_null
+          - name: PLCY_CNTRCT_NUM
+            description: Policy contract number.
+            tests:
+              - not_null
+          - name: PLCY_INCEPT_DT
+            description: Policy inception date.
+            tests:
+              - not_null
+          - name: PERSTNCY_YRS
+            description: Persistency years.
+            tests:
+              - not_null
+          - name: LPS_DAYS_CNT
+            description: Lapse days count.
+            tests:
+              - not_null
+          - name: TERM_STRT_DT
+            description: Term start date.
+            tests:
+              - not_null
+          - name: TERM_END_DT
+            description: Term end date.
+            tests:
+              - not_null
+          - name: PNI_AGE
+            description: PNI age.
+            tests:
+              - not_null
+          - name: XCLUDED_DRVR_CHLD_IND
+            description: Excluded driver child indicator.
+            tests:
+              - not_null
+          - name: XCLUDED_DRVR_OTH_IND
+            description: Excluded driver other indicator.
+            tests:
+              - not_null
+          - name: XCLUDED_DRVR_PARENT_IND
+            description: Excluded driver parent indicator.
+            tests:
+              - not_null
+          - name: XCLUDED_DRVR_SPS_IND
+            description: Excluded driver spouse indicator.
+            tests:
+              - not_null
+          - name: LIFE_PLCY_IND
+            description: Life policy indicator.
+            tests:
+              - not_null
+          - name: ADVNC_PURCH_IND
+            description: Advance purchase indicator.
+            tests:
+              - not_null
+          - name: ALTR_VEH_IND
+            description: Alter vehicle indicator.
+            tests:
+              - not_null
+          - name: ALTRN_FUEL_IND
+            description: Alternate fuel indicator.
+            tests:
+              - not_null
+          - name: ABS_IND
+            description: ABS indicator.
+            tests:
+              - not_null
+          - name: ANTI_THFT_IND
+            description: Anti-theft indicator.
+            tests:
+              - not_null
+          - name: ANTIQ_CAR_IND
+            description: Antique car indicator.
+            tests:
+              - not_null
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator.
+            tests:
+              - not_null
+          - name: ELECTRNC_STABLTY_CTRL_DISC_IND
+            description: Electronic stability control discount indicator.
+            tests:
+              - not_null
+          - name: HI_PERF_IND
+            description: High performance indicator.
+            tests:
+              - not_null
+          - name: NEW_PARENT_IND
+            description: New parent indicator.
+            tests:
+              - not_null
+          - name: PASSV_RESTRA_IND
+            description: Passive restraint indicator.
+            tests:
+              - not_null
+          - name: PRI_INS_DISC_IND
+            description: Primary insurance discount indicator.
+            tests:
+              - not_null
+          - name: CONVICT_FREE_IND
+            description: Conviction-free indicator.
+            tests:
+              - not_null
+          - name: SR22_FILNG_IND
+            description: SR22 filing indicator.
+            tests:
+              - not_null
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator.
+            tests:
+              - not_null
+          - name: TEEN_DRVR_IND
+            description: Teen driver indicator.
+            tests:
+              - not_null
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator.
+            tests:
+              - not_null
+          - name: UNVERFYBL_DRVNG_RECRD_IND
+            description: Unverifiable driving record indicator.
+            tests:
+              - not_null
+          - name: MINI_PLCY_SK
+            description: Mini policy surrogate key.
+            tests:
+              - not_null
+          - name: MINI_PLCY_CHK_SUM
+            description: Mini policy checksum.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+
+  - name: DIM_AG_SOI_ENH
+    description: Dimension table for SOI enhancements.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_SOI_ENH
+        description: SOI enhancements dimension.
+        identifier: DIM_AG_SOI_ENH
+        columns:
+          - name: SOI_ENH_SK
+            description: Surrogate key for SOI enhancements.
+            tests:
+              - not_null
+              - unique
+          - name: PLCY_ID_SK
+            description: Policy ID surrogate key.
+            tests:
+              - not_null
+          - name: SOI_ID
+            description: SOI ID.
+            tests:
+              - not_null
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp.
+            tests:
+              - not_null
+          - name: SRC_EFF_DT
+            description: Source effective date.
+            tests:
+              - not_null
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record.
+            tests:
+              - not_null
+          - name: ADD_UNIT_IND
+            description: Add unit indicator.
+            tests:
+              - not_null
+          - name: RPLC_VEH_IND
+            description: Replace vehicle indicator.
+            tests:
+              - not_null
+          - name: DISTNT_STDNT_DISC_IND
+            description: Distant student discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_MTRC_DISC_IND
+            description: Auto specialty metric discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_BOAT_WC_DISC_IND
+            description: Auto specialty boat WC discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_OFFRD_OTH_DISC_IND
+            description: Auto specialty offered other discount indicator.
+            tests:
+              - not_null
+          - name: AUTO_SPLTY_MTRHM_TRLR_DISC_IND
+            description: Auto specialty motorhome trailer discount indicator.
+            tests:
+              - not_null
+          - name: DRVR_IMPRV_DISC_IND
+            description: Driver improvement discount indicator.
+            tests:
+              - not_null
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+          - name: LSE_VEH_IND
+            description: Lease vehicle indicator.
+            tests:
+              - not_null
+          - name: MLT_LINE_DISC_DESC
+            description: Multi-line discount description.
+            tests:
+              - not_null
+          - name: PRD_TYP
+            description: Product type.
+            tests:
+              - not_null
+          - name: AUTO_USE_CD
+            description: Auto use code.
+            tests:
+              - not_null
+          - name: AUTO_USE_DESC
+            description: Auto use description.
+            tests:
+              - not_null
+          - name: RT_CLS
+            description: Rating class.
+            tests:
+              - not_null
+          - name: FARM_DISC_CD
+            description: Farm discount code.
+            tests:
+              - not_null
+          - name: NON_SMKR
+            description: Non-smoker indicator.
+            tests:
+              - not_null
+          - name: FIRE_TAX_CD_CNTY
+            description: Fire tax code county.
+            tests:
+              - not_null
+          - name: FIRE_TAX_CD_CITY
+            description: Fire tax code city.
+            tests:
+              - not_null
+          - name: NEW_BUS_REINSTMT_DT
+            description: New business reinstatement date.
+            tests:
+              - not_null
+          - name: LMT_TORT
+            description: Limited tort indicator.
+            tests:
+              - not_null
+
+  - name: DIM_AG_RATED_GEO
+    description: Dimension table for rated geographic.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_RATED_GEO
+        description: Rated geographic dimension.
+        identifier: DIM_AG_RATED_GEO
+        columns:
+          - name: RATED_GEO_SK
+            description: Surrogate key for rated geographic.
+            tests:
+              - not_null
+              - unique
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute.
+            tests:
+              - not_null
+          - name: GRGNG_ZIP_3
+            description: Garaging ZIP code (3 digits).
+            tests:
+              - not_null
+          - name: GRGNG_ZIP_5
+            description: Garaging ZIP code (5 digits).
+            tests:
+              - not_null
+          - name: GRGNG_ZIP_PLUS4
+            description: Garaging ZIP code plus 4.
+            tests:
+              - not_null
+          - name: FARMR_GEO_ST_SK
+            description: Farmer geographic state surrogate key.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+
+  - name: DIM_AG_CVG_ENH
+    description: Dimension table for coverage enhancements.
+    database: AGDM
+    schema: staging
+    tables:
+      - name: DIM_AG_CVG_ENH
+        description: Coverage enhancements dimension.
+        identifier: DIM_AG_CVG_ENH
+        columns:
+          - name: ON_OFF_PREM_SK
+            description: Surrogate key for on/off premium.
+            tests:
+              - not_null
+              - unique
+          - name: PLCY_ID_SK
+            description: Policy ID surrogate key.
+            tests:
+              - not_null
+          - name: SOI_ID
+            description: SOI ID.
+            tests:
+              - not_null
+          - name: CVG_CD
+            description: Coverage code.
+            tests:
+              - not_null
+          - name: LOB
+            description: Line of business.
+            tests:
+              - not_null
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp.
+            tests:
+              - not_null
+          - name: EFF_DT
+            description: Effective date.
+            tests:
+              - not_null
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record.
+            tests:
+              - not_null
+          - name: REGSTR_PER_SK
+            description: Registration period surrogate key.
+            tests:
+              - not_null
+          - name: DIP
+            description: DIP.
+            tests:
+              - not_null
+          - name: SAP_CMPY
+            description: SAP company.
+            tests:
+              - not_null
+          - name: NC_TIER
+            description: NC tier.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+          - name: NJ_FRGVN_PNTS
+            description: NJ forgiven points.
+            tests:
+              - not_null
+          - name: NJ_RTD_PNTS
+            description: NJ rated points.
+            tests:
+              - not_null
+          - name: CVG_TYP_IND
+            description: Coverage type indicator.
+            tests:
+              - not_null
+          - name: DRV_RCRD_SRCHRG_PCT
+            description: Driver record surcharge percentage.
+            tests:
+              - not_null
+          - name: FARA_CD
+            description: FARA code.
+            tests:
+              - not_null
+
+  - name: WRK_BIRP_TA_NISS_NU0C_APRM_DTL
+    description: Detailed table for NISS NU0C APRM processing.
+    database: PowerExchange_For_Snowflake
+    schema: staging
+    tables:
+      - name: WRK_BIRP_TA_NISS_NU0C_APRM_DTL
+        description: Detailed processing table for NISS NU0C APRM.
+        identifier: WRK_BIRP_TA_NISS_NU0C_APRM_DTL
+        columns:
+          - name: FISC_PER_YR
+            description: Fiscal period year.
+            tests:
+              - not_null
+          - name: NAIC_CMPNY_CD
+            description: NAIC company code.
+            tests:
+              - not_null
+          - name: NISS_CMPNY_CD
+            description: NISS company code.
+            tests:
+              - not_null
+          - name: ST_NM
+            description: State name.
+            tests:
+              - not_null
+          - name: ST_CD
+            description: State code.
+            tests:
+              - not_null
+          - name: NISS_ST_CD
+            description: NISS state code.
+            tests:
+              - not_null
+          - name: ST_ABBR
+            description: State abbreviation.
+            tests:
+              - not_null
+          - name: ACCTNG_LOB
+            description: Accounting line of business.
+            tests:
+              - not_null
+          - name: CVG_TYP_CD
+            description: Coverage type code.
+            tests:
+              - not_null
+          - name: CVG_AMT
+            description: Coverage amount.
+            tests:
+              - not_null
+          - name: BI_LMT
+            description: Bodily injury limit.
+            tests:
+              - not_null
+          - name: GA_ADDED_AT_FAULT_IND
+            description: Indicator for added at fault.
+            tests:
+              - not_null
+          - name: PLCY_IND
+            description: Policy indicator.
+            tests:
+              - not_null
+          - name: UM_UMI_STACKING
+            description: UM/UMI stacking indicator.
+            tests:
+              - not_null
+          - name: PIP_WVR_WL_IND
+            description: PIP waiver WL indicator.
+            tests:
+              - not_null
+          - name: PIP_MED_SEC_IND
+            description: PIP medical security indicator.
+            tests:
+              - not_null
+          - name: PIP_LOSS_INCOME_IND
+            description: PIP loss income indicator.
+            tests:
+              - not_null
+          - name: MI_PPO_IND
+            description: MI PPO indicator.
+            tests:
+              - not_null
+          - name: PRD_GRP_CD
+            description: Product group code.
+            tests:
+              - not_null
+          - name: NJ_HLTH_INSR_PRIM
+            description: NJ health insurance primary indicator.
+            tests:
+              - not_null
+          - name: NJ_EXTR_PIP_PKG
+            description: NJ extra PIP package indicator.
+            tests:
+              - not_null
+          - name: NJ_RESDNC_RLTNSHP_PIP_IND
+            description: NJ residence relationship PIP indicator.
+            tests:
+              - not_null
+          - name: NY_SSL_IND
+            description: NY SSL indicator.
+            tests:
+              - not_null
+          - name: NY_FULL_CVG_GLASS_COMP_IND
+            description: NY full coverage glass comp indicator.
+            tests:
+              - not_null
+          - name: GRGNG_ZIP
+            description: Garaging ZIP code.
+            tests:
+              - not_null
+          - name: NISS_TERR_CD
+            description: NISS territory code.
+            tests:
+              - not_null
+          - name: RATNG_CMPY_CD
+            description: Rating company code.
+            tests:
+              - not_null
+          - name: MLT_CAR_IND
+            description: Multi-car indicator.
+            tests:
+              - not_null
+          - name: RT_CLS
+            description: Rating class.
+            tests:
+              - not_null
+          - name: AGE
+            description: Age of the driver.
+            tests:
+              - not_null
+          - name: GENDR
+            description: Gender of the driver.
+            tests:
+              - not_null
+          - name: MRTL_STAT
+            description: Marital status of the driver.
+            tests:
+              - not_null
+          - name: AUTO_USE_CD
+            description: Auto use code.
+            tests:
+              - not_null
+          - name: MILES_TO_WRK
+            description: Miles to work.
+            tests:
+              - not_null
+          - name: GOOD_STDNT_IND
+            description: Good student indicator.
+            tests:
+              - not_null
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator.
+            tests:
+              - not_null
+          - name: SOI_TYP
+            description: SOI type.
+            tests:
+              - not_null
+          - name: PHY_DMG_IND
+            description: Physical damage indicator.
+            tests:
+              - not_null
+          - name: NJ_RATD_PNTS
+            description: NJ rated points.
+            tests:
+              - not_null
+          - name: VEH_MDL_YR
+            description: Vehicle model year.
+            tests:
+              - not_null
+          - name: NJ_EXCPTION_CD
+            description: NJ exception code.
+            tests:
+              - not_null
+          - name: NJ_FGVN_PNTS
+            description: NJ forgiven points.
+            tests:
+              - not_null
+          - name: PASSV_RESTRA_DISC
+            description: Passive restraint discount.
+            tests:
+              - not_null
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator.
+            tests:
+              - not_null
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator.
+            tests:
+              - not_null
+          - name: ANTI_THFT_DISC
+            description: Anti-theft discount.
+            tests:
+              - not_null
+          - name: DAY_TM_RUN_LIGHTS
+            description: Daytime running lights indicator.
+            tests:
+              - not_null
+          - name: LMT_TORT
+            description: Limited tort indicator.
+            tests:
+              - not_null
+          - name: ANNL_STMNT_LOB_CD
+            description: Annual statement line of business code.
+            tests:
+              - not_null
+          - name: CVG_TYP_IND
+            description: Coverage type indicator.
+            tests:
+              - not_null
+
+  - name: WRK_BIRP_TA_NISS_NU0C_APRM_LND
+    description: Landing table for NISS NU0C APRM processing.
+    database: PowerExchange_For_Snowflake
+    schema: staging
+    tables:
+      - name: WRK_BIRP_TA_NISS_NU0C_APRM_LND
+        description: Landing processing table for NISS NU0C APRM.
+        identifier: WRK_BIRP_TA_NISS_NU0C_APRM_LND
+        columns:
+          - name: NISS_APRM_LND_SK
+            description: Surrogate key for the landing record.
+            tests:
+              - not_null
+              - unique
+          - name: REG_PER_YR
+            description: Registration period year.
+            tests:
+              - not_null
+          - name: FISC_PER_YR
+            description: Fiscal period year.
+            tests:
+              - not_null
+          - name: NAIC_CMPNY_CD
+            description: NAIC company code.
+            tests:
+              - not_null
+          - name: NISS_CMPNY_CD
+            description: NISS company code.
+            tests:
+              - not_null
+          - name: ST_NM
+            description: State name.
+            tests:
+              - not_null
+          - name: ST_CD
+            description: State code.
+            tests:
+              - not_null
+          - name: NISS_ST_CD
+            description: NISS state code.
+            tests:
+              - not_null
+          - name: ST_ABBR
+            description: State abbreviation.
+            tests:
+              - not_null
+          - name: ACCTNG_LOB
+            description: Accounting line of business.
+            tests:
+              - not_null
+          - name: CVG_TYP_CD
+            description: Coverage type code.
+            tests:
+              - not_null
+          - name: CVG_AMT
+            description: Coverage amount.
+            tests:
+              - not_null
+          - name: BI_LMT
+            description: Bodily injury limit.
+            tests:
+              - not_null
+          - name: GA_ADDED_AT_FAULT_IND
+            description: Indicator for added at fault.
+            tests:
+              - not_null
+          - name: PLCY_IND
+            description: Policy indicator.
+            tests:
+              - not_null
+          - name: UM_UMI_STACKING
+            description: UM/UMI stacking indicator.
+            tests:
+              - not_null
+          - name: PIP_WVR_WL_IND
+            description: PIP waiver WL indicator.
+            tests:
+              - not_null
+          - name: PIP_MED_SEC_IND
+            description: PIP medical security indicator.
+            tests:
+              - not_null
+          - name: PIP_LOSS_INCOME_IND
+            description: PIP loss income indicator.
+            tests:
+              - not_null
+          - name: MI_PPO_IND
+            description: MI PPO indicator.
+            tests:
+              - not_null
+          - name: PRD_GRP_CD
+            description: Product group code.
+            tests:
+              - not_null
+          - name: NJ_HLTH_INSR_PRIM
+            description: NJ health insurance primary indicator.
+            tests:
+              - not_null
+          - name: NJ_EXTR_PIP_PKG
+            description: NJ extra PIP package indicator.
+            tests:
+              - not_null
+          - name: NJ_RESDNC_RLTNSHP_PIP_IND
+            description: NJ residence relationship PIP indicator.
+            tests:
+              - not_null
+          - name: NY_SSL_IND
+            description: NY SSL indicator.
+            tests:
+              - not_null
+          - name: NY_FULL_CVG_GLASS_COMP_IND
+            description: NY full coverage glass comp indicator.
+            tests:
+              - not_null
+          - name: GRGNG_ZIP
+            description: Garaging ZIP code.
+            tests:
+              - not_null
+          - name: NISS_TERR_CD
+            description: NISS territory code.
+            tests:
+              - not_null
+          - name: RATNG_CMPY_CD
+            description: Rating company code.
+            tests:
+              - not_null
+          - name: MLT_CAR_IND
+            description: Multi-car indicator.
+            tests:
+              - not_null
+          - name: RT_CLS
+            description: Rating class.
+            tests:
+              - not_null
+          - name: AGE
+            description: Age of the driver.
+            tests:
+              - not_null
+          - name: GENDR
+            description: Gender of the driver.
+            tests:
+              - not_null
+          - name: MRTL_STAT
+            description: Marital status of the driver.
+            tests:
+              - not_null
+          - name: AUTO_USE_CD
+            description: Auto use code.
+            tests:
+              - not_null
+          - name: MILES_TO_WRK
+            description: Miles to work.
+            tests:
+              - not_null
+          - name: GOOD_STDNT_IND
+            description: Good student indicator.
+            tests:
+              - not_null
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator.
+            tests:
+              - not_null
+          - name: SOI_TYP
+            description: SOI type.
+            tests:
+              - not_null
+          - name: PHY_DMG_IND
+            description: Physical damage indicator.
+            tests:
+              - not_null
+          - name: NJ_RATD_PNTS
+            description: NJ rated points.
+            tests:
+              - not_null
+          - name: VEH_MDL_YR
+            description: Vehicle model year.
+            tests:
+              - not_null
+          - name: NJ_EXCPTION_CD
+            description: NJ exception code.
+            tests:
+              - not_null
+          - name: NJ_FGVN_PNTS
+            description: NJ forgiven points.
+            tests:
+              - not_null
+          - name: PASSV_RESTRA_DISC
+            description: Passive restraint discount.
+            tests:
+              - not_null
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator.
+            tests:
+              - not_null
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator.
+            tests:
+              - not_null
+          - name: ANTI_THFT_DISC
+            description: Anti-theft discount.
+            tests:
+              - not_null
+          - name: DAY_TM_RUN_LIGHTS
+            description: Daytime running lights indicator.
+            tests:
+              - not_null
+          - name: LMT_TORT
+            description: Limited tort indicator.
+            tests:
+              - not_null
+          - name: ANNL_STMNT_LOB_CD
+            description: Annual statement line of business code.
+            tests:
+              - not_null
+          - name: CVG_TYP_IND
+            description: Coverage type indicator.
+            tests:
+              - not_null
+          - name: CVG_EXPS_VAL
+            description: Coverage expense value.
+            tests:
+              - not_null
+          - name: WRITTN_PREM_AMT
+            description: Written premium amount.
+            tests:
+              - not_null
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+            tests:
+              - not_null
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+            tests:
+              - not_null
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+            tests:
+              - not_null
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+            tests:
+              - not_null
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+            tests:
+              - not_null
+          - name: NJ_NO_LWST_LMT_IND
+            description: NJ no lowest limit indicator.
+            tests:
+              - not_null
+          - name: NJ_NMD_DRVR_EXCL_IND
+            description: NJ named driver exclusion indicator.
+            tests:
+              - not_null
+          - name: EXPS_VAL_ROLLED
+            description: Expenses value rolled.
+            tests:
+              - not_null
+          - name: COMP_DED
+            description: Comprehensive deductible.
+            tests:
+              - not_null
+          - name: COLL_DED
+            description: Collision deductible.
+            tests:
+              - not_null
+          - name: PLCY_CNTRCT_NUM
+            description: Policy contract number.
+            tests:
+              - not_null
+          - name: UNIT_NUM
+            description: Unit number.
+            tests:
+              - not_null
+          - name: EFF_DT
+            description: Effective date.
+            tests:
+              - not_null
+          - name: NUM_OF_CARS_IN_HH
+            description: Number of cars in household.
+            tests:
+              - not_null
+          - name: RDRVR_DT_OF_BRTH
+            description: Driver date of birth.
+            tests:
+              - not_null
+          - name: TERM_STRT_DT
+            description: Term start date.
+            tests:
+              - not_null
+          - name: SRC_SYS_CD
+            description: Source system code.
+            tests:
+              - not_null
+          - name: PNI_AGE
+            description: PNI age.
+            tests:
+              - not_null
+          - name: MIS_LOB
+            description: MIS line of business.
+            tests:
+              - not_null
+          - name: PRINCIPAL_OPRT
+            description: Principal operator.
+            tests:
+              - not_null
+          - name: SOURCE_IND_DERIVED
+            description: Source indicator derived.
             tests:
               - not_null

@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: fct_cloud_data_warehouse
+    description: "Load curated tables into Snowflake, Redshift, or BigQuery from various cloud sources."
+    meta:
+      owner: data_engineering_team
+      domain: cloud_integration
+    config:
+      materialized: table
+    tags: ['cloud', 'data_warehouse']
+    columns:
+      - name: sf_field
+        description: "Salesforce field integrated into the cloud data warehouse."
+        tests:
+          - not_null
+      - name: amazon_s3_field
+        description: "Amazon S3 field integrated into the cloud data warehouse."
+        tests:
+          - not_null
+      - name: oracle_field
+        description: "Oracle field integrated into the cloud data warehouse."
+        tests:
+          - not_null
+      - name: kafka_topic_field
+        description: "Kafka topic field integrated into the cloud data warehouse."
+        tests:
+          - not_null
+
+  - name: fct_operational_data_store
+    description: "Deliver cleansed datasets to operational systems via REST APIs or flat-file exports."
+    meta:
+      owner: data_operations_team
+      domain: operational_data
+    config:
+      materialized: table
+    tags: ['operational', 'data_store']
+    columns:
+      - name: normalized_field1
+        description: "Normalized field from data cleansing process."
+        tests:
+          - not_null
+      - name: integrated_field1
+        description: "Field integrated from various data sources."
+        tests:
+          - not_null
+      - name: customer_lifetime_value
+        description: "Calculated customer lifetime value using advanced transformations."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_mean_to_be_between:
+              min_value: 0
+              max_value: 1000000
+
+  - name: fct_analytical_reports
+    description: "Feed Power BI, Tableau, and other BI platforms with performance datasets."
+    meta:
+      owner: analytics_team
+      domain: business_intelligence
+    config:
+      materialized: view
+    tags: ['analytics', 'reports']
+    columns:
+      - name: customer_lifetime_value
+        description: "Calculated customer lifetime value for analytical reporting."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_mean_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: aggregated_metric
+        description: "Aggregated metric for performance analysis."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_max_to_be_between:
+              min_value: 0
+              max_value: 1000000

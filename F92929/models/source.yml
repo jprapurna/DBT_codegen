@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: Snowflake
+    description: Source data from Snowflake database
+    database: Snowflake
+    schema: null
+    overrides: powercenter
+
+    tables: []

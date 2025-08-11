@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: DBConnection_CDH_GWODS
+    description: Source database connection for CDH_GWODS schema
+    database: DBConnection_CDH_GWODS
+    schema: CDH_GWODS
+
+    tables:
+      - name: CDH_GW_BUR
+        description: Table containing CDH_GW_BUR data
+        identifier: CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: BUR data
+            tests:
+              - not_null
+              - unique
+
+  - name: DBConnection_CDM
+    description: Source database connection for CDM schema
+    database: DBConnection_CDM
+    schema: CDM
+
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Table containing W_CLAIM_CD_BUR_SCD3 data
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: ROW_WID
+            description: Row identifier
+            tests:
+              - not_null
+              - unique
+          - name: INTEGRATION_ID
+            description: Integration identifier
+            tests:
+              - not_null
+              - unique
+          - name: NEW_BUR
+            description: New BUR data
+            tests:
+              - not_null
+              - unique

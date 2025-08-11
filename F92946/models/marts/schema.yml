@@ -1,0 +1,90 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: "Model for updating claim data based on the update strategy expression."
+    meta:
+      owner: "data_team"
+      domain: "claims"
+    config:
+      materialized: view
+    tags: ["claims", "update"]
+    columns:
+      - name: INTEGRATION_ID
+        description: "Unique identifier for integration."
+        tests:
+          - not_null
+          - unique
+      - name: o_Flag
+        description: "Flag indicating operation status."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive']
+      - name: BATCH_ID
+        description: "Identifier for the batch process."
+        tests:
+          - not_null
+      - name: o_Flag1
+        description: "Secondary flag for operation status."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['yes', 'no']
+      - name: update_strategy_expression_78066
+        description: "Expression used for update strategy."
+        tests:
+          - not_null
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: "Model for handling insert operations with specific field mappings for claims."
+    meta:
+      owner: "data_team"
+      domain: "claims"
+    config:
+      materialized: view
+    tags: ["claims", "insert"]
+    columns:
+      - name: INTEGRATION_ID
+        description: "Unique identifier for integration."
+        tests:
+          - not_null
+          - unique
+      - name: o_Flag
+        description: "Flag indicating operation status."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive']
+      - name: CDM_INSERT_DT
+        description: "Date of insertion into the CDM."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: "Date of update in the CDM."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: TGT_TABLE_NAME
+        description: "Name of the target table for insertion."
+        tests:
+          - not_null
+
+  - name: fct_Output
+    description: "Model for mapping input field 'ROW_ID' to output field 'ROW_WID'."
+    meta:
+      owner: "data_team"
+      domain: "output_mapping"
+    config:
+      materialized: view
+    tags: ["mapping", "output"]
+    columns:
+      - name: ROW_ID
+        description: "Identifier for the row in the input."
+        tests:
+          - not_null
+          - unique
+      - name: ROW_WID
+        description: "Identifier for the row in the output."
+        tests:
+          - not_null
+          - unique

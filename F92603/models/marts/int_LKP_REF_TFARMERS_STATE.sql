@@ -3,7 +3,7 @@ WITH lookup_tfarmers_state AS (
   SELECT 
     FARMERS_STATE_CD,
     STATE_CODE
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+  FROM FDR.REF_TFARMERS_STATE
 )
 SELECT 
   FARMERS_STATE_CD,

@@ -1,43 +1,21 @@
--- Purpose: Load detailed data for NISS auto territory reporting
+-- Purpose: Load detailed data for NISS auto territory reporting.
 
 WITH detailed_data AS (
     SELECT 
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.REF_AUTO_TERR_SK,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.END_EFF_DT,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.CHCKSUM,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.CR_BY_MAPNG_ID,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.DW_CR_TMSP,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.UPD_BY_MAPNG_ID,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.DW_UPD_TMSP,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.WRK_FLOW_RUN_ID,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.NISS_TERR_CD,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.CNTY_NM,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.CITY_NM,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.SRC_EFF_DT,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.SRC_OBSLT_DT,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.NISS_ST_CD,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.ST_ABBRV,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.ZIP_CD,
-        int_LKP_RBI_REF_AUTO_TERR_ByStZipLob.PP_COMMRCL_CD
-    FROM {{ ref('int_LKP_RBI_REF_AUTO_TERR_ByStZipLob') }}
+        a.*,
+        b.ref_auto_terr_sk,
+        c.mapping_name,
+        c.folder_name,
+        c.workflow_name
+    FROM 
+        {{ ref('int_EXPTRANS') }} a
+    LEFT JOIN 
+        {{ ref('int_LKP_RBI_REF_AUTO_TERR_ByStZipLob') }} b ON a.niss_st_cd = b.niss_st_cd AND a.st_abbrv = b.st_abbrv AND a.zip_cd = b.zip_cd AND a.pp_commrcl_cd = b.pp_commrcl_cd
+    LEFT JOIN 
+        {{ ref('int_EXP_ABC_MAPPING_AUDIT_ID_LOOKUP') }} c ON a.mapping_name = c.mapping_name AND a.folder_name = c.folder_name AND a.workflow_name = c.workflow_name
 )
 
 SELECT 
-    detailed_data.REF_AUTO_TERR_SK,
-    detailed_data.END_EFF_DT,
-    detailed_data.CHCKSUM,
-    detailed_data.CR_BY_MAPNG_ID,
-    detailed_data.DW_CR_TMSP,
-    detailed_data.UPD_BY_MAPNG_ID,
-    detailed_data.DW_UPD_TMSP,
-    detailed_data.WRK_FLOW_RUN_ID,
-    detailed_data.NISS_TERR_CD,
-    detailed_data.CNTY_NM,
-    detailed_data.CITY_NM,
-    detailed_data.SRC_EFF_DT,
-    detailed_data.SRC_OBSLT_DT,
-    detailed_data.NISS_ST_CD,
-    detailed_data.ST_ABBRV,
-    detailed_data.ZIP_CD,
-    detailed_data.PP_COMMRCL_CD
-FROM detailed_data
+    *
+FROM 
+    detailed_data

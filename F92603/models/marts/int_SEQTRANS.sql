@@ -1,10 +1,12 @@
 -- Purpose: Generates sequence values starting from 0, incrementing by 1
 WITH sequence_values AS (
   SELECT 
-    9174512 + ROW_NUMBER() OVER () AS nextval,
-    9174512 + ROW_NUMBER() OVER () - 1 AS currval
+    0 AS start_value,
+    1 AS increment_by,
+    9223372036854775807 AS end_value,
+    9174512 AS current_value
 )
 SELECT 
-  nextval,
-  currval
+  start_value + increment_by AS nextval,
+  current_value AS currval
 FROM sequence_values

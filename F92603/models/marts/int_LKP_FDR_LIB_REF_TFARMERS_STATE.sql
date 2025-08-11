@@ -1,14 +1,12 @@
--- Purpose: This model performs a lookup to derive ST_ABBR using FARMERS_STATE_CD as input.
-
-WITH lookup AS (
-  SELECT
-    FARMERS_STATE_CD,
-    STATE_CODE
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
-  WHERE FARMERS_STATE_CD = i_FARMERS_STATE_CD
+-- Purpose: Lookup transformation for Farmers state code.
+WITH farmers_state_lookup AS (
+  SELECT DISTINCT 
+    FARMERS_STATE_CD, 
+    STATE_CODE 
+  FROM {{ source('FDR', 'REF_TFARMERS_STATE') }}
+  WHERE END_EFF_DT = '2999-12-31'
 )
-
-SELECT
-  i_FARMERS_STATE_CD AS FARMERS_STATE_CD,
-  lookup.STATE_CODE
-FROM lookup
+SELECT 
+  FARMERS_STATE_CD, 
+  STATE_CODE 
+FROM farmers_state_lookup

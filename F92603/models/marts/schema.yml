@@ -1,260 +1,217 @@
 version: 2
 
 models:
-  - name: fct_niss_auto_103_atprm_dtl_upd_classcd
-    description: Final model for reporting or analytics based on the update and expression transformations.
-    meta:
-      owner: data_team
-      domain: insurance
+  - name: fct_NU0C_NISS_AUTO_102_ATPRM_DTL_Load
+    description: Load detailed data for NISS auto territory reporting, including mappings and folder information.
     config:
       materialized: view
-    tags: ['insurance', 'analytics']
+    tags: ['reporting', 'analytics']
+    columns:
+      - name: ref_auto_terr_sk
+        description: Reference key for auto territory.
+        tests:
+          - not_null
+          - unique
+      - name: mapping_name
+        description: Name of the mapping used in the workflow.
+        tests:
+          - not_null
+      - name: folder_name
+        description: Name of the folder containing the workflow.
+        tests:
+          - not_null
+      - name: workflow_name
+        description: Name of the workflow.
+        tests:
+          - not_null
+
+  - name: fct_niss_auto_103_atprm_dtl_upd_classcd
+    description: Final model for reporting or analytics, focusing on updated class codes.
+    config:
+      materialized: view
+    tags: ['reporting', 'analytics']
     columns:
       - name: NISS_APRM_DETL_SK
-        description: Unique identifier for NISS APRM detail.
+        description: Surrogate key for NISS APRM details.
         tests:
+          - not_null
           - unique
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_unique
       - name: NISS_CLASS_CD
-        description: Class code for NISS.
+        description: Class code for NISS APRM.
         tests:
           - not_null
-      - name: REC_EXCPN_IND
+      - name: v_CLASS_CD_Indemnity
+        description: Indemnity class code.
+        tests:
+          - not_null
+      - name: v_CLASS_CD_Auto_1
+        description: Auto class code 1.
+        tests:
+          - not_null
+      - name: v_CLASS_CD_Auto_1A
+        description: Auto class code 1A.
+        tests:
+          - not_null
+      - name: v_CLASS_CD_Auto_2
+        description: Auto class code 2.
+        tests:
+          - not_null
+      - name: v_CLASS_CD_Auto_3
+        description: Auto class code 3.
+        tests:
+          - not_null
+      - name: v_CLASS_CD_Auto_4
+        description: Auto class code 4.
+        tests:
+          - not_null
+      - name: v_CLASS_CD_Auto_5
+        description: Auto class code 5.
+        tests:
+          - not_null
+      - name: v_CLASS_CD_Auto_6
+        description: Auto class code 6.
+        tests:
+          - not_null
+
+  - name: fct_niss_auto_atprm_dtl
+    description: Final output for reporting or analytics, containing updated class codes and exception handling.
+    config:
+      materialized: view
+    tags: ['reporting', 'analytics']
+    columns:
+      - name: NISS_APRM_DETL_SK
+        description: Surrogate key for NISS APRM details.
+        tests:
+          - not_null
+          - unique
+      - name: niss_class_cd
+        description: Class code for NISS APRM.
+        tests:
+          - not_null
+      - name: rec_excpn_ind
         description: Indicator for record exception.
         tests:
           - not_null
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: REC_EXCPN_RSN_DESC
-        description: Description of the reason for record exception.
+      - name: rec_excp_desc
+        description: Description of the record exception.
+        tests:
+          - not_null
+      - name: cdm_insert_dt
+        description: Timestamp of the record insertion.
+        tests:
+          - not_null
+
+  - name: fct_upd_niss_cvg_cd
+    description: Model updates the NISS_CVG_CD with strategy DD_UPDATE.
+    config:
+      materialized: view
+    tags: ['reporting', 'analytics']
+    columns:
+      - name: NISS_APRM_DETL_SK
+        description: Surrogate key for NISS APRM details.
+        tests:
+          - not_null
+          - unique
+      - name: ST_NM
+        description: State name.
+        tests:
+          - not_null
       - name: ST_ABBR
         description: State abbreviation.
         tests:
           - not_null
-      - name: ST_CD
-        description: State code.
-        tests:
-          - not_null
-      - name: RATNG_CMPY_CD
-        description: Rating company code.
-      - name: MLT_CAR_IND
-        description: Indicator for multiple cars.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: RT_CLS
-        description: Rating class.
-      - name: AGE
-        description: Age of the individual.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 120
-      - name: GENDR
-        description: Gender of the individual.
-        tests:
-          - accepted_values:
-              values: ['M', 'F', 'O']
-      - name: MRTL_STAT
-        description: Marital status.
-        tests:
-          - accepted_values:
-              values: ['Single', 'Married', 'Divorced', 'Widowed']
-      - name: auto_use_cd
-        description: Code for auto use.
-      - name: iage
-        description: Inferred age.
-      - name: imiles_to_wrk
-        description: Inferred miles to work.
-      - name: GOOD_STDNT_IND
-        description: Indicator for good student.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: DRVR_TRNG_IND
-        description: Indicator for driver training.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: SOI_TYP
-        description: Type of source of income.
       - name: ACCTNG_LOB
         description: Accounting line of business.
-      - name: CVG_TYP_CD
-        description: Coverage type code.
-      - name: NISS_CLASS_CD_FL
-        description: NISS class code flag.
-      - name: v_class_cd_indemnity
-        description: Indemnity class code.
-      - name: v_class_cd_auto_1
-        description: Auto class code 1.
-      - name: v_class_cd_auto_1a
-        description: Auto class code 1a.
-      - name: v_class_cd_auto_2
-        description: Auto class code 2.
-      - name: v_class_cd_auto_3
-        description: Auto class code 3.
-      - name: v_class_cd_auto_4
-        description: Auto class code 4.
-      - name: v_class_cd_auto_5
-        description: Auto class code 5.
-      - name: v_class_cd_auto_6
-        description: Auto class code 6.
-
-  - name: fct_niss_cvg_cd
-    description: Final model for reporting or analytics related to NISS coverage codes.
-    meta:
-      owner: data_team
-      domain: insurance
-    config:
-      materialized: view
-    tags: ['insurance', 'coverage']
-    columns:
-      - name: NISS_APRM_DETL_SK
-        description: Unique identifier for NISS APRM detail.
         tests:
-          - unique
           - not_null
-          - dbt_expectations.expect_column_values_to_be_unique
       - name: NISS_CVG_CD
         description: Coverage code for NISS.
         tests:
           - not_null
-      - name: bi_lmt_1_decimal
-        description: First BI limit in decimal.
-      - name: bi_lmt_2_decimal
-        description: Second BI limit in decimal.
-      - name: bi_lmt_3_decimal
-        description: Third BI limit in decimal.
-      - name: cvg_amt_1_decimal
-        description: First coverage amount in decimal.
-      - name: cvg_amt_2_decimal
-        description: Second coverage amount in decimal.
-      - name: cvg_amt_3_decimal
-        description: Third coverage amount in decimal.
 
-  - name: fct_WRK_BIRP_TA_NISS_NU0C_APRM_LND1
-    description: Final model for reporting or analytics related to NISS_NU0C_APRM_LND.
-    meta:
-      owner: data_team
-      domain: insurance
+  - name: fct_niss_cvg_cd
+    description: Final model for reporting or analytics on NISS_CVG_CD.
     config:
       materialized: view
-    tags: ['insurance', 'analytics']
+    tags: ['reporting', 'analytics']
     columns:
-      - name: nextval
-        description: Next value in sequence.
-      - name: currval
-        description: Current value in sequence.
-      - name: i_ST_NM
-        description: State name.
-      - name: FARMERS_STATE_NAME
-        description: Farmers state name.
-      - name: NISS_STATE_CODE
-        description: NISS state code.
-      - name: FARMERS_STATE_CD
-        description: Farmers state code.
-      - name: STATE_CODE
-        description: State code.
-      - name: i_NISS_ST_CD
-        description: NISS state code.
-      - name: i_ST_ABBRV
-        description: State abbreviation.
-      - name: i_ZIP_CD
-        description: ZIP code.
-      - name: NISS_TERR_CD
-        description: NISS territory code.
-      - name: MAPPING_NAME
-        description: Name of the mapping.
-      - name: FOLDER_NAME
-        description: Name of the folder.
-      - name: WORKFLOW_NAME
-        description: Name of the workflow.
-      - name: CR_BY_MAPNG_ID
-        description: Created by mapping ID.
-      - name: DW_CR_TMSP
-        description: Data warehouse creation timestamp.
-      - name: UPD_BY_MAPNG_ID
-        description: Updated by mapping ID.
-      - name: DW_UPD_TMSP
-        description: Data warehouse update timestamp.
-      - name: WRK_FLOW_RUN_ID
-        description: Workflow run ID.
-      - name: REG_PER_YR
-        description: Registration period year.
-      - name: FISC_PER_YR
-        description: Fiscal period year.
-      - name: NAIC_CMPNY_CD
-        description: NAIC company code.
-      - name: ST_NM
-        description: State name.
-      - name: ST_CD
-        description: State code.
-      - name: ACCTNG_LOB
-        description: Accounting line of business.
-      - name: CVG_TYP_CD
-        description: Coverage type code.
-      - name: CVG_AMT
-        description: Coverage amount.
-      - name: BI_LMT
-        description: BI limit.
-      - name: GA_ADDED_AT_FAULT_IND
-        description: Indicator for GA added at fault.
-      - name: PLCY_IND
-        description: Policy indicator.
-      - name: UM_UMI_STACKING
-        description: UM/UMI stacking.
-      - name: PIP_WVR_WL_IND
-        description: PIP waiver WL indicator.
-      - name: PIP_MED_SEC_IND
-        description: PIP medical section indicator.
-      - name: PIP_LOSS_INCOME_IND
-        description: PIP loss income indicator.
-      - name: MI_PPO_IND
-        description: MI PPO indicator.
-      - name: PRD_GRP_CD
-        description: Product group code.
-      - name: NJ_HLTH_INSR_PRIM
-        description: NJ health insurance primary.
-      - name: NJ_EXTR_PIP_PKG
-        description: NJ extra PIP package.
-      - name: NJ_RESDNC_RLTNSHP_PIP_IND
-        description: NJ residence relationship PIP indicator.
-      - name: NY_SSL_IND
-        description: NY SSL indicator.
-      - name: NY_FULL_CVG_GLASS_COMP_IND
-        description: NY full coverage glass comp indicator.
-      - name: GRGNG_ZIP
-        description: Garaging ZIP code.
-      - name: RATNG_CMPY_CD
-        description: Rating company code.
-      - name: MLT_CAR_IND
-        description: Indicator for multiple cars.
-      - name: RT_CLS
-        description: Rating class.
-      - name: AGE
-        description: Age of the individual.
+      - name: NISS_APRM_DETL_SK
+        description: Surrogate key for NISS APRM details.
         tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 120
-      - name: GENDR
-        description: Gender of the individual.
+          - not_null
+          - unique
+      - name: NISS_CVG_CD
+        description: Coverage code for NISS.
         tests:
-          - accepted_values:
-              values: ['M', 'F', 'O']
-      - name: MRTL_STAT
-        description: Marital status.
+          - not_null
+      - name: BI_LMT_1_Decimal
+        description: First BI limit in decimal.
         tests:
-          - accepted_values:
-              values: ['Single', 'Married', 'Divorced', 'Widowed']
-      - name: AUTO_USE_CD
-        description: Code for auto use.
-      - name: MILES_TO_WRK
-        description: Miles to work.
-      - name: GOOD_STDNT_IND
-        description: Indicator for good student.
+          - not_null
+      - name: BI_LMT_2_Decimal
+        description: Second BI limit in decimal.
         tests:
-          - accepted_values:
-              values: ['Y', 'N']
+          - not_null
+      - name: BI_LMT_3_Decimal
+        description: Third BI limit in decimal.
+        tests:
+          - not_null
+      - name: CVG_AMT_1_Decimal
+        description: First coverage amount in decimal.
+        tests:
+          - not_null
+      - name: CVG_AMT_2_Decimal
+        description: Second coverage amount in decimal.
+        tests:
+          - not_null
+      - name: CVG_AMT_3_Decimal
+        description: Third coverage amount in decimal.
+        tests:
+          - not_null
+
+  - name: fct_WRK_BIRP_TA_NISS_NU0C_APRM_DTL
+    description: Final model for detailed reporting of written premium.
+    config:
+      materialized: view
+    tags: ['reporting', 'analytics']
+    columns:
+      - name: grgng_zip_5
+        description: 5-digit ZIP code for grouping.
+        tests:
+          - not_null
+      - name: farmers_state_cd_int
+        description: Internal state code for farmers.
+        tests:
+          - not_null
+      - name: cvg_cd_step1
+        description: Coverage code step 1.
+        tests:
+          - not_null
+      - name: cvg_cd_step1a
+        description: Coverage code step 1A.
+        tests:
+          - not_null
+      - name: cvg_cd_step2
+        description: Coverage code step 2.
+        tests:
+          - not_null
+      - name: cvg_cd_step3
+        description: Coverage code step 3.
+        tests:
+          - not_null
+      - name: cvg_cd_step4
+        description: Coverage code step 4.
+        tests:
+          - not_null
+      - name: cvg_cd_step5
+        description: Coverage code step 5.
+        tests:
+          - not_null
+      - name: cvg_cd_step6
+        description: Coverage code step 6.
+        tests:
+          - not_null
+      - name: cvg_cd_step7
+        description: Coverage code step 7.
+        tests:
+          - not_null

@@ -1,4 +1,4 @@
--- Purpose: Represents the logic for loading data related to NISS_NU0C_APRM_LND
+-- Purpose: Represents the logic for loading data related to WRK_BIRP_TA_NISS_NU0C_APRM_LND
 
 WITH source_data AS (
   SELECT
@@ -77,7 +77,7 @@ WITH source_data AS (
     MIS_LOB,
     PRINCIPAL_OPRT,
     SOURCE_IND_DERIVED
-  FROM {{ source('powercenter', 'WRK_BIRP_TA_NISS_NU0C_APRM_LND') }}
+  FROM {{ source('PowerExchange_For_Snowflake', 'WRK_BIRP_TA_NISS_NU0C_APRM_LND') }}
 )
 
 SELECT * FROM source_data

@@ -118,7 +118,7 @@ WITH source_data AS (
     LOB,
     PRINCIPAL_OPRT,
     SOURCE_IND_DERIVED
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+  FROM {{ source('PowerExchange_For_Snowflake', 'WRK_BIRP_NISS_APRM_DETL') }}
 )
 
 SELECT * FROM source_data

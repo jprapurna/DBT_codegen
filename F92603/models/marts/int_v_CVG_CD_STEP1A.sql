@@ -1,4 +1,8 @@
--- Purpose: Local variable for coverage code step 1A
+-- Purpose: Local variable for coverage code step 1A.
+WITH coverage_code_step1a AS (
+  SELECT 
+    IIF(ST_ABBR = 'FL', DECODE(1,...) AS cvg_cd_step1a
+)
 SELECT 
-  IIF(ST_ABBR = 'FL', DECODE(1, ...)) AS v_cvg_cd_step1a
-FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+  cvg_cd_step1a
+FROM coverage_code_step1a

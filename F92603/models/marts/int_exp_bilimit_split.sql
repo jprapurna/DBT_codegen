@@ -1,25 +1,23 @@
 -- Purpose: Splits BI limit based on '/' and converts parts to integers
 
 WITH bi_limit_split AS (
-  SELECT
+  SELECT 
     BI_LMT,
-    REPLACE(LTRIM(RTRIM(BI_LMT)), ',', '') AS v_bi_lmt,
-    LENGTH(LTRIM(RTRIM(REPLACE(LTRIM(RTRIM(BI_LMT)), ',', '')))) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(BI_LMT)), ',', ''), '/', '')) + 1 AS v_bi_lmt_parts,
-    INSTR(REPLACE(LTRIM(RTRIM(BI_LMT)), ',', ''), '/', 1, 1) AS v_bi_lmt_part1_pos,
-    INSTR(REPLACE(LTRIM(RTRIM(BI_LMT)), ',', ''), '/', 1, 2) AS v_bi_lmt_part2_pos,
-    DECODE(v_bi_lmt_parts, 1, v_bi_lmt, SUBSTR(v_bi_lmt, 1, v_bi_lmt_part1_pos - 1)) AS v_limit_field1,
-    DECODE(v_bi_lmt_parts, 2, SUBSTR(v_bi_lmt, v_bi_lmt_part1_pos + 1), SUBSTR(v_bi_lmt, v_bi_lmt_part1_pos + 1, v_bi_lmt_part2_pos - v_bi_lmt_part1_pos - 1)) AS v_limit_field2,
-    DECODE(v_bi_lmt_parts, 3, SUBSTR(v_bi_lmt, v_bi_lmt_part2_pos + 1)) AS v_limit_field3
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+    REPLACECHR(0, LTRIM(RTRIM(BI_LMT)), ',', '') AS v_BI_LMT,
+    LENGTH(LTRIM(RTRIM(REPLACECHR(0, LTRIM(RTRIM(BI_LMT)), ',', '')))) - LENGTH(REPLACECHR(0, LTRIM(RTRIM(REPLACECHR(0, LTRIM(RTRIM(BI_LMT)), ',', ''))), '/', '')) + 1 AS v_BI_LMT_Parts,
+    INSTR(REPLACECHR(0, LTRIM(RTRIM(BI_LMT)), ',', ''), '/', 1, 1) AS v_BI_LMT_Part1_Pos,
+    INSTR(REPLACECHR(0, LTRIM(RTRIM(BI_LMT)), ',', ''), '/', 1, 2) AS v_BI_LMT_Part2_Pos
+  FROM {{ ref('WRK_BIRP_NISS_APRM_DETL') }}
 )
 
-SELECT
+SELECT 
   BI_LMT,
-  TO_INTEGER(v_limit_field1) AS bi_lmt_1_decimal,
-  TO_INTEGER(v_limit_field2) AS bi_lmt_2_decimal,
-  TO_INTEGER(v_limit_field3) AS bi_lmt_3_decimal,
-  v_bi_lmt_parts AS bi_lmt_no_of_parts,
-  v_bi_lmt AS src_bi_lmt,
-  REC_EXCPN_IND,
-  REC_EXCPN_RSN_DESC
+  DECODE(1, v_BI_LMT_Parts=1, v_BI_LMT, v_BI_LMT_Parts=2, SUBSTR(LTRIM(RTRIM(v_BI_LMT)), 1, v_BI_LMT_Part1_Pos-1), v_BI_LMT_Parts=3, SUBSTR(LTRIM(RTRIM(v_BI_LMT)), 1, v_BI_LMT_Part1_Pos-1), '0') AS v_Limit_FIELD1,
+  DECODE(1, v_BI_LMT_Parts=1, '0', v_BI_LMT_Parts=2, SUBSTR(LTRIM(RTRIM(v_BI_LMT)), v_BI_LMT_Part1_Pos+1), v_BI_LMT_Parts=3, SUBSTR(LTRIM(RTRIM(v_BI_LMT)), v_BI_LMT_Part1_Pos+1, v_BI_LMT_Part2_Pos - v_BI_LMT_Part1_Pos -1), '0') AS v_Limit_FIELD2,
+  DECODE(1, v_BI_LMT_Parts=1, '0', v_BI_LMT_Parts=2, '0', v_BI_LMT_Parts=3, SUBSTR(LTRIM(RTRIM(v_BI_LMT)), v_BI_LMT_Part2_Pos+1), '0') AS v_Limit_FIELD3,
+  TO_INTEGER(v_Limit_FIELD1) AS BI_LMT_1_Decimal,
+  TO_INTEGER(v_Limit_FIELD2) AS BI_LMT_2_Decimal,
+  TO_INTEGER(v_Limit_FIELD3) AS BI_LMT_3_Decimal,
+  v_BI_LMT_Parts AS BI_LMT_NO_OF_PARTS,
+  v_BI_LMT AS SRC_BI_LMT
 FROM bi_limit_split

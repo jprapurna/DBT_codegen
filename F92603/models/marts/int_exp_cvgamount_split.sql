@@ -1,26 +1,23 @@
 -- Purpose: Splits coverage amount based on '/' and derives individual parts
 
 WITH cvg_amount_split AS (
-  SELECT
+  SELECT 
     CVG_AMT,
-    REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') AS v_cvg_amt,
-    LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 AS v_cvg_amt_parts,
-    INSTR(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', 1, 1) AS v_cvg_amt_part1_pos,
-    INSTR(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', 1, 2) AS v_cvg_amt_part2_pos,
-    DECODE(v_cvg_amt_parts, 1, v_cvg_amt, SUBSTR(v_cvg_amt, 1, v_cvg_amt_part1_pos - 1)) AS v_amount_field1,
-    DECODE(v_cvg_amt_parts, 2, SUBSTR(v_cvg_amt, v_cvg_amt_part1_pos + 1), SUBSTR(v_cvg_amt, v_cvg_amt_part1_pos + 1, v_cvg_amt_part2_pos - v_cvg_amt_part1_pos - 1)) AS v_amount_field2,
-    DECODE(v_cvg_amt_parts, 3, SUBSTR(v_cvg_amt, v_cvg_amt_part2_pos + 1)) AS v_amount_field3
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+    REPLACECHR(0, LTRIM(RTRIM(CVG_AMT)), ',', '') AS v_CVG_AMT,
+    LENGTH(REPLACECHR(0, LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACECHR(0, REPLACECHR(0, LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 AS v_CVG_AMT_Parts,
+    INSTR(REPLACECHR(0, LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', 1, 1) AS v_CVG_AMT_Part1_Pos,
+    INSTR(REPLACECHR(0, LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', 1, 2) AS v_CVG_AMT_Part2_Pos
+  FROM {{ ref('WRK_BIRP_NISS_APRM_DETL') }}
 )
 
-SELECT
+SELECT 
   CVG_AMT,
-  v_amount_field1 AS cvg_amt_1_string,
-  v_amount_field2 AS cvg_amt_2_string,
-  v_amount_field3 AS cvg_amt_3_string,
-  TO_DECIMAL(v_amount_field1) AS cvg_amt_1_decimal,
-  TO_DECIMAL(v_amount_field2) AS cvg_amt_2_decimal,
-  TO_DECIMAL(v_amount_field3) AS cvg_amt_3_decimal,
-  v_cvg_amt_parts AS cvg_amt_no_of_parts,
-  v_cvg_amt AS src_cvg_amt
+  DECODE(1, v_CVG_AMT_Parts=1, v_CVG_AMT, v_CVG_AMT_Parts=2, SUBSTR(v_CVG_AMT, 1, v_CVG_AMT_Part1_Pos-1), v_CVG_AMT_Parts=3, SUBSTR(v_CVG_AMT, 1, v_CVG_AMT_Part1_Pos-1), '0') AS v_AMOUNT_FIELD1,
+  DECODE(1, v_CVG_AMT_Parts=1, '0', v_CVG_AMT_Parts=2, SUBSTR(v_CVG_AMT, v_CVG_AMT_Part1_Pos+1), v_CVG_AMT_Parts=3, SUBSTR(v_CVG_AMT, v_CVG_AMT_Part1_Pos+1, v_CVG_AMT_Part2_Pos - v_CVG_AMT_Part1_Pos -1), '0') AS v_AMOUNT_FIELD2,
+  DECODE(1, v_CVG_AMT_Parts=1, '0', v_CVG_AMT_Parts=2, '0', v_CVG_AMT_Parts=3, SUBSTR(v_CVG_AMT, v_CVG_AMT_Part2_Pos+1), '0') AS v_AMOUNT_FIELD3,
+  TO_DECIMAL(v_AMOUNT_FIELD1) AS CVG_AMT_1_Decimal,
+  TO_DECIMAL(v_AMOUNT_FIELD2) AS CVG_AMT_2_Decimal,
+  TO_DECIMAL(v_AMOUNT_FIELD3) AS CVG_AMT_3_Decimal,
+  v_CVG_AMT_Parts AS CVG_AMT_NO_OF_PARTS,
+  v_CVG_AMT AS SRC_CVG_AMT
 FROM cvg_amount_split

@@ -3,7 +3,7 @@ WITH lookup_ff_niss_state AS (
   SELECT 
     FARMERS_STATE_NAME,
     NISS_STATE_CODE
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+  FROM $LookupFile_ff_NISS_STATE
 )
 SELECT 
   i_ST_NM,

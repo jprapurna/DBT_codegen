@@ -1,27 +1,27 @@
--- Purpose: Final model for reporting or analytics
+-- Purpose: Final model for reporting or analytics on NISS_CVG_CD
 
-WITH final_niss_cvg_cd AS (
-  SELECT
+WITH niss_cvg_cd AS (
+  SELECT 
     a.NISS_APRM_DETL_SK,
     a.NISS_CVG_CD,
-    b.bi_lmt_1_decimal,
-    b.bi_lmt_2_decimal,
-    b.bi_lmt_3_decimal,
-    c.cvg_amt_1_decimal,
-    c.cvg_amt_2_decimal,
-    c.cvg_amt_3_decimal
-  FROM {{ ref('int_upd_niss_cvg_cd') }} AS a
-  JOIN {{ ref('int_exp_bilimit_split') }} AS b ON a.NISS_APRM_DETL_SK = b.NISS_APRM_DETL_SK
-  JOIN {{ ref('int_exp_cvgamount_split') }} AS c ON a.NISS_APRM_DETL_SK = c.NISS_APRM_DETL_SK
+    b.BI_LMT_1_Decimal,
+    b.BI_LMT_2_Decimal,
+    b.BI_LMT_3_Decimal,
+    c.CVG_AMT_1_Decimal,
+    c.CVG_AMT_2_Decimal,
+    c.CVG_AMT_3_Decimal
+  FROM {{ ref('int_upd_niss_cvg_cd') }} a
+  JOIN {{ ref('int_exp_bilimit_split') }} b ON a.NISS_APRM_DETL_SK = b.NISS_APRM_DETL_SK
+  JOIN {{ ref('int_exp_cvgamount_split') }} c ON a.NISS_APRM_DETL_SK = c.NISS_APRM_DETL_SK
 )
 
-SELECT
+SELECT 
   NISS_APRM_DETL_SK,
   NISS_CVG_CD,
-  bi_lmt_1_decimal,
-  bi_lmt_2_decimal,
-  bi_lmt_3_decimal,
-  cvg_amt_1_decimal,
-  cvg_amt_2_decimal,
-  cvg_amt_3_decimal
-FROM final_niss_cvg_cd
+  BI_LMT_1_Decimal,
+  BI_LMT_2_Decimal,
+  BI_LMT_3_Decimal,
+  CVG_AMT_1_Decimal,
+  CVG_AMT_2_Decimal,
+  CVG_AMT_3_Decimal
+FROM niss_cvg_cd

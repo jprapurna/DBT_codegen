@@ -1,7 +1,7 @@
--- Purpose: Represents the expression transformation logic for deriving local variables and handling input fields.
+-- Purpose: Represents the expression transformation logic for various fields
 
-WITH derived_fields AS (
-  SELECT
+WITH expression_transformation AS (
+  SELECT 
     NISS_APRM_DETL_SK,
     ST_ABBR,
     ST_CD,
@@ -11,29 +11,21 @@ WITH derived_fields AS (
     AGE,
     GENDR,
     MRTL_STAT,
-    I_AUTO_USE_CD,
-    MILES_TO_WRK,
-    GOOD_STDNT_IND,
-    DRVR_TRNG_IND,
-    SOI_TYP,
-    ACCTNG_LOB,
-    CVG_TYP_CD,
-    NISS_CLASS_CD_FL,
-    IIF(ISNULL(I_AUTO_USE_CD), '', I_AUTO_USE_CD) AS auto_use_cd,
-    TO_INTEGER(AGE) AS iage,
-    TO_INTEGER(MILES_TO_WRK) AS imiles_to_wrk,
-    DECODE(SOI_TYP, 'Indemnity', 'Indemnity_Class', 'Other', 'Other_Class') AS v_class_cd_indemnity,
-    IIF(MLT_CAR_IND = 'Y' AND RT_CLS = 'A', 'Auto_Class_1', 'Other_Class') AS v_class_cd_auto_1,
-    IIF(ST_ABBR = 'FL', NISS_CLASS_CD_FL, '') AS v_class_cd_auto_1a,
-    IIF(RT_CLS = 'B', 'Auto_Class_2', 'Other_Class') AS v_class_cd_auto_2,
-    IIF(RT_CLS = 'C' AND AGE > 25, 'Auto_Class_3', 'Other_Class') AS v_class_cd_auto_3,
-    IIF(RT_CLS = 'D', 'Auto_Class_4', 'Other_Class') AS v_class_cd_auto_4,
-    DECODE(RATNG_CMPY_CD, 'XYZ', 'Auto_Class_5', 'Other', 'Other_Class') AS v_class_cd_auto_5,
-    DECODE(RATNG_CMPY_CD, 'ABC', 'Auto_Class_6', 'Other', 'Other_Class') AS v_class_cd_auto_6
-  FROM {{ ref('stg_wrk_birp_niss_aprm_detl') }}
+    IIF(ISNULL(AUTO_USE_CD),'',AUTO_USE_CD) AS AUTO_USE_CD,
+    TO_INTEGER(AGE) AS IAGE,
+    TO_INTEGER(MILES_TO_WRK) AS IMILES_TO_WRK,
+    DECODE(ACCTNG_LOB, 'Indemnity', 'Indemnity_Class', 'Other', 'Other_Class') AS v_CLASS_CD_Indemnity,
+    IIF(ACCTNG_LOB = 'Auto' AND CVG_TYP_CD = '1', 'Auto_Class_1', 'Other_Class') AS v_CLASS_CD_Auto_1,
+    IIF(ST_ABBR = 'FL', NISS_CLASS_CD_FL, '') AS v_CLASS_CD_Auto_1A,
+    IIF(ACCTNG_LOB = 'Auto' AND CVG_TYP_CD = '2', 'Auto_Class_2', 'Other_Class') AS v_CLASS_CD_Auto_2,
+    IIF(ACCTNG_LOB = 'Auto' AND CVG_TYP_CD = '3', 'Auto_Class_3', 'Other_Class') AS v_CLASS_CD_Auto_3,
+    IIF(ACCTNG_LOB = 'Auto' AND CVG_TYP_CD = '4', 'Auto_Class_4', 'Other_Class') AS v_CLASS_CD_Auto_4,
+    DECODE(CVG_TYP_CD, '5', 'Auto_Class_5', 'Other', 'Other_Class') AS v_CLASS_CD_Auto_5,
+    DECODE(CVG_TYP_CD, '6', 'Auto_Class_6', 'Other', 'Other_Class') AS v_CLASS_CD_Auto_6
+  FROM {{ ref('WRK_BIRP_NISS_APRM_DETL') }}
 )
 
-SELECT
+SELECT 
   NISS_APRM_DETL_SK,
   ST_ABBR,
   ST_CD,
@@ -43,21 +35,15 @@ SELECT
   AGE,
   GENDR,
   MRTL_STAT,
-  auto_use_cd,
-  iage,
-  imiles_to_wrk,
-  GOOD_STDNT_IND,
-  DRVR_TRNG_IND,
-  SOI_TYP,
-  ACCTNG_LOB,
-  CVG_TYP_CD,
-  NISS_CLASS_CD_FL,
-  v_class_cd_indemnity,
-  v_class_cd_auto_1,
-  v_class_cd_auto_1a,
-  v_class_cd_auto_2,
-  v_class_cd_auto_3,
-  v_class_cd_auto_4,
-  v_class_cd_auto_5,
-  v_class_cd_auto_6
-FROM derived_fields
+  AUTO_USE_CD,
+  IAGE,
+  IMILES_TO_WRK,
+  v_CLASS_CD_Indemnity,
+  v_CLASS_CD_Auto_1,
+  v_CLASS_CD_Auto_1A,
+  v_CLASS_CD_Auto_2,
+  v_CLASS_CD_Auto_3,
+  v_CLASS_CD_Auto_4,
+  v_CLASS_CD_Auto_5,
+  v_CLASS_CD_Auto_6
+FROM expression_transformation

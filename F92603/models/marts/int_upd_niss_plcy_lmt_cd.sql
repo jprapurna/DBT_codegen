@@ -1,15 +1,15 @@
--- Purpose: Intermediate model for update strategy logic for fields NISS_APRM_DETL_SK and NISS_PLCY_LMT_CD
+-- Purpose: Represents the update strategy logic for the NISS_PLCY_LMT_CD field
 
-WITH update_strategy AS (
-  SELECT
+WITH updated_niss_policy_limit AS (
+  SELECT 
     NISS_APRM_DETL_SK,
-    NISS_PLCY_LMT_CD,
-    'DD_UPDATE' AS update_strategy_expression,
-    'YES' AS forward_rejected_rows
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+    NISS_PLCY_LMT_CD
+  FROM 
+    {{ source('WRK_BIRP_NISS_APRM_DETL', 'WRK_BIRP_NISS_APRM_DETL') }}
 )
 
-SELECT
+SELECT 
   NISS_APRM_DETL_SK,
   NISS_PLCY_LMT_CD
-FROM update_strategy
+FROM 
+  updated_niss_policy_limit

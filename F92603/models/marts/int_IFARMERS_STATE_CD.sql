@@ -1,4 +1,8 @@
--- Purpose: Custom calculation for Farmers state code conversion
+-- Purpose: Custom calculation for Farmers state code conversion.
+WITH farmers_state_code_conversion AS (
+  SELECT 
+    TO_INTEGER(v_FARMERS_STATE_CD) AS farmers_state_cd_int
+)
 SELECT 
-  TO_INTEGER(v_FARMERS_STATE_CD) AS ifarmers_state_cd
-FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+  farmers_state_cd_int
+FROM farmers_state_code_conversion

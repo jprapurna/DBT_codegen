@@ -75,7 +75,7 @@ WITH source_data AS (
     SRC_SYS_CD,
     PNI_AGE,
     LOB
-  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_LND') }}
+  FROM {{ source('PowerExchange_For_Snowflake', 'WRK_BIRP_NISS_APRM_LND') }}
 )
 
 SELECT * FROM source_data

@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: fct_Output
+    description: "Writes data to output target mapping ROW_ID to ROW_WID."
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: view
+    tags: ['output', 'claims']
+    columns:
+      - name: row_id
+        description: "Unique identifier for the output row, mapped from ROW_WID."
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique

@@ -1,13 +1,13 @@
--- Purpose: Extract data from CDH_GW_BUR with custom SQL query
+-- Purpose: Extract data from CDH_GW_BUR source with custom SQL query
 WITH source_data AS (
     SELECT 
         POLICY_STATE, 
         BUR, 
-        'GWCDH' AS SOURCE_NAME 
-    FROM {{ source('genai_power_bi', 'cdh_gw_bur') }}
+        'GWCDH' AS source_name
+    FROM {{ source('IICS', 'CDH_GW_BUR') }}
 )
 SELECT 
     POLICY_STATE, 
     BUR, 
-    SOURCE_NAME 
+    source_name
 FROM source_data

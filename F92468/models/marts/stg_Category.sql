@@ -4,4 +4,4 @@ SELECT
 "POLICY_STATE" AS policy_state,
 "BUR" AS bur,
 "SOURCE_NAME" AS source_name
-FROM {{ source('IICS', 'CDH_GW_BUR') }}
+FROM {{ source('IICS', 'Category') }}

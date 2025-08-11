@@ -1,0 +1,85 @@
+-- Purpose: Detailed final model for reporting and analytics
+WITH final_dtl AS (
+  SELECT 
+    a.REG_PER_YR,
+    a.FISC_PER_YR,
+    a.NAIC_CMPNY_CD,
+    a.ST_NM,
+    a.ST_CD,
+    a.ACCTNG_LOB,
+    a.CVG_TYP_CD,
+    a.CVG_AMT,
+    a.BI_LMT,
+    a.GA_UMBI_PD_ADDED_IND,
+    a.FA2_PLCY_IND,
+    a.UM_UIM_STACKING,
+    a.PIP_WVR_WL_IND,
+    a.PIP_MED_SEC_IND,
+    a.PIP_LOSS_INCOME_IND,
+    a.MI_PPO_IND,
+    a.PRD_GRP_CD,
+    a.NJ_HLTH_INSR_PRIM,
+    a.NJ_EXTR_PIP_PKG,
+    a.NJ_RESDNC_RLTNSHP_PIP_IND,
+    a.NY_SSL_IND,
+    a.NY_FULL_CVG_GLASS_COMP_IND,
+    a.NJ_NO_LWST_LMT_IND,
+    a.NJ_NMD_DRVR_EXCL_IND,
+    a.GRGNG_ZIP_5,
+    a.RATNG_CMPY_CD,
+    a.MLT_CAR_IND,
+    a.RT_CLS,
+    a.AGE,
+    a.GENDR,
+    a.MRTL_STAT,
+    a.AUTO_USE_CD,
+    a.MILES_TO_WRK,
+    a.GOOD_STDNT_IND,
+    a.DRVR_TRNG_IND,
+    a.SOI_TYP,
+    a.PHY_DMG_IND,
+    a.NJ_RTD_PNTS,
+    a.VEH_MDL_YR,
+    a.NJ_EXCPTION_CD,
+    a.NJ_FRGVN_PNTS,
+    a.PASSV_RESTRA_DISC,
+    a.SNR_DRVR_IND,
+    a.DEFNS_DRVR_DISC_IND,
+    a.ANTI_THFT_DISC,
+    a.DAY_TM_RUN_LIGHTS,
+    a.LMT_TORT,
+    a.CVG_TYP_IND,
+    a.CVG_EXPS_VAL,
+    a.TTL_WRITTN_PREM_AMT,
+    a.COMP_DED,
+    a.COLL_DED,
+    a.PLCY_CNTRCT_NUM,
+    a.UNIT_NUM,
+    a.EFF_DT,
+    a.NUM_OF_CARS_IN_HH,
+    a.RDRVR_DT_OF_BRTH,
+    a.TERM_STRT_DT,
+    a.SRC_SYS_CD,
+    a.PNI_AGE,
+    b.v_cvg_cd_step1,
+    b.v_cvg_cd_step1a,
+    b.v_cvg_cd_step2,
+    b.v_cvg_cd_step3,
+    b.v_cvg_cd_step4,
+    b.v_cvg_cd_step5,
+    b.v_cvg_cd_step6,
+    b.v_cvg_cd_step7,
+    c.grgng_zip_5,
+    d.ifarmers_state_cd
+  FROM 
+    {{ ref('int_SQL_Override') }} a
+  JOIN 
+    {{ ref('int_v_CVG_CD_STEP1') }} b ON a.ST_CD = b.ST_CD
+  JOIN 
+    {{ ref('int_GRGNG_ZIP_5') }} c ON a.GRGNG_ZIP_5 = c.GRGNG_ZIP_5
+  JOIN 
+    {{ ref('int_IFARMERS_STATE_CD') }} d ON a.ST_CD = d.ST_CD
+)
+SELECT 
+  *
+FROM final_dtl

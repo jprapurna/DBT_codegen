@@ -1,0 +1,48 @@
+-- Purpose: This expression is used to derive TERR_CD and pass the data to target.
+
+WITH derived_values AS (
+  SELECT
+    v_CNT + 1 AS v_CNT,
+    DECODE(1, ISNULL(i_NISS_TERR_CD), '?', IS_SPACES(i_NISS_TERR_CD), '?', LTRIM(RTRIM(i_NISS_TERR_CD))) AS NISS_TERR_CD
+  FROM {{ source('powercenter', 'WRK_BIRP_NISS_APRM_DETL') }}
+)
+
+SELECT
+  v_CNT,
+  NISS_ATPRM_LND_SK,
+  REG_PER_YR,
+  FISC_PER_YR,
+  NAIC_CMPNY_CD,
+  NISS_CMPNY_CD,
+  ST_NM,
+  ST_CD,
+  NISS_STATE_CODE,
+  STATE_ABBR,
+  ACCTNG_LOB,
+  CVG_TYP_CD,
+  CVG_AMT,
+  BI_LMT,
+  GA_ADDED_AT_FAULT_IND,
+  FA2_PLCY_IND,
+  UM_UIM_STACKING,
+  PIP_WVR_WL_IND,
+  PIP_MED_SEC_IND,
+  PIP_LOSS_INCOME_IND,
+  MI_PPO_IND,
+  PRD_GRP_CD,
+  NJ_HLTH_INSR_PRIM,
+  NJ_EXTR_PIP_PKG,
+  NJ_RESDNC_RLTNSHP_PIP_IND,
+  NY_SSL_IND,
+  NY_FULL_CVG_GLASS_COMP_IND,
+  GRGNG_ZIP_5,
+  i_NISS_TERR_CD,
+  derived_values.NISS_TERR_CD,
+  RATNG_CMPY_CD,
+  MLT_CAR_IND,
+  RT_CLS,
+  AGE,
+  GENDR,
+  MRTL_STAT,
+  AUTO_USE_CD
+FROM derived_values

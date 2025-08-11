@@ -1,266 +1,32 @@
 version: 2
 
 models:
-  - name: niss_auto_atprm_detail
-    description: This model serves as the final output for reporting or analytics, representing the NISS Auto ATPRM Detail.
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: This model performs an update operation on the W_CLAIM_CD_BUR_SCD3_U table using data from the intermediate update source.
     meta:
       owner: data_team
-      domain: auto_insurance
+      domain: claims
     config:
       materialized: view
-    tags: ['reporting', 'analytics']
-    columns:
-      - name: NISS_APRM_DETL_SK
-        description: Unique identifier for NISS APRM Detail.
-        tests:
-          - unique
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_unique
-      - name: NISS_CLASS_CD
-        description: Code representing the class of NISS.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set: ['Indemnity', 'Auto_1A', 'Auto_4', 'Auto_5', 'Auto_6']
-      - name: REC_EXCPN_IND
-        description: Indicator for record exception.
-        tests:
-          - not_null
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: REC_EXCP_DESC
-        description: Description of the record exception.
-        tests:
-          - dbt_expectations.expect_column_value_lengths_to_be_between:
-              min_value: 0
-              max_value: 255
+    tags: ['update', 'claims']
+    columns: []
 
-  - name: niss_cvg_cd_detail
-    description: Final model for reporting or analytics on NISS_CVG_CD.
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: This model handles the insert operation on the W_CLAIM_CD_BUR_SCD3_I table, joining data from multiple intermediate sources.
     meta:
       owner: data_team
-      domain: auto_insurance
+      domain: claims
     config:
       materialized: view
-    tags: ['reporting', 'analytics']
-    columns:
-      - name: NISS_APRM_DETL_SK
-        description: Unique identifier for NISS APRM Detail.
-        tests:
-          - unique
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_unique
-      - name: NISS_CVG_CD
-        description: Coverage code for NISS.
-        tests:
-          - not_null
-      - name: NISS_SSL_LIAB_CD
-        description: SSL liability code for NISS.
-        tests:
-          - not_null
-      - name: NISS_LIAB_OR_NO_FAULT_CD
-        description: Liability or no-fault code for NISS.
-        tests:
-          - not_null
-      - name: REC_EXCPN_IND
-        description: Indicator for record exception.
-        tests:
-          - not_null
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: BI_LMT_1_Decimal
-        description: First decimal limit for BI.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: BI_LMT_2_Decimal
-        description: Second decimal limit for BI.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: BI_LMT_3_Decimal
-        description: Third decimal limit for BI.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: BI_LMT_NO_OF_PARTS
-        description: Number of parts for BI limit.
-        tests:
-          - not_null
-      - name: SRC_BI_LMT
-        description: Source of BI limit.
-        tests:
-          - not_null
-      - name: CVG_AMT_1_Decimal
-        description: First decimal amount for coverage.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: CVG_AMT_2_Decimal
-        description: Second decimal amount for coverage.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: CVG_AMT_3_Decimal
-        description: Third decimal amount for coverage.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: CVG_AMT_NO_OF_PARTS
-        description: Number of parts for coverage amount.
-        tests:
-          - not_null
-      - name: SRC_CVG_AMT
-        description: Source of coverage amount.
-        tests:
-          - not_null
+    tags: ['insert', 'claims']
+    columns: []
 
-  - name: detailed_data
-    description: Load detailed data for NISS auto territory reporting.
+  - name: fct_Output
+    description: This model writes data to the target table using data from the intermediate export source.
     meta:
       owner: data_team
-      domain: auto_insurance
+      domain: output
     config:
       materialized: view
-    tags: ['reporting', 'analytics']
-    columns:
-      - name: fisc_per_yr
-        description: Fiscal period year.
-        tests:
-          - not_null
-      - name: naic_cmpny_cd
-        description: NAIC company code.
-        tests:
-          - not_null
-      - name: niss_cmpny_cd
-        description: NISS company code.
-        tests:
-          - not_null
-      - name: st_nm
-        description: State name.
-        tests:
-          - not_null
-      - name: st_cd
-        description: State code.
-        tests:
-          - not_null
-      - name: niss_st_cd
-        description: NISS state code.
-        tests:
-          - not_null
-      - name: st_abbr
-        description: State abbreviation.
-        tests:
-          - not_null
-      - name: acctng_lob
-        description: Accounting line of business.
-        tests:
-          - not_null
-      - name: cvg_typ_cd
-        description: Coverage type code.
-        tests:
-          - not_null
-      - name: cvg_amt
-        description: Coverage amount.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: bi_lmt
-        description: BI limit.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: ga_added_at_fault_ind
-        description: Indicator for GA added at fault.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: fa2_plcy_ind
-        description: FA2 policy indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: um_umi_stacking
-        description: UM/UMI stacking.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: pip_wvr_wl_ind
-        description: PIP waiver WL indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: pip_med_sec_ind
-        description: PIP medical section indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: pip_loss_income_ind
-        description: PIP loss income indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: mi_ppo_ind
-        description: MI PPO indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: prd_grp_cd
-        description: Product group code.
-        tests:
-          - not_null
-      - name: nj_hlth_insr_prim
-        description: NJ health insurance primary.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: nj_extr_pip_pkg
-        description: NJ extra PIP package.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: nj_resdnc_rltnshp_pip_ind
-        description: NJ residence relationship PIP indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: ny_ssl_ind
-        description: NY SSL indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: ny_full_cvg_glass_comp_ind
-        description: NY full coverage glass comp indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: grgng_zip_5
-        description: 5-digit garage zip code.
-        tests:
-          - dbt_expectations.expect_column_values_to_match_regex:
-              regex: "^[0-9]{5}$"
-      - name: niss_terr_cd
-        description: NISS territory code.
-        tests:
-          - not_null
-      - name: ratng_cmpny_cd
-        description: Rating company code.
-        tests:
-          - not_null
-      - name: mlt_car_ind
-        description: Multi-car indicator.
-        tests:
-          - accepted_values:
-              values: ['Y', 'N']
-      - name: wrk_flow_run_id
-        description: Workflow run identifier.
-        tests:
-          - not_null
+    tags: ['output', 'export']
+    columns: []

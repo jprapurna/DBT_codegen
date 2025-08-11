@@ -1,5 +1,6 @@
 {{ config(materialized='view') }}
 
 SELECT
-*
-FROM {{ source('W_CLAIM_CD_SCD3_IU', 'CDH_GW_BUR') }}
+"policy_state" AS policy_state, -- State of the policy
+"bur" AS bur -- BUR data
+FROM {{ source('genai_power_bi', 'cdh_gw_bur') }}

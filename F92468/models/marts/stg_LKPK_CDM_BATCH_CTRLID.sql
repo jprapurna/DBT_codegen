@@ -1,5 +1,0 @@
-{{ config(materialized='view') }}
-
-SELECT
-*
-FROM {{ source('W_CLAIM_CD_SCD3_IU', 'LKPK_CDM_BATCH_CTRLID') }}

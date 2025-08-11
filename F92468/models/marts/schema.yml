@@ -1,32 +1,97 @@
 version: 2
 
 models:
-  - name: fct_W_CLAIM_CD_BUR_SCD3_U
-    description: This model performs an update operation on the W_CLAIM_CD_BUR_SCD3_U table using data from the intermediate update source.
-    meta:
-      owner: data_team
-      domain: claims
+  - name: fct_Output
+    description: This model writes data to the target table, selecting columns from the intermediate model `int_exp_ROW_WID`.
     config:
       materialized: view
-    tags: ['update', 'claims']
-    columns: []
+    tags: ['output', 'target']
+    columns:
+      - name: TGT_TABLE_NAME
+        description: The name of the target table.
+        tests:
+          - not_null
+          - unique
+      - name: V1
+        description: Value 1 from the source data.
+        tests:
+          - not_null
+      - name: V2
+        description: Value 2 from the source data.
+        tests:
+          - not_null
+      - name: ROW_WID
+        description: Row identifier from the source data.
+        tests:
+          - not_null
+          - unique
 
   - name: fct_W_CLAIM_CD_BUR_SCD3_I
-    description: This model performs an insert operation on the W_CLAIM_CD_BUR_SCD3_I table, joining data from intermediate sources for claim insert updates.
-    meta:
-      owner: data_team
-      domain: claims
+    description: This model inserts data into the table `W_CLAIM_CD_BUR_SCD3_I`, joining data from `int_rtr_CLM_INSERT_UPD` and `int_exp_ROW_WID`.
     config:
       materialized: view
-    tags: ['insert', 'claims']
-    columns: []
+    tags: ['insert', 'claim']
+    columns:
+      - name: o_Flag
+        description: Operational flag indicating the status of the row.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['active', 'inactive']
+      - name: CDM_INSERT_DT
+        description: The date when the record was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: The date when the record was last updated.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: TGT_TABLE_NAME
+        description: The name of the target table.
+        tests:
+          - not_null
+          - unique
+      - name: ROW_WID
+        description: Row identifier from the source data.
+        tests:
+          - not_null
+          - unique
 
-  - name: fct_Output
-    description: This model writes data to the target table using data from the intermediate source.
-    meta:
-      owner: data_team
-      domain: output
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: This model performs update operations on the table `W_CLAIM_CD_BUR_SCD3_U`, selecting columns from the intermediate model `int_UPD_BUR`.
     config:
       materialized: view
-    tags: ['output', 'data_transfer']
-    columns: []
+    tags: ['update', 'claim']
+    columns:
+      - name: in_INTEGRATION_ID
+        description: Integration identifier for incoming data.
+        tests:
+          - not_null
+          - unique
+      - name: LKP_INTEGRATION_ID
+        description: Lookup integration identifier for existing data.
+        tests:
+          - not_null
+      - name: o_Flag
+        description: Operational flag indicating the status of the row.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['active', 'inactive']
+      - name: BATCH_ID
+        description: Identifier for the batch process.
+        tests:
+          - not_null
+          - unique
+      - name: o_Flag1
+        description: Secondary operational flag for additional status.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['active', 'inactive']
+      - name: Update_Strategy_Expression_78066
+        description: Expression defining the update strategy for the row.
+        tests:
+          - not_null

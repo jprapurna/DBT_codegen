@@ -1,0 +1,194 @@
+version: 2
+
+models:
+  - name: fct_WRK_BIRP_TA_NISS_NU0C_APRM_LND
+    description: Final model for reporting and analytics on policy and coverage details.
+    meta:
+      owner: data_team
+      domain: insurance
+    config:
+      materialized: view
+    tags: ['insurance', 'policy', 'coverage']
+    columns:
+      - name: nextval
+        description: Sequence next value for processing.
+        tests:
+          - not_null
+          - unique
+      - name: currval
+        description: Current sequence value for processing.
+        tests:
+          - not_null
+          - unique
+      - name: FARMERS_STATE_NAME
+        description: Name of the state for Farmers insurance.
+        tests:
+          - not_null
+      - name: NISS_STATE_CODE
+        description: Code representing the state in NISS system.
+        tests:
+          - not_null
+          - unique
+      - name: STATE_CODE
+        description: General state code used for reference.
+        tests:
+          - not_null
+      - name: NISS_TERR_CD
+        description: Territory code in NISS system.
+        tests:
+          - not_null
+      - name: MAPPING_NAME
+        description: Name of the mapping used in audit.
+        tests:
+          - not_null
+      - name: FOLDER_NAME
+        description: Folder name in audit mapping.
+        tests:
+          - not_null
+      - name: WORKFLOW_NAME
+        description: Workflow name in audit mapping.
+        tests:
+          - not_null
+      - name: REG_PER_YR
+        description: Registration period year.
+        tests:
+          - not_null
+      - name: FISC_PER_YR
+        description: Fiscal period year.
+        tests:
+          - not_null
+      - name: NAIC_CMPNY_CD
+        description: NAIC company code.
+        tests:
+          - not_null
+      - name: ST_NM
+        description: State name.
+        tests:
+          - not_null
+      - name: ST_CD
+        description: State code.
+        tests:
+          - not_null
+      - name: ACCTNG_LOB
+        description: Accounting line of business.
+        tests:
+          - not_null
+      - name: CVG_TYP_CD
+        description: Coverage type code.
+        tests:
+          - not_null
+      - name: CVG_AMT
+        description: Coverage amount.
+        tests:
+          - not_null
+      - name: BI_LMT
+        description: Bodily injury limit.
+        tests:
+          - not_null
+      - name: GA_ADDED_AT_FAULT_IND
+        description: Indicator for Georgia added at fault.
+        tests:
+          - not_null
+      - name: PLCY_IND
+        description: Policy indicator.
+        tests:
+          - not_null
+      - name: UM_UMI_STACKING
+        description: Uninsured motorist stacking indicator.
+        tests:
+          - not_null
+      - name: PIP_WVR_WL_IND
+        description: Personal injury protection waiver indicator.
+        tests:
+          - not_null
+      - name: PIP_MED_SEC_IND
+        description: Personal injury protection medical section indicator.
+        tests:
+          - not_null
+      - name: PIP_LOSS_INCOME_IND
+        description: Personal injury protection loss income indicator.
+        tests:
+          - not_null
+      - name: MI_PPO_IND
+        description: Michigan PPO indicator.
+        tests:
+          - not_null
+      - name: PRD_GRP_CD
+        description: Product group code.
+        tests:
+          - not_null
+      - name: NJ_HLTH_INSR_PRIM
+        description: New Jersey health insurance primary indicator.
+        tests:
+          - not_null
+      - name: NJ_EXTR_PIP_PKG
+        description: New Jersey extra PIP package indicator.
+        tests:
+          - not_null
+      - name: NJ_RESDNC_RLTNSHP_PIP_IND
+        description: New Jersey residence relationship PIP indicator.
+        tests:
+          - not_null
+      - name: NY_SSL_IND
+        description: New York SSL indicator.
+        tests:
+          - not_null
+      - name: NY_FULL_CVG_GLASS_COMP_IND
+        description: New York full coverage glass comprehensive indicator.
+        tests:
+          - not_null
+      - name: GRGNG_ZIP
+        description: Garaging ZIP code.
+        tests:
+          - not_null
+      - name: RATNG_CMPY_CD
+        description: Rating company code.
+        tests:
+          - not_null
+      - name: MLT_CAR_IND
+        description: Multi-car indicator.
+        tests:
+          - not_null
+      - name: RT_CLS
+        description: Rate class.
+        tests:
+          - not_null
+      - name: AGE
+        description: Age of the insured.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 120
+      - name: GENDR
+        description: Gender of the insured.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['M', 'F', 'O']
+      - name: MRTL_STAT
+        description: Marital status of the insured.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Single', 'Married', 'Divorced', 'Widowed']
+      - name: AUTO_USE_CD
+        description: Auto use code.
+        tests:
+          - not_null
+      - name: MILES_TO_WRK
+        description: Miles to work.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+      - name: GOOD_STDNT_IND
+        description: Good student indicator.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Y', 'N']
+```
+
+This `schema.yml` file is generated for the `fct_WRK_BIRP_TA_NISS_NU0C_APRM_LND.sql` model, focusing on the final model for reporting and analytics on policy and coverage details. The columns are described based on their names and inferred roles, with appropriate tests applied to ensure data quality.

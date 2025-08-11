@@ -1,11 +1,13 @@
--- Purpose: Writes data to output target mapping ROW_ID to ROW_WID.
-WITH output AS (
-    SELECT 
-        ROW_WID AS row_id
-    FROM 
-        {{ ref('int_exp_ROW_WID') }}
+-- Purpose: Write data to output target
+WITH output_data AS (
+  SELECT 
+    exp_row_wid.V1, 
+    exp_row_wid.V2, 
+    exp_row_wid.ROW_WID 
+  FROM {{ ref('int_exp_ROW_WID') }} AS exp_row_wid
 )
 SELECT 
-    row_id
-FROM 
-    output
+  V1, 
+  V2, 
+  ROW_WID 
+FROM output_data

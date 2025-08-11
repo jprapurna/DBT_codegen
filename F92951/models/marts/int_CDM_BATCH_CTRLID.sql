@@ -1,17 +1,13 @@
--- Purpose: Fetches max batch ID based on source name from CDM_BATCH_CTRLID.
-WITH max_batch_ctrlid AS (
-    SELECT 
-        MAX(BATCH_ID) AS batch_id, 
-        LTRIM(RTRIM(SOURCE_NAME)) AS source_name
-    FROM 
-        {{ source('IICS', 'lkp_CDM_BATCH_CTRLID') }}
-    WHERE 
-        STATUS = 'RUNNING'
-    GROUP BY 
-        SOURCE_NAME
+-- Purpose: Lookup to fetch max batch ID based on source name
+WITH batch_data AS (
+  SELECT 
+    MAX(BATCH_ID) AS BATCH_ID, 
+    LTRIM(RTRIM(SOURCE_NAME)) AS SOURCE_NAME 
+  FROM {{ source('IICS', 'LKP_CDM_BATCH_CTRLID') }}
+  WHERE STATUS = 'RUNNING'
+  GROUP BY SOURCE_NAME
 )
 SELECT 
-    batch_id, 
-    source_name
-FROM 
-    max_batch_ctrlid
+  BATCH_ID, 
+  SOURCE_NAME 
+FROM batch_data

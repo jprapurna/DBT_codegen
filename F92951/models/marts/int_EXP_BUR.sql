@@ -1,11 +1,13 @@
--- Purpose: Renames POLICY_STATE to INTEGRATION_ID.
-WITH exp_bur AS (
-    SELECT 
-        POLICY_STATE AS integration_id
-    FROM 
-        {{ ref('int_CDH_GW_BUR') }}
+-- Purpose: Rename POLICY_STATE to INTEGRATION_ID
+WITH renamed_data AS (
+  SELECT 
+    POLICY_STATE AS INTEGRATION_ID, 
+    BUR, 
+    SOURCE_NAME 
+  FROM {{ ref('int_CDH_GW_BUR') }}
 )
 SELECT 
-    integration_id
-FROM 
-    exp_bur
+  INTEGRATION_ID, 
+  BUR, 
+  SOURCE_NAME 
+FROM renamed_data

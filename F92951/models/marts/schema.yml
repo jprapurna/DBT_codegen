@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: fct_Output
-    description: "Writes data to output target mapping ROW_ID to ROW_WID."
+    description: "Model to write data to the output target, selecting specific columns from the intermediate data."
     meta:
       owner: data_team
       domain: claims_processing
@@ -10,8 +10,22 @@ models:
       materialized: view
     tags: ['output', 'claims']
     columns:
-      - name: row_id
-        description: "Unique identifier for the output row, mapped from ROW_WID."
+      - name: V1
+        description: "First value column from the intermediate data."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: V2
+        description: "Second value column from the intermediate data."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: ROW_WID
+        description: "Unique row identifier from the intermediate data."
         tests:
           - unique
           - not_null

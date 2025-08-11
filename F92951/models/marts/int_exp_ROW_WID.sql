@@ -1,13 +1,18 @@
--- Purpose: Calculates ROW_WID using variables V1 and V2.
-WITH exp_row_wid AS (
+-- Purpose: Calculate ROW_WID using variables V1 and V2
+WITH calculated_row_wid AS (
+  SELECT 
+    V1, 
+    V2, 
+    V2 + 1 AS ROW_WID 
+  FROM (
     SELECT 
-        IIF(v2 = 0, (SELECT MAX(ROW_WID) FROM {{ ref('int_mplt_CDM_ROW_WID') }}), v2) AS v1,
-        v1 + 1 AS v2,
-        v2 AS row_wid
-    FROM 
-        {{ ref('int_EXP_Flag') }}
+      IIF(V2 = 0, (SELECT ROW_WID FROM {{ ref('int_mplt_CDM_ROW_WID') }}), V2) AS V1, 
+      V1 + 1 AS V2 
+    FROM {{ ref('int_mplt_CDM_ROW_WID') }}
+  )
 )
 SELECT 
-    row_wid
-FROM 
-    exp_row_wid
+  V1, 
+  V2, 
+  ROW_WID 
+FROM calculated_row_wid

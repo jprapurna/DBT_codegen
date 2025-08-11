@@ -1,13 +1,19 @@
--- Purpose: Updates data in W_CLAIM_CD_BUR_SCD3_U based on Update Strategy Expression.
-WITH claim_cd_bur_scd3_u AS (
-    SELECT 
-        *
-    FROM 
-        {{ ref('int_UPD_BUR') }}
-    WHERE 
-        update_strategy_expression_78066 = 'DD_UPDATE'
+-- Purpose: Update data in W_CLAIM_CD_BUR_SCD3_U based on Update Strategy Expression
+WITH update_data AS (
+  SELECT 
+    exp_flag.o_Flag, 
+    exp_flag.CDM_INSERT_DT, 
+    exp_flag.CDM_UPDATE_DT, 
+    exp_flag.TGT_TABLE_NAME, 
+    upd_bur.Update_Strategy_Expression_78066 
+  FROM {{ ref('int_EXP_Flag') }} AS exp_flag
+  JOIN {{ ref('int_UPD_BUR') }} AS upd_bur
+  ON exp_flag.o_Flag = 'U'
 )
 SELECT 
-    *
-FROM 
-    claim_cd_bur_scd3_u
+  o_Flag, 
+  CDM_INSERT_DT, 
+  CDM_UPDATE_DT, 
+  TGT_TABLE_NAME, 
+  Update_Strategy_Expression_78066 
+FROM update_data

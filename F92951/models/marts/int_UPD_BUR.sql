@@ -1,11 +1,10 @@
--- Purpose: Applies update strategy using expression DD_UPDATE.
-WITH upd_bur AS (
-    SELECT 
-        'DD_UPDATE' AS update_strategy_expression_78066
-    FROM 
-        {{ ref('int_EXP_Flag') }}
+-- Purpose: Update strategy expression
+WITH update_strategy AS (
+  SELECT 
+    'DD_UPDATE' AS Update_Strategy_Expression_78066 
+  FROM {{ ref('int_rtr_CLM_INSERT_UPD') }}
+  WHERE o_Flag = 'U'
 )
 SELECT 
-    update_strategy_expression_78066
-FROM 
-    upd_bur
+  Update_Strategy_Expression_78066 
+FROM update_strategy

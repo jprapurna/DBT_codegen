@@ -1,5 +1,11 @@
 -- Purpose: Map POLICY_STATE to INTEGRATION_ID
-SELECT 
+WITH mapped_data AS (
+  SELECT 
     POLICY_STATE, 
     POLICY_STATE AS INTEGRATION_ID 
-FROM {{ ref('int_CDH_GW_BUR') }}
+  FROM {{ ref('int_CDH_GW_BUR') }}
+)
+SELECT 
+  POLICY_STATE, 
+  INTEGRATION_ID 
+FROM mapped_data

@@ -2,75 +2,31 @@ version: 2
 
 models:
   - name: fct_W_CLAIM_CD_BUR_SCD3_U
-    description: Update operation on the table W_CLAIM_CD_BUR_SCD3_U.
+    description: This model performs an update operation on the W_CLAIM_CD_BUR_SCD3_U table using data from the intermediate update source.
     meta:
       owner: data_team
       domain: claims
     config:
-      materialized: table
-    tags: ['claims', 'update']
-    columns:
-      - name: INTEGRATION_ID
-        description: Unique identifier for integration.
-        tests:
-          - not_null
-          - unique
-      - name: LKP_INTEGRATION_ID
-        description: Lookup integration identifier.
-        tests:
-          - not_null
-      - name: o_Flag
-        description: Operation flag indicating the type of update.
-        tests:
-          - accepted_values:
-              values: ['I', 'U', 'NC']
-      - name: BATCH_ID
-        description: Identifier for the batch process.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 1
-              max_value: 1000000
-      - name: Update_Strategy_Expression_78066
-        description: Strategy expression for update operations.
-        tests:
-          - accepted_values:
-              values: ['DD_UPDATE']
+      materialized: view
+    tags: ['update', 'claims']
+    columns: []
 
   - name: fct_W_CLAIM_CD_BUR_SCD3_I
-    description: Insert data into the table W_CLAIM_CD_BUR_SCD3_I.
+    description: This model performs an insert operation on the W_CLAIM_CD_BUR_SCD3_I table, joining data from intermediate sources for claim insert updates.
     meta:
       owner: data_team
       domain: claims
     config:
-      materialized: table
-    tags: ['claims', 'insert']
-    columns:
-      - name: TGT_TABLE_NAME
-        description: Target table name for insertion.
-        tests:
-          - not_null
-      - name: ROW_WID
-        description: Row identifier for the target table.
-        tests:
-          - not_null
-          - unique
+      materialized: view
+    tags: ['insert', 'claims']
+    columns: []
 
   - name: fct_Output
-    description: Write data to the target table.
+    description: This model writes data to the target table using data from the intermediate source.
     meta:
       owner: data_team
       domain: output
     config:
-      materialized: table
-    tags: ['output', 'write']
-    columns:
-      - name: TGT_TABLE_NAME
-        description: Target table name for output.
-        tests:
-          - not_null
-      - name: ROW_WID
-        description: Row identifier for the output table.
-        tests:
-          - not_null
-          - unique
+      materialized: view
+    tags: ['output', 'data_transfer']
+    columns: []

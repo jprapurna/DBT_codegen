@@ -1,9 +1,10 @@
--- Purpose: Insert data into the table W_CLAIM_CD_BUR_SCD3_I
-SELECT 
+-- Purpose: Insert operation on W_CLAIM_CD_BUR_SCD3_I
+WITH insert_data AS (
+  SELECT 
     * 
-FROM {{ ref('int_mplt_CDM_ROW_WID') }}
-WHERE EXISTS (
-    SELECT 1 
-    FROM {{ ref('int_rtr_CLM_INSERT_UPD') }}
-    WHERE o_Flag = 'I'
+  FROM {{ ref('int_rtr_CLM_INSERT_UPD') }}
+  JOIN {{ ref('int_mplt_CDM_ROW_WID') }} ON TGT_TABLE_NAME = ROW_WID
 )
+SELECT 
+  * 
+FROM insert_data

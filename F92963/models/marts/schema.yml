@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: "Model for updating data in W_CLAIM_CD_BUR_SCD3_U based on the update strategy expression."
+    meta:
+      owner: "data_team"
+      domain: "claims"
+    config:
+      materialized: view
+    tags: ["update", "claims"]
+    columns:
+      - name: INTEGRATION_ID
+        description: "Unique identifier for integration records."
+        tests:
+          - not_null
+          - unique
+      - name: o_Flag
+        description: "Flag indicating the operation type, expected to be 'U' for updates."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['U']
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['U']
+      - name: BATCH_ID
+        description: "Identifier for the batch process."
+        tests:
+          - not_null
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: "Model for inserting data into W_CLAIM_CD_BUR_SCD3_I."
+    meta:
+      owner: "data_team"
+      domain: "claims"
+    config:
+      materialized: view
+    tags: ["insert", "claims"]
+    columns:
+      - name: INTEGRATION_ID
+        description: "Unique identifier for integration records."
+        tests:
+          - not_null
+          - unique
+      - name: o_Flag
+        description: "Flag indicating the operation type, expected to be 'I' for inserts."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I']
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I']
+      - name: CDM_INSERT_DT
+        description: "Date when the record was inserted."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: "Date when the record was last updated."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+  - name: fct_Output
+    description: "Model for writing data to the target table."
+    meta:
+      owner: "data_team"
+      domain: "output"
+    config:
+      materialized: view
+    tags: ["output", "target"]
+    columns:
+      - name: TGT_TABLE_NAME
+        description: "Name of the target table."
+        tests:
+          - not_null
+      - name: v1
+        description: "Value 1 for the target table."
+        tests:
+          - not_null
+      - name: v2
+        description: "Value 2 for the target table."
+        tests:
+          - not_null

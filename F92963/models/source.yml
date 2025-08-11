@@ -1,0 +1,82 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source for CDM schema tables
+    database: 
+    schema: CDM
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Source query for CDH_GW_BUR table
+        identifier: SQ_CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: Business unit reference
+            tests:
+              - not_null
+              - unique
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+              - unique
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup for W_CLAIM_CD_BUR_SCD3 table
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row identifier
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Lookup integration identifier
+            tests:
+              - not_null
+              - unique
+          - name: LKP_NEW_BUR
+            description: Lookup new business unit reference
+            tests:
+              - not_null
+              - unique
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup for maximum row identifier
+        identifier: LKP_MAX_ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Row identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+              - unique
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup for CDM batch control ID
+        identifier: LKP_CDM_BATCH_CTRLID
+
+        columns:
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+              - unique
+          - name: BATCH_ID
+            description: Batch identifier
+            tests:
+              - not_null
+              - unique

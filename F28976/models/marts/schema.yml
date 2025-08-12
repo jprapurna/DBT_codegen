@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: fct_Output
+    description: This model writes data to the target table by selecting all columns from the intermediate model `int_exp_ROW_WID`.
+    meta:
+      owner: data_engineering_team
+      domain: data_output
+    config:
+      materialized: view
+    tags: ['output', 'data_transfer']
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the output data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_I
+    description: This model inserts data into the table `W_CLAIM_CD_BUR_SCD3_I` by joining data from `int_rtr_CLM_INSERT_UPD` and `int_mplt_CDM_ROW_WID` on the `TGT_TABLE_NAME` and `ROW_WID`.
+    meta:
+      owner: claims_team
+      domain: claims_processing
+    config:
+      materialized: view
+    tags: ['claims', 'insert_operation']
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the claim data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: TGT_TABLE_NAME
+        description: Target table name used for joining operations.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['table1', 'table2', 'table3']
+
+  - name: fct_W_CLAIM_CD_BUR_SCD3_U
+    description: This model performs update operations on the table `W_CLAIM_CD_BUR_SCD3_U` by selecting all columns from the intermediate model `int_UPD_BUR`.
+    meta:
+      owner: claims_team
+      domain: claims_processing
+    config:
+      materialized: view
+    tags: ['claims', 'update_operation']
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the update data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique

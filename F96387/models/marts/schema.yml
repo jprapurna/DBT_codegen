@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: fct_Output
+    description: This model writes data to the target table using data from the intermediate table `int_exp_ROW_WID`.
+    meta:
+      owner: data_team
+      domain: claims_processing
+    config:
+      materialized: view
+    tags: ['claims', 'output']
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the output data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: CLAIM_AMOUNT
+        description: The amount associated with each claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: CLAIM_STATUS
+        description: The current status of the claim.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['open', 'closed', 'pending']
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['open', 'closed', 'pending']
+      - name: CLAIM_DATE
+        description: The date when the claim was filed.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2020-01-01'
+              max_value: '2023-12-31'

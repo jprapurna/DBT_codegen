@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: fct_Output
+    description: This model writes data to the target table by selecting all columns from the intermediate expression table.
+    meta:
+      owner: data_team
+      domain: operations
+    config:
+      materialized: view
+    tags: ['operations', 'output']
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the output data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: TGT_TABLE_NAME
+        description: Name of the target table where data is written.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: other_column
+        description: Other columns from the intermediate expression table.
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null

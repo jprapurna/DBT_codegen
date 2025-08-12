@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: fct_tbl_S_Audit_Item_NewProcess
+    description: "Loads processed audit item data into the final audit item table."
+    meta:
+      owner: data_team
+      domain: audit
+    config:
+      materialized: table
+    tags: ['audit', 'processed_data']
+    columns:
+      - name: row_ID
+        description: "Unique identifier for each audit item."
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: operation_dt
+        description: "Date and time when the operation was performed."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: fieldname
+        description: "Name of the field that was audited."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: newvalue
+        description: "New value of the audited field after the operation."
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 0
+              max_value: 255
+      - name: oldvalue
+        description: "Old value of the audited field before the operation."
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 0
+              max_value: 255

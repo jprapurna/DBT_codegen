@@ -1,0 +1,80 @@
+version: 2
+
+sources:
+  - name: Salesforce
+    description: Extract and process audit item data from Salesforce using SSIS package.
+    database: InSightETL2
+    schema: dbo
+
+    tables:
+      - name: tblSF_CaseHistory_Import
+        description: Extracts case history data from Salesforce for processing.
+        identifier: tblSF_CaseHistory_Import
+
+        columns:
+          - name: ROW_ID
+            description: Unique identifier for rows
+            tests:
+              - not_null
+              - unique
+          - name: OPERATION_DT
+            description: Date of operation
+            tests:
+              - not_null
+          - name: FIELDNAME
+            description: Name of the field
+            tests:
+              - not_null
+          - name: NEWVALUE
+            description: New value of the field
+          - name: OLDVALUE
+            description: Old value of the field
+          - name: ColCode
+            description: Column code (null)
+
+      - name: tblSF_AUDIT_ITEM
+        description: Processes audit item data from Salesforce with owner information.
+        identifier: tblSF_AUDIT_ITEM
+
+        columns:
+          - name: ROW_ID
+            description: Unique identifier for rows
+            tests:
+              - not_null
+              - unique
+          - name: RECORD_ID
+            description: Record identifier
+            tests:
+              - not_null
+          - name: CREATED_BY
+            description: Creator of the record
+            tests:
+              - not_null
+          - name: LAST_UPD_BY
+            description: Last updater of the record
+          - name: CREATED
+            description: Creation date
+            tests:
+              - not_null
+          - name: LAST_UPD
+            description: Last update date
+          - name: OPERATION_DT
+            description: Date of operation
+            tests:
+              - not_null
+          - name: MODIFICATION_NUM
+            description: Modification number
+          - name: CONFLICT_ID
+            description: Conflict identifier
+          - name: BUSCOMP_NAME
+            description: Business component name
+          - name: USER_ID
+            description: User identifier
+          - name: Old_Owner
+            description: Previous owner
+          - name: New_Owner
+            description: New owner
+          - name: OPERATION_CD
+            description: Operation code
+          - name: FIELD_NAME
+            description: Field name

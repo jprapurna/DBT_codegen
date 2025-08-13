@@ -1,0 +1,67 @@
+-- Purpose: Transform and update coverage code and split limit and coverage amount fields.
+
+WITH source_data AS (
+    SELECT
+        NISS_APRM_DETL_SK,
+        ST_NM,
+        ST_ABBR,
+        ACCTNG_LOB,
+        CVG_TYP_CD,
+        CVG_AMT,
+        BI_LMT,
+        GA_ADDED_AT_FAULT_IND,
+        FA2_PLCY_IND,
+        UM_UMI_STACKING,
+        PIP_WVR_WL_IND,
+        PIP_MED_SEC_IND,
+        PIP_LOSS_INCOME_IND,
+        MI_PPO_IND,
+        COMP_DED,
+        RATNG_CMPY_CD,
+        COLL_DED,
+        MIS_LOB,
+        SOURCE_IND_DERIVED
+    FROM {{ source('power_center', 'WRK_BIRP_NISS_APRM_DETL') }}
+)
+
+SELECT
+    NISS_APRM_DETL_SK,
+    ST_NM,
+    ST_ABBR,
+    ACCTNG_LOB,
+    CVG_TYP_CD,
+    CVG_AMT,
+    BI_LMT,
+    GA_ADDED_AT_FAULT_IND,
+    FA2_PLCY_IND,
+    UM_UMI_STACKING,
+    PIP_WVR_WL_IND,
+    PIP_MED_SEC_IND,
+    PIP_LOSS_INCOME_IND,
+    MI_PPO_IND,
+    COMP_DED,
+    RATNG_CMPY_CD,
+    COLL_DED,
+    MIS_LOB,
+    SOURCE_IND_DERIVED,
+    CAST(BI_LMT AS DECIMAL(10,1)) AS BI_LMT_1_Decimal,
+    CAST(BI_LMT AS DECIMAL(10,2)) AS BI_LMT_2_Decimal,
+    CAST(BI_LMT AS DECIMAL(10,3)) AS BI_LMT_3_Decimal,
+    CAST(CVG_AMT AS DECIMAL(10,1)) AS CVG_AMT_1_Decimal,
+    CAST(CVG_AMT AS DECIMAL(10,2)) AS CVG_AMT_2_Decimal,
+    CAST(CVG_AMT AS DECIMAL(10,3)) AS CVG_AMT_3_Decimal,
+    CAST(REPLACE(LTRIM(RTRIM(COLL_DED)), ',', '') AS INTEGER) AS v_COLL_DED,
+    COLL_DED AS v_COLL_DED_STR,
+    CASE WHEN INSTR(COMP_DED, '/') = 0 THEN CAST(REPLACE(LTRIM(RTRIM(COMP_DED)), ',', '') AS INTEGER) ELSE NULL END AS v_COMP_DED,
+    CASE WHEN PIP_WVR_WL_IND = 1 THEN 'Y' WHEN PIP_WVR_WL_IND = 0 THEN 'N' ELSE '' END AS v_PIP_WVR_WL_IND,
+    CASE WHEN PIP_MED_SEC_IND = 1 THEN 'Y' WHEN PIP_MED_SEC_IND = 0 THEN 'N' ELSE '' END AS v_PIP_MED_SEC_IND,
+    CASE WHEN PIP_LOSS_INCOME_IND = 1 THEN 'Y' WHEN PIP_LOSS_INCOME_IND = 0 THEN 'N' ELSE '' END AS v_PIP_LOSS_INCOME_IND,
+    CASE WHEN MI_PPO_IND = 1 THEN 'Y' WHEN MI_PPO_IND = 0 THEN 'N' ELSE '' END AS v_MI_PPO_IND,
+    -- Complex IIF logic for v_CVG_CD_STEP1, v_CVG_CD_STEP1A, v_CVG_CD_STEP2, v_CVG_CD_STEP3, v_CVG_CD_STEP4
+    -- Placeholder for complex logic
+    NULL AS v_CVG_CD_STEP1,
+    NULL AS v_CVG_CD_STEP1A,
+    NULL AS v_CVG_CD_STEP2,
+    NULL AS v_CVG_CD_STEP3,
+    NULL AS v_CVG_CD_STEP4
+FROM source_data;

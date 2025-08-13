@@ -1,0 +1,67 @@
+-- Purpose: Intermediate transformation for NISS auto data.
+WITH state_lookup AS (
+    SELECT 
+        FARMERS_STATE_NAME,
+        NISS_STATE_CODE
+    FROM {{ ref('state_codes') }}
+)
+
+SELECT 
+    lnd.REG_PER_YR,
+    lnd.FISC_PER_YR,
+    lnd.NAIC_CMPNY_CD,
+    lnd.ST_NM,
+    lnd.ST_CD,
+    lnd.ACCTNG_LOB,
+    lnd.CVG_TYP_CD,
+    lnd.CVG_AMT,
+    lnd.BI_LMT,
+    lnd.GA_UMBI_PD_ADDED_IND,
+    lnd.FA2_PLCY_IND,
+    lnd.UM_UIM_STACKING,
+    lnd.PIP_WVR_WL_IND,
+    lnd.PIP_MED_SEC_IND,
+    lnd.PIP_LOSS_INCOME_IND,
+    lnd.MI_PPO_IND,
+    lnd.PRD_GRP_CD,
+    lnd.NJ_HLTH_INSR_PRIM,
+    lnd.NJ_EXTR_PIP_PKG,
+    lnd.NJ_RESDNC_RLTNSHP_PIP_IND,
+    lnd.NY_SSL_IND,
+    lnd.NY_FULL_CVG_GLASS_COMP_IND,
+    lnd.GRGNG_ZIP_5,
+    lnd.RATNG_CMPY_CD,
+    lnd.MLT_CAR_IND,
+    lnd.RT_CLS,
+    lnd.AGE,
+    lnd.GENDR,
+    lnd.MRTL_STAT,
+    lnd.AUTO_USE_CD,
+    lnd.MILES_TO_WRK,
+    lnd.GOOD_STDNT_IND,
+    lnd.DRVR_TRNG_IND,
+    lnd.SOI_TYP,
+    lnd.PHY_DMG_IND,
+    lnd.NJ_RTD_PNTS,
+    lnd.VEH_MDL_YR,
+    lnd.NJ_EXCPTION_CD,
+    lnd.NJ_FRGVN_PNTS,
+    lnd.PASSV_RESTRA_DISC,
+    lnd.SNR_DRVR_IND,
+    lnd.DEFNS_DRVR_DISC_IND,
+    lnd.ANTI_THFT_DISC,
+    lnd.DAY_TM_RUN_LIGHTS,
+    lnd.LMT_TORT,
+    lnd.CVG_TYP_IND,
+    lnd.CVG_EXPS_VAL,
+    lnd.TTL_WRITTN_PREM_AMT,
+    lnd.v_FARMERS_STATE_CD,
+    lnd.IFARMERS_STATE_CD,
+    lnd.NJ_NO_LWST_LMT_IND,
+    lnd.NJ_NMD_DRVR_EXCL_IND,
+    sl.FARMERS_STATE_NAME,
+    sl.NISS_STATE_CODE,
+    {{ decode_null_spaces(lnd.NISS_TERR_CD) }} AS NISS_TERR_CD
+FROM {{ source('power_center', 'WRK_BIRP_TA_NISS_NU0C_APRM_LND') }} AS lnd
+LEFT JOIN state_lookup AS sl
+ON lnd.ST_NM = sl.FARMERS_STATE_NAME

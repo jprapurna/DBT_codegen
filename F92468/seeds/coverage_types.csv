@@ -1,0 +1,5 @@
+coverage_type_code,coverage_type_description
+BI,Bodily Injury
+PD,Property Damage
+UM,Uninsured Motorist
+UIM,Underinsured Motorist

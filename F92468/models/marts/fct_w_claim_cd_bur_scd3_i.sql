@@ -1,12 +1,18 @@
--- Purpose: Insert data into the target table `W_CLAIM_CD_BUR_SCD3`
+-- Purpose: Represents the final insert operation for W_CLAIM_CD_BUR_SCD3
 
 WITH insert_data AS (
   SELECT 
-    *
-  FROM {{ ref('int_rtr_clm_insert_upd') }}
-  WHERE o_Flag = 'I'
+    row_wid,
+    cdm_insert_dt,
+    cdm_update_dt,
+    tgt_table_name
+  FROM {{ ref('int_exp_row_wid') }}
+  WHERE {{ ref('int_rtr_clm_insert_upd') }}.o_flag = 'I'
 )
 
 SELECT 
-  *
+  row_wid,
+  cdm_insert_dt,
+  cdm_update_dt,
+  tgt_table_name
 FROM insert_data

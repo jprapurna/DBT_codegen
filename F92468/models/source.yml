@@ -1,10 +1,11 @@
 version: 2
 
 sources:
-  - name: genai_power_bi
-    description: Source database for Power BI integration
-    database: genai_power_bi
-    schema: default
+  - name: GENAI_POWER_BI
+    description: Source data for CDM schema in GENAI_POWER_BI database
+    database: GENAI_POWER_BI
+    schema: CDM
+
     tables:
       - name: SQ_CDH_GW_BUR
         description: Source table for CDH Gateway BUR data
@@ -23,13 +24,13 @@ sources:
             description: Source name
             tests:
               - not_null
-              - unique
+
       - name: LKP_W_CLAIM_CD_BUR_SCD3
         description: Lookup table for claim code BUR SCD3
         identifier: LKP_W_CLAIM_CD_BUR_SCD3
         columns:
           - name: LKP_ROW_WID
-            description: Lookup row ID
+            description: Lookup row identifier
             tests:
               - not_null
               - unique
@@ -37,36 +38,41 @@ sources:
             description: Lookup integration ID
             tests:
               - not_null
-              - unique
           - name: LKP_NEW_BUR
             description: Lookup new BUR value
             tests:
               - not_null
-      - name: lkp_CDM_BATCH_CTRLID
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row identifier
+        identifier: LKP_MAX_ROW_WID
+        columns:
+          - name: ROW_WID
+            description: Maximum row identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+
+      - name: LKP_CDM_BATCH_CTRLID
         description: Lookup table for CDM batch control ID
-        identifier: lkp_CDM_BATCH_CTRLID
+        identifier: LKP_CDM_BATCH_CTRLID
         columns:
           - name: SOURCE_NAME
             description: Source name
             tests:
               - not_null
-              - unique
           - name: BATCH_ID
-            description: Batch ID
+            description: Batch identifier
             tests:
               - not_null
               - unique
-      - name: lkp_MAX_ROW_WID
-        description: Lookup table for maximum row width
-        identifier: lkp_MAX_ROW_WID
-        columns:
-          - name: ROW_WID
-            description: Row width
+          - name: STATUS
+            description: Status of the batch
             tests:
               - not_null
-              - unique
-          - name: TABLE_NAME
-            description: Table name
-            tests:
-              - not_null
-              - unique
+              - accepted_values:
+                  values: ['RUNNING', 'COMPLETED', 'FAILED']

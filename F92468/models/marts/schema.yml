@@ -1,3 +1,66 @@
-Based on the provided SQL files, none of the models qualify as marts because they are either intermediate or staging models. As per the guidelines, only marts SQL files should be considered for generating `schema.yml`. Since the provided files (`fct_w_claim_cd_bur_scd3_i.sql`, `fct_w_claim_cd_bur_scd3_u.sql`, and `fct_output.sql`) are intermediate models, no `schema.yml` will be generated for these files. 
+version: 2
 
-If you have any marts SQL files, please provide them for processing.
+models:
+  - name: fct_w_claim_cd_bur_scd3_i  # Represents the final insert operation for W_CLAIM_CD_BUR_SCD3
+    description: This model captures the insert operations for W_CLAIM_CD_BUR_SCD3, including row identifiers, timestamps, and target table names.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, insert_operations]
+    columns:
+      - name: row_wid
+        description: Unique identifier for the row.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: cdm_insert_dt
+        description: Timestamp indicating when the row was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: cdm_update_dt
+        description: Timestamp indicating when the row was last updated.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: tgt_table_name
+        description: Name of the target table associated with the row.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+
+  - name: fct_w_claim_cd_bur_scd3_u  # Represents the final update operation for W_CLAIM_CD_BUR_SCD3
+    description: This model captures the update operations for W_CLAIM_CD_BUR_SCD3, including row identifiers, timestamps, and target table names.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, update_operations]
+    columns:
+      - name: row_wid
+        description: Unique identifier for the row.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: cdm_insert_dt
+        description: Timestamp indicating when the row was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: cdm_update_dt
+        description: Timestamp indicating when the row was last updated.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: tgt_table_name
+        description: Name of the target table associated with the row.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255

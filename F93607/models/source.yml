@@ -1,0 +1,77 @@
+version: 2
+
+sources:
+  - name: CDH_GWODS
+    description: Source tables for CDH_GWODS database in Snowflake
+    database: CDH_GWODS
+    schema: CDM
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Source query for CDH_GW_BUR table
+        identifier: SQ_CDH_GW_BUR
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+          - name: BUR
+            description: Business unit region
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Source name for the data
+            tests:
+              - not_null
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for W_CLAIM_CD_BUR_SCD3
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row ID
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Lookup integration ID
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: Lookup new business unit region
+            tests:
+              - not_null
+
+      - name: lkp_CDM_BATCH_CTRLID
+        description: Lookup table for batch control ID
+        identifier: lkp_CDM_BATCH_CTRLID
+        columns:
+          - name: SOURCE_NAME
+            description: Source name for the batch
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch ID
+            tests:
+              - not_null
+              - unique
+          - name: STATUS
+            description: Status of the batch
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['RUNNING', 'COMPLETED', 'FAILED']
+
+      - name: lkp_MAX_ROW_WID
+        description: Lookup table for maximum row ID
+        identifier: lkp_MAX_ROW_WID
+        columns:
+          - name: ROW_WID
+            description: Maximum row ID
+            tests:
+              - not_null
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+              - unique

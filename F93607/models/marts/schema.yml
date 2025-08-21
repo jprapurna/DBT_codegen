@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3_u  # Represents the target table where data is written
+    description: This model represents the target table where data is written, containing integration IDs, flags, batch information, and row identifiers.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, integration]
+    columns:
+      - name: in_integration_id
+        description: Represents the integration ID from the input source.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: lkp_integration_id
+        description: Represents the lookup integration ID used for mapping purposes.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: o_flag
+        description: Represents a flag indicating the operation or status.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive', 'pending']
+      - name: batch_id
+        description: Represents the batch identifier for processing.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000
+      - name: row_wid
+        description: Represents the row identifier used for deduplication and tracking.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_unique
+          - relationships:
+              to: ref('int_mplt_cdm_row_wid')
+              field: row_wid

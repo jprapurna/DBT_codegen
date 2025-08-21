@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3_insert  # Required
+    description: Represents the final model for INSERT operations. This model filters rows where the operation flag indicates an insert ('I').
+    meta:
+      owner: claims_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'insert']
+    columns:
+      - name: o_Flag
+        description: Operation flag indicating the type of operation (e.g., 'I' for insert).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I']
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I']
+      - name: other_columns
+        description: All other columns inherited from the intermediate model `int_rtr_clm_insert_upd`.
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+
+  - name: fct_w_claim_cd_bur_scd3_update  # Required
+    description: Represents the final model for UPDATE operations. This model filters rows where the operation flag indicates an update ('U').
+    meta:
+      owner: claims_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'update']
+    columns:
+      - name: o_Flag
+        description: Operation flag indicating the type of operation (e.g., 'U' for update).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['U']
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['U']
+      - name: other_columns
+        description: All other columns inherited from the intermediate model `int_rtr_clm_insert_upd`.
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null

@@ -1,0 +1,88 @@
+version: 2
+
+sources:
+  - name: CDH_GWODS
+    description: Source for CDH Gateway Operational Data Store
+    database: genai_power_bi
+    schema: CDH_GWODS
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Source table for CDH Gateway BUR data
+        identifier: CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: BUR identifier
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Source name for the data
+            tests:
+              - not_null
+
+  - name: CDM
+    description: Claims Data Mart
+    database: genai_power_bi
+    schema: CDM
+
+    tables:
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim BUR data
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row identifier
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Integration ID for lookup
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: New BUR value from lookup
+            tests:
+              - not_null
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row identifier
+        identifier: MAX_ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Maximum row identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup table for batch control ID
+        identifier: CDM_BATCH_CTRLID
+
+        columns:
+          - name: SOURCE_NAME
+            description: Source name for batch control
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch identifier
+            tests:
+              - not_null
+              - unique
+          - name: STATUS
+            description: Status of the batch
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['RUNNING', 'COMPLETED', 'FAILED']

@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3_insert  # Required
+    description: This model handles insert operations for the W_CLAIM_CD_BUR_SCD3 table. It generates a surrogate key based on POLICY_STATE and BUR and filters rows where the o_Flag is 'I'.
+    meta:
+      owner: data_engineering_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'insert_operations']
+    columns:
+      - name: ROW_WID
+        description: Surrogate key generated based on POLICY_STATE and BUR.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: POLICY_STATE
+        description: The state associated with the policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['CA', 'NY', 'TX', 'FL']  # Example states, adjust based on actual data
+      - name: BUR
+        description: Business unit region identifier.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 2
+              max_value: 10
+      - name: SOURCE_NAME
+        description: The name of the source system providing the data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50
+
+  - name: fct_w_claim_cd_bur_scd3_update  # Required
+    description: This model handles update operations for the W_CLAIM_CD_BUR_SCD3 table. It retrieves rows where the o_Flag is 'U'.
+    meta:
+      owner: data_engineering_team
+      domain: claims
+    config:
+      materialized: table
+    tags: ['claims', 'update_operations']
+    columns:
+      - name: ROW_WID
+        description: Surrogate key generated based on POLICY_STATE and BUR.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: POLICY_STATE
+        description: The state associated with the policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['CA', 'NY', 'TX', 'FL']  # Example states, adjust based on actual data
+      - name: BUR
+        description: Business unit region identifier.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 2
+              max_value: 10
+      - name: SOURCE_NAME
+        description: The name of the source system providing the data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50

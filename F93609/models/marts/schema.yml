@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: fct_tbl_S_AUDIT_ITEM_NewProcess  # Required
+    description: This model consolidates audit item data from multiple sources into a unified table for tracking changes in field values, operations, and associated metadata.
+    meta:
+      owner: data_engineering_team
+      domain: audit_tracking
+    config:
+      materialized: table
+    tags: [audit, tracking, operations]
+    columns:
+      - name: ROW_ID
+        description: Unique identifier for each audit record.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: OPERATION_DT
+        description: The date and time when the operation occurred.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-12-31'
+      - name: FIELDNAME
+        description: The name of the field that was changed during the operation.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: NEWVALUE
+        description: The new value of the field after the operation.
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 0
+              max_value: 500
+      - name: OLDVALUE
+        description: The old value of the field before the operation.
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 0
+              max_value: 500
+      - name: ColCode
+        description: A code associated with the operation or field change.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 50

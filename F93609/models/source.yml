@@ -1,0 +1,82 @@
+version: 2
+
+sources:
+  - name: Salesforce_Audit_Data_Integration
+    description: Integration of Salesforce audit item data into staging and final destination tables.
+    database: InSightETL2
+    schema: audit_integration_staging
+
+    tables:
+      - name: tblSF_CaseHistory_Import
+        description: Salesforce case history import table for audit data processing.
+        identifier: tblSF_CaseHistory_Import
+        columns:
+          - name: ROW_ID
+            description: Unique row identifier
+            tests:
+              - not_null
+              - unique
+          - name: OPERATION_DT
+            description: Operation timestamp
+            tests:
+              - not_null
+          - name: FIELDNAME
+            description: Field name
+            tests:
+              - not_null
+          - name: NEWVALUE
+            description: New value
+          - name: OLDVALUE
+            description: Old value
+          - name: ColCode
+            description: Placeholder column
+
+      - name: SQ_CDH_GW_BUR
+        description: Staging table for policy state and BUR mappings.
+        identifier: SQ_CDH_GW_BUR
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+          - name: BUR
+            description: BUR value
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Source name
+            tests:
+              - not_null
+
+      - name: lkp_CDM_BATCH_CTRLID
+        description: Lookup table for batch control IDs.
+        identifier: lkp_CDM_BATCH_CTRLID
+        columns:
+          - name: SOURCE_NAME
+            description: Source name
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch identifier
+            tests:
+              - not_null
+              - unique
+          - name: STATUS
+            description: Status of the batch
+            tests:
+              - accepted_values:
+                  values: ['A', 'B', 'C']
+
+      - name: lkp_MAX_ROW_WID
+        description: Lookup table for maximum row width.
+        identifier: lkp_MAX_ROW_WID
+        columns:
+          - name: ROW_WID
+            description: Row width identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null

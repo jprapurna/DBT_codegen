@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source for GENAI_POWER_BI database
+    database: genai_power_bi
+    schema: none
+    tables:
+      - name: sq_cdh_gw_bur
+        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: SQ_CDH_GW_BUR
+        columns: []
+      - name: lkp_w_claim_cd_bur_scd3
+        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+        columns: []
+      - name: lkp_cdm_batch_ctrlid
+        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: lkp_CDM_BATCH_CTRLID
+        columns: []
+      - name: lkp_max_row_wid
+        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: lkp_MAX_ROW_WID
+        columns: []
+      - name: s_w_claim_cd_scd3_iu
+        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: s_W_CLAIM_CD_SCD3_IU
+        columns: []

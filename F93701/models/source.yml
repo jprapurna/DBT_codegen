@@ -2,27 +2,77 @@ version: 2
 
 sources:
   - name: genai_power_bi
-    description: Source for GENAI_POWER_BI database
+    description: Source tables for the workflow wf_W_CLAIM_CD_SCD3_IU
     database: genai_power_bi
-    schema: none
+    schema: staging
+
     tables:
-      - name: sq_cdh_gw_bur
-        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+      - name: SQ_CDH_GW_BUR
+        description: Source table containing policy state and BUR information
         identifier: SQ_CDH_GW_BUR
-        columns: []
-      - name: lkp_w_claim_cd_bur_scd3
-        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: BUR information
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim code BUR SCD3
         identifier: LKP_W_CLAIM_CD_BUR_SCD3
-        columns: []
-      - name: lkp_cdm_batch_ctrlid
-        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
-        identifier: lkp_CDM_BATCH_CTRLID
-        columns: []
-      - name: lkp_max_row_wid
-        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
-        identifier: lkp_MAX_ROW_WID
-        columns: []
-      - name: s_w_claim_cd_scd3_iu
-        description: Error: SQL compilation error. Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
-        identifier: s_W_CLAIM_CD_SCD3_IU
-        columns: []
+        columns:
+          - name: LKP_ROW_WID
+            description: Row identifier for lookup
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Integration ID for lookup
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: New BUR value for lookup
+            tests:
+              - not_null
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row width
+        identifier: LKP_MAX_ROW_WID
+        columns:
+          - name: ROW_WID
+            description: Row width identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup table for CDM batch control ID
+        identifier: LKP_CDM_BATCH_CTRLID
+        columns:
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch identifier
+            tests:
+              - not_null
+              - unique
+          - name: STATUS
+            description: Status of the batch
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['A', 'B', 'C']

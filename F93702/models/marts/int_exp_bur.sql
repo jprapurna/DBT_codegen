@@ -1,0 +1,9 @@
+SELECT 
+    POLICY_STATE, 
+    CASE 
+        WHEN POLICY_STATE = 'CA' THEN 1001
+        WHEN POLICY_STATE = 'NY' THEN 1002
+        WHEN POLICY_STATE = 'TX' THEN 1003
+        ELSE NULL 
+    END AS INTEGRATION_ID
+FROM {{ ref('int_cdh_gw_bur') }}

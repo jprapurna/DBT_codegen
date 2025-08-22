@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3  # Required
+    description: Fact table capturing claim burden changes with SCD Type 3 logic. Includes historical and current burden values along with metadata for inserts and updates.
+    meta:
+      owner: data_engineering_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, scd3, fact_table]
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the table.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: BUR
+        description: Current burden value associated with the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: NEW_BUR
+        description: New burden value after the update.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: OLD_BUR
+        description: Previous burden value before the update.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: o_Flag
+        description: Flag indicating the operation type (e.g., insert or update).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['insert', 'update']
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['insert', 'update']
+      - name: CDM_INSERT_DT
+        description: Timestamp of when the record was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: Timestamp of when the record was last updated.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable

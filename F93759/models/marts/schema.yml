@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: fct_Assignment_PC_Variables  # Required
+    description: Represents the final model for workflow-level variable tracking.
+    meta:
+      owner: data_team
+      domain: workflow_management
+    config:
+      materialized: table
+    tags: [workflow, variables]
+    columns:
+      - name: variable_id
+        description: Unique identifier for the variable.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: variable_name
+        description: Name of the variable being tracked.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: variable_value
+        description: Value assigned to the variable.
+        tests:
+          - not_null
+      - name: created_at
+        description: Timestamp when the variable was created.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: updated_at
+        description: Timestamp when the variable was last updated.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+  - name: fct_Assignment_PC_Workflow_Parameter_File  # Required
+    description: Represents the final model for parameter file assignments.
+    meta:
+      owner: data_team
+      domain: workflow_management
+    config:
+      materialized: table
+    tags: [workflow, parameters]
+    columns:
+      - name: parameter_file_id
+        description: Unique identifier for the parameter file.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: workflow_id
+        description: Identifier for the associated workflow.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('fct_Workflows')
+              field: workflow_id
+      - name: file_name
+        description: Name of the parameter file.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: created_at
+        description: Timestamp when the parameter file was created.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: updated_at
+        description: Timestamp when the parameter file was last updated.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable

@@ -1,0 +1,77 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source tables for the CDM schema
+    database: genai_power_bi
+    schema: cdm
+
+    tables:
+      - name: sq_cdh_gw_bur
+        description: Table containing policy state and BUR information
+        identifier: SQ_CDH_GW_BUR
+        columns:
+          - name: policy_state
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: bur
+            description: BUR identifier
+            tests:
+              - not_null
+          - name: source_name
+            description: Name of the source
+            tests:
+              - not_null
+
+      - name: lkp_w_claim_cd_bur_scd3
+        description: Lookup table for claim BUR SCD3
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+        columns:
+          - name: lkp_row_wid
+            description: Row identifier for lookup
+            tests:
+              - not_null
+              - unique
+          - name: lkp_integration_id
+            description: Integration ID for lookup
+            tests:
+              - not_null
+          - name: lkp_new_bur
+            description: New BUR value for lookup
+            tests:
+              - not_null
+
+      - name: lkp_max_row_wid
+        description: Lookup table for maximum row WID
+        identifier: LKP_MAX_ROW_WID
+        columns:
+          - name: row_wid
+            description: Row identifier
+            tests:
+              - not_null
+              - unique
+          - name: table_name
+            description: Name of the table
+            tests:
+              - not_null
+
+      - name: lkp_cdm_batch_ctrlid
+        description: Lookup table for CDM batch control ID
+        identifier: LKP_CDM_BATCH_CTRLID
+        columns:
+          - name: source_name
+            description: Name of the source
+            tests:
+              - not_null
+          - name: batch_id
+            description: Batch identifier
+            tests:
+              - not_null
+          - name: status
+            description: Status of the batch
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['A', 'B', 'C']

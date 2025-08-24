@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: fct_claim_data  # Derived from the file name
+    description: Final model for claim data ready for reporting.
+    meta:
+      owner: data_team  # Optional metadata, inferred as placeholder
+      domain: claims  # Optional metadata, inferred as placeholder
+    config:
+      materialized: table
+    tags: [claims, reporting]  # Tags inferred from the context
+    columns:
+      - name: ROW_WID
+        description: Row identifier, likely the primary key for the table.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: INTEGRATION_ID
+        description: Integration identifier, used for linking or tracking data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: NEW_BUR
+        description: New BUR value, representing updated BUR data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: operation_flag
+        description: Operation flag indicating the type of operation ('I' for insert, 'U' for update).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['I', 'U']
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I', 'U']

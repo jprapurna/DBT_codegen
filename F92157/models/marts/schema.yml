@@ -1,0 +1,210 @@
+version: 2
+
+models:
+  - name: fct_niss_auto_load
+    description: Model for mapping NISS state codes to Farmers state codes with additional territory code transformations.
+    meta:
+      owner: data_engineering
+      domain: auto_insurance
+    config:
+      materialized: table
+    tags: [auto_insurance, mapping]
+    columns:
+      - name: unique_id
+        description: Surrogate key generated from FARMERS_STATE_NAME and FARMERS_STATE_CD.
+        tests:
+          - unique
+          - not_null
+      - name: NISS_STATE_CODE
+        description: NISS state code mapped from the reference table.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: STATE_CODE
+        description: Farmers state code mapped from the reference table.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: TERR_CD
+        description: Territory code derived from NISS_STATE_CODE with whitespace and null handling.
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 10
+
+  - name: fct_policy_details
+    description: Model for policy details including state and territory mappings.
+    meta:
+      owner: data_engineering
+      domain: policy_management
+    config:
+      materialized: table
+    tags: [policy_management, mapping]
+    columns:
+      - name: POLICY_ID
+        description: Unique identifier for policies.
+        tests:
+          - unique
+          - not_null
+      - name: NISS_STATE_CODE
+        description: NISS state code mapped from the reference table.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: STATE_CODE
+        description: Farmers state code mapped from the reference table.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: ST_ABBRV
+        description: State abbreviation for Farmers state codes.
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z]{2}$"
+      - name: NISS_TERR_CD
+        description: NISS territory code mapped from the reference table.
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+
+  - name: fct_territory_details
+    description: Model for detailed territory information including effective dates and checksum values.
+    meta:
+      owner: data_engineering
+      domain: territory_management
+    config:
+      materialized: table
+    tags: [territory_management, details]
+    columns:
+      - name: REF_AUTO_TERR_SK
+        description: Surrogate key for auto territory reference.
+        tests:
+          - unique
+          - not_null
+      - name: END_EFF_DT
+        description: End effective date for the territory.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CHCKSUM
+        description: Checksum value for data integrity validation.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: NISS_TERR_CD
+        description: NISS territory code.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: CNTY_NM
+        description: County name associated with the territory.
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 50
+      - name: CITY_NM
+        description: City name associated with the territory.
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 50
+
+  - name: fct_audit_details
+    description: Model for audit details including workflow run IDs and timestamps.
+    meta:
+      owner: data_engineering
+      domain: audit_management
+    config:
+      materialized: table
+    tags: [audit_management, details]
+    columns:
+      - name: WRK_FLOW_RUN_ID
+        description: Workflow run identifier for audit tracking.
+        tests:
+          - unique
+          - not_null
+      - name: DW_CR_TMSP
+        description: Timestamp for data warehouse creation.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: DW_UPD_TMSP
+        description: Timestamp for data warehouse updates.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+  - name: fct_niss_auto_atprm_dtl
+    description: Model for detailed NISS auto APRM data including exception indicators and descriptions.
+    meta:
+      owner: data_engineering
+      domain: auto_insurance
+    config:
+      materialized: table
+    tags: [auto_insurance, details]
+    columns:
+      - name: NISS_APRM_DETL_SK
+        description: Surrogate key for NISS APRM details.
+        tests:
+          - unique
+          - not_null
+      - name: NISS_CLASS_CD
+        description: NISS classification code.
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z0-9]{1,10}$"
+      - name: REC_EXCP_IND
+        description: Record exception indicator.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: REC_EXCP_DESC
+        description: Description of record exceptions.
+        tests:
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+
+  - name: fct_auto_territory
+    description: Model for auto territory mappings including state and ZIP codes.
+    meta:
+      owner: data_engineering
+      domain: territory_management
+    config:
+      materialized: table
+    tags: [territory_management, mapping]
+    columns:
+      - name: NISS_TERR_CD
+        description: NISS territory code.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: NISS_ST_CD
+        description: NISS state code.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: ST_ABBRV
+        description: State abbreviation for NISS state codes.
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z]{2}$"
+      - name: ZIP_CD
+        description: ZIP code for the territory.
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[0-9]{5}$"
+
+  - name: fct_WRK_BIRP_NISS_APRM_LND
+    description: Final model for reporting and analytics on NISS APRM LND data.
+    meta:
+      owner: data_engineering
+      domain: reporting
+    config:
+      materialized: table
+    tags: [reporting, analytics]
+
+  - name: fct_WRK_BIRP_NISS_APRM_DETL
+    description: Final model for reporting and analytics on detailed NISS APRM data.
+    meta:
+      owner: data_engineering
+      domain: reporting
+    config:
+      materialized: table
+    tags: [reporting, analytics]

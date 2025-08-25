@@ -22,4 +22,4 @@ SELECT
     NJ_NO_LWST_LMT_IND,
     NJ_NMD_DRVR_EXCL_IND,
     CVG_TYP_CD
-FROM source_data;
+FROM source_data

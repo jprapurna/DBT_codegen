@@ -3,4 +3,4 @@
 {{ config(materialized='table') }}
 
 SELECT *
-FROM {{ ref('int_WRK_BIRP_NISS_APRM_LND') }};
+FROM {{ ref('int_WRK_BIRP_NISS_APRM_LND') }}

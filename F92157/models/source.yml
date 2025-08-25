@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: AGDM
     description: Source data from AGDM database
-    database: AGDM
-    schema: public
+    database: DBA_COMMON_UTILS
+    schema: DBA
     tables:
       - name: DIM_AG_TRANS_TYP_PLCY
         description: Transaction type policy dimension table
@@ -224,8 +224,8 @@ sources:
 
   - name: PowerExchange_For_Snowflake
     description: Source data from PowerExchange for Snowflake
-    database: PowerExchange_For_Snowflake
-    schema: public
+    database: DBA_COMMON_UTILS
+    schema: DBA
     tables:
       - name: WRK_BIRP_NISS_APRM_DETL
         description: Work table for NISS APRM details
@@ -297,3 +297,126 @@ sources:
             description: Fiscal period year
             tests:
               - not_null
+
+      - name: FDR_LIB_WRK_BIRP_NISS_APRM_DETL1
+        columns:
+          - name: NISS_APRM_DETL_SK
+            description: Surrogate key for NISS APRM landing details
+            tests:
+              - not_null
+              - unique
+          - name: NISS_PLCY_LMT_CD
+            description: Registration period year
+            tests:
+              - not_null
+          - name: update_flag
+            description: Fiscal period year
+            tests:
+              - not_null
+
+
+  - name: Flat_File_Lookup
+    database: DBA_COMMON_UTILS
+    schema: DBA
+    tables:
+      - name: Flat_File_Lookup
+        columns:
+          - name: i_ST_NM
+            description: Surrogate key for on/off premium
+            tests:
+              - not_null
+              - unique
+          - name: FARMERS_STATE_NAME
+            description: farmers code
+            tests:
+              - not_null
+          - name: NISS_STATE_CODE
+            description: state code
+            tests:
+              - not_null
+
+  - name: BIRP
+    database: DBA_COMMON_UTILS
+    schema: DBA
+    tables:
+      - name: RBI_REF_AUTO_TERR
+        columns:
+          - name: NISS_ST_CD
+            description: Surrogate key for on/off premium
+            tests:
+              - not_null
+              - unique
+          - name: ST_ABBRV
+            description: farmers code
+            tests:
+              - not_null
+          - name: ZIP_CD
+            description: state code
+            tests:
+              - not_null
+
+  - name: FDR
+    database: DBA_COMMON_UTILS
+    schema: DBA
+    tables:
+      - name: REF_TFARMERS_STATE
+        columns:
+          - name: FARMERS_STATE_CD
+            description: Surrogate key for on/off premium
+            tests:
+              - not_null
+              - unique
+
+  - name: CDM
+    database: DBA_COMMON_UTILS
+    schema: DBA
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3
+        columns:
+          - name: ROW_WID
+            description: Surrogate key for on/off premium
+            tests:
+              - not_null
+              - unique
+      
+      - name: territory_details
+        columns:
+          - name: ROW_WID
+            description: Surrogate key for on/off premium
+            tests:
+              - not_null
+              - unique
+          - name: NISS_ST_CD
+            description: NISS state code
+          - name: ST_ABBRV
+            description: State abbreviation
+          - name: ZIP_CD
+            description: ZIP code
+          - name: PP_COMMRCL_CD
+            description: Commercial code
+          - name: REF_AUTO_TERR_SK
+            description: Reference auto territory surrogate key
+          - name: END_EFF_DT
+            description: End effective date
+          - name: CHCKSUM
+            description: Checksum value
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: NISS_TERR_CD
+            description: NISS territory code
+          - name: CNTY_NM
+            description: County name
+          - name: CITY_NM
+            description: City name
+          - name: SRC_EFF_DT
+            description: Source effective date
+          - name: SRC_OBSLT_DT
+            description: Source obsolete date

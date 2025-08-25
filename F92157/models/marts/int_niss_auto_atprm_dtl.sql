@@ -9,7 +9,7 @@ WITH base_data AS (
         SOI_TYP,
         ACCTNG_LOB,
         CVG_TYP_CD
-    FROM {{ ref('WRK_BIRP_NISS_APRM_DETL') }}
+    FROM {{ source('PowerExchange_For_Snowflake', 'WRK_BIRP_NISS_APRM_DETL') }}
 ),
 derived_fields AS (
     SELECT
@@ -22,9 +22,6 @@ derived_fields AS (
         SOI_TYP,
         ACCTNG_LOB,
         CVG_TYP_CD,
-        {{ dbt_utils.safe_cast('AGE', 'INTEGER') }} AS IAGE,
-        {{ dbt_utils.safe_cast('AUTO_USE_CD', 'STRING') }} AS AUTO_USE_CD,
-        {{ derive_class_code('ST_ABBR', 'AGE', 'GENDR', 'MRTL_STAT', 'MLT_CAR_IND', 'AUTO_USE_CD', 'SOI_TYP', 'ACCTNG_LOB', 'CVG_TYP_CD') }} AS v_CLASS_CODE_TAuto,
         CASE
             WHEN AUTO_USE_CD IS NULL THEN 'UNKNOWN'
             ELSE AUTO_USE_CD

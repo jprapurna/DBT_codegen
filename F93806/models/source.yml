@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source tables for claims data processing
+    database: GENAI_POWER_BI
+    schema: SCHEMA_CDH_GWODS
+
+    tables:
+      - name: cdh_gw_bur
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: CDH_GW_BUR
+        columns: []
+
+      - name: cdm_batch_ctrlid
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: CDM_BATCH_CTRLID
+        columns: []
+
+      - name: sq_cdh_gw_bur
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: SQ_CDH_GW_BUR
+        columns: []
+
+      - name: w_claim_cd_bur_scd3_u
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: W_CLAIM_CD_BUR_SCD3_U
+        columns: []
+
+      - name: w_claim_cd_bur_scd3_i
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: W_CLAIM_CD_BUR_SCD3_I
+        columns: []
+
+      - name: lkp_w_claim_cd_bur_scd3
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+        columns: []
+
+      - name: mplt_cdm_batch_id_lkp_cdm_batch_ctrlid
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: MPLT_CDM_BATCH_ID_LKP_CDM_BATCH_CTRLID
+        columns: []
+
+      - name: mplt_cdm_row_wid_lkp_max_row_wid
+        description: Error: Schema 'GENAI_POWER_BI.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: MPLT_CDM_ROW_WID_LKP_MAX_ROW_WID
+        columns: []

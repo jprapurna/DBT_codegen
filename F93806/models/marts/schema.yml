@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: fct_claim_data  # Required
+    description: Final model for claim data processing with SCD3 logic. This model includes row ID generation and tracks insert/update timestamps based on flag values.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, scd3, final_model]
+    columns:
+      - name: ROW_ID
+        description: Unique identifier for each row generated using the `generate_row_id` function.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: INSERT_DATE
+        description: Timestamp indicating when a record was inserted. Populated when FLAG = 'I'.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: UPDATE_DATE
+        description: Timestamp indicating when a record was updated. Populated when FLAG = 'U'.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: FLAG
+        description: Indicator for record operation type ('I' for insert, 'U' for update).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I', 'U']

@@ -1,0 +1,4 @@
+STATUS,BATCH_DESCRIPTION
+RUNNING,Currently processing
+COMPLETED,Processing completed
+FAILED,Processing failed

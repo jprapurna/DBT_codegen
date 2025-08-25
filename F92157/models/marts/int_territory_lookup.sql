@@ -17,7 +17,7 @@ WITH territory_details AS (
         CITY_NM,
         SRC_EFF_DT,
         SRC_OBSLT_DT
-    FROM {{ ref('territory_details') }}
+FROM {{ source('CDM', 'territory_details') }}
 )
 SELECT *
 FROM territory_details

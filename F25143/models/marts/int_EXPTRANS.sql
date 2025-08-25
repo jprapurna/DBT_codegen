@@ -1,0 +1,10 @@
+WITH processed_data AS (
+    SELECT
+        COALESCE(LTRIM(RTRIM(GRGNG_ZIP_5)), '00000') AS GRGNG_ZIP_5,
+        COALESCE(NISS_STATE_CODE, 'UNKNOWN') AS NISS_STATE_CODE,
+        COALESCE(NISS_TERR_CD, 'UNKNOWN') AS NISS_TERR_CD,
+        src.*
+    FROM {{ ref('int_TERRITORY_LOOKUP') }} src
+)
+SELECT *
+FROM processed_data;

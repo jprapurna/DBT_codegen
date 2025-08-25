@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: fct_POLICY_DETAILS  # Required
+    description: This model provides detailed information about policy contracts, including effective dates, state codes, territory codes, and written premium amounts.
+    meta:
+      owner: insurance_team
+      domain: policy_management
+    config:
+      materialized: table
+    tags: [insurance, policy_details]
+    columns:
+      - name: policy_contract_number
+        description: The unique identifier for a policy contract.
+        tests:
+          - unique
+          - not_null
+      - name: effective_date
+        description: The date when the policy becomes effective.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: state_code
+        description: The state code associated with the policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z]{2}$"
+      - name: territory_code
+        description: The territory code associated with the policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z0-9]{1,5}$"
+      - name: written_premium_amount
+        description: The amount of premium written for the policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+``` 
+
+For the other models (`fct_auto_territory`, `fct_farmers_state`, `fct_niss_aprm_lnd`, and `fct_niss_aprm_detl`), no `schema.yml` files are generated because they use `SELECT *` and do not explicitly define columns in the SQL. Only models with explicitly defined columns are considered for `schema.yml` generation.

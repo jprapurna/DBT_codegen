@@ -7,4 +7,4 @@ WITH state_lookup AS (
 SELECT
     FARMERS_STATE_NAME,
     NISS_STATE_CODE
-FROM state_lookup;
+FROM state_lookup

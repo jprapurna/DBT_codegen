@@ -67,6 +67,7 @@ models:
         tests:
           - dbt_expectations.expect_column_values_to_not_be_null
 
+
   - name: fct_territory_details
     description: Model for detailed territory information including effective dates and checksum values.
     meta:

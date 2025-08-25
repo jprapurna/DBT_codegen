@@ -1,13 +1,14 @@
 snowflake:
   outputs:
     dev:
+      account: farmers-awsuseast2.privatelink
+      database: DBA_COMMON_UTILS
+      password: '#8,7qJU%36rF4>daA-DS'
+      authenticator: https://farmersinsurance.okta.com
+      role: FARMERS_OKTA_SFLAKE_DEV_IT_DATAECONOMY_RW
+      schema: DBA
+      threads: 1
       type: snowflake
-      account: ZBRMEWR-UEB09447
-      user: RGAJAVALLI_DATAECONOMY_IO
-      password: Admingmr@123
-      role: ACCOUNTADMIN
-      database: GENAI_POWER_BI
-      warehouse: GENAI_WH
-      schema: PUBLIC
-      threads: 4
+      user: svc-dtecnmy-np-rw
+      warehouse: DEV_IT_DATAECONOMY_WH
   target: dev

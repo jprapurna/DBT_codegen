@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3  # Required
+    description: Handles Slowly Changing Dimension Type 3 (SCD3) for W_CLAIM_CD_BUR_SCD3.
+    meta:
+      owner: data_engineering  # Optional metadata
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, scd3]  # Optional tags
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for the row.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: INTEGRATION_ID
+        description: Identifier for integration processes.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z0-9_-]+$"  # Assuming alphanumeric with underscores or hyphens
+      - name: NEW_BUR
+        description: New business unit reference.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 50
+      - name: CDM_INSERT_DT
+        description: Date when the record was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: "2000-01-01"
+              max_value: "2100-12-31"
+      - name: CDM_UPDATE_DT
+        description: Date when the record was last updated.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: "2000-01-01"
+              max_value: "2100-12-31"

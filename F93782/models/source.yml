@@ -1,0 +1,81 @@
+version: 2
+
+sources:
+  - name: CDH_GWODS
+    description: Source for CDH Gateway BUR data
+    database: genai_power_bi
+    schema: CDH_GWODS
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Source table for CDH Gateway BUR
+        identifier: CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: BUR identifier
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Source name
+            tests:
+              - not_null
+
+  - name: CDM
+    description: Lookup tables for CDM
+    database: genai_power_bi
+    schema: CDM
+
+    tables:
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim BUR SCD3
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row ID
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Lookup integration ID
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: Lookup new BUR
+            tests:
+              - not_null
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row ID
+        identifier: MAX_ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Row ID
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup table for CDM batch control ID
+        identifier: CDM_BATCH_CTRLID
+
+        columns:
+          - name: SOURCE_NAME
+            description: Source name
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch ID
+            tests:
+              - not_null

@@ -1,15 +1,10 @@
--- Purpose: Represents the lookup transformation fetching fields from W_CLAIM_CD_BUR_SCD3
-
+-- Purpose: Lookup transformation for W_CLAIM_CD_BUR_SCD3
 WITH lookup_data AS (
-  SELECT 
-    ROW_WID AS lkp_row_wid,
-    INTEGRATION_ID AS lkp_integration_id,
-    NEW_BUR AS lkp_new_bur
-  FROM {{ source('GENAI_POWER_BI', 'LKP_W_CLAIM_CD_BUR_SCD3') }}
+  SELECT
+    ROW_WID AS lkp_ROW_WID,
+    INTEGRATION_ID AS lkp_INTEGRATION_ID,
+    NEW_BUR AS lkp_NEW_BUR
+  FROM {{ source('claim_cd_bur_scd3', 'lkp_w_claim_cd_bur_scd3') }}
 )
-
-SELECT 
-  lkp_row_wid,
-  lkp_integration_id,
-  lkp_new_bur
+SELECT *
 FROM lookup_data

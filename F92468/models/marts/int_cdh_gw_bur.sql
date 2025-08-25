@@ -1,15 +1,10 @@
--- Purpose: Represents the source data from CDH_GW_BUR with custom SQL override
-
+-- Purpose: Extract data from CDH_GW_BUR source table
 WITH source_data AS (
-  SELECT 
+  SELECT
     POLICY_STATE,
     BUR,
-    'GWCDH' AS source_name
-  FROM {{ source('GENAI_POWER_BI', 'SQ_CDH_GW_BUR') }}
+    'GWCDH' AS SOURCE_NAME
+  FROM {{ source('cdh_gw_bur', 'sq_cdh_gw_bur') }}
 )
-
-SELECT 
-  POLICY_STATE,
-  BUR,
-  source_name
+SELECT *
 FROM source_data

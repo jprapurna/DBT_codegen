@@ -11,14 +11,9 @@ updated_data AS (
         NISS_APRM_DETL_SK,
         NISS_CLASS_CD,
         REC_EXCP_IND,
-        REC_EXCP_DESC,
-        CASE
-            WHEN DD_UPDATE = 'INSERT' THEN 'INSERT'
-            WHEN DD_UPDATE = 'UPDATE' THEN 'UPDATE'
-            ELSE 'NC'
-        END AS update_flag
+        REC_EXCP_DESC
     FROM source_data
 )
 
 SELECT *
-FROM updated_data;
+FROM updated_data

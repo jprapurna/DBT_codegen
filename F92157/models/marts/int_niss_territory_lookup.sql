@@ -15,4 +15,4 @@ SELECT
         WHEN ZIP_CD IS NULL OR ZIP_CD = '' THEN '00000'
         ELSE LTRIM(RTRIM(ZIP_CD))
     END AS GRGNG_ZIP_5
-FROM territory_lookup;
+FROM territory_lookup

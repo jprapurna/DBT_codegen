@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source tables for GENAI Power BI
+    database: genai_power_bi
+    schema: none
+
+    tables:
+      - name: tblSF_CaseHistory_Import
+        description: Error: 002003 (02000): 01bea726-010e-9a96-0008-19fb00ee817e: SQL compilation error: Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: tblSF_CaseHistory_Import
+        columns: []
+
+      - name: SQ_CDH_GW_BUR
+        description: Error: 002003 (02000): 01bea726-010e-9a72-0008-19fb00ef0282: SQL compilation error: Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: SQ_CDH_GW_BUR
+        columns: []
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Error: 002003 (02000): 01bea726-010e-9d22-0008-19fb00ee21ee: SQL compilation error: Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+        columns: []
+
+      - name: lkp_CDM_BATCH_CTRLID
+        description: Error: 002003 (02000): 01bea726-010e-9a72-0008-19fb00ef0286: SQL compilation error: Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: lkp_CDM_BATCH_CTRLID
+        columns: []
+
+      - name: lkp_MAX_ROW_WID
+        description: Error: 002003 (02000): 01bea726-010e-9d22-0008-19fb00ee21f2: SQL compilation error: Schema 'GENAI_POWER_BI.NONE' does not exist or not authorized.
+        identifier: lkp_MAX_ROW_WID
+        columns: []

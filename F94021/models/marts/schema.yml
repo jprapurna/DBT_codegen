@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: fct_salesforce_audit  # Required
+    description: This model represents the Salesforce audit log, capturing user actions, group associations, and timestamps for auditing purposes.
+    meta:
+      owner: data_team
+      domain: audit
+    config:
+      materialized: table
+    tags: [audit, salesforce]
+    columns:
+      - name: surrogate_key
+        description: A unique identifier for each audit record, generated from `audit_id` and `action_timestamp`.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: audit_id
+        description: The unique identifier for the audit event.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: user_full_name
+        description: The full name of the user who performed the action.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 100
+      - name: group_full_name
+        description: The full name of the group associated with the action.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 100
+      - name: action_description
+        description: A description of the action performed during the audit event.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: action_timestamp
+        description: The timestamp when the action occurred.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-01-01'

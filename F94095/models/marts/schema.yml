@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: fct_claims_scd3  # Required
+    description: Final model for claims data processing with SCD3 logic. This model processes claims data and applies SCD3 transformations based on flag evaluations.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'scd3', 'data_processing']
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for the row.
+        tests:
+          - unique
+          - not_null
+      - name: INTEGRATION_ID
+        description: Identifier for integration processes.
+        tests:
+          - not_null
+      - name: NEW_BUR
+        description: New BUR value after processing.
+        tests:
+          - not_null
+      - name: OLD_BUR
+        description: Old BUR value before processing.
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: INSERT_DT
+        description: Timestamp for when the record was inserted.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: UPDATE_DT
+        description: Timestamp for when the record was last updated.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+  - name: fct_claim_cd_bur_scd3  # Required
+    description: Final model for claims data processing with SCD3 logic. This model flags data based on row-wide comparisons and BUR changes.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'scd3', 'data_processing']
+    columns:
+      - name: INTEGRATION_ID
+        description: Identifier for integration processes.
+        tests:
+          - not_null
+      - name: BUR
+        description: BUR value associated with the claim.
+        tests:
+          - not_null
+      - name: SOURCE_NAME
+        description: Name of the source system providing the data.
+        tests:
+          - not_null
+      - name: BATCH_ID
+        description: Batch identifier for the data processing.
+        tests:
+          - not_null
+      - name: ROW_WID
+        description: Unique identifier for the row.
+        tests:
+          - unique
+          - not_null
+      - name: operation_flag
+        description: Flag indicating the operation type ('I', 'NC', 'U').
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I', 'NC', 'U']
+
+  - name: fct_w_claim_cd_bur_scd3  # Required
+    description: Final model for SCD3 logic implementation. This model processes claims data and flags rows based on BUR changes and integration ID comparisons.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: ['claims', 'scd3', 'data_processing']
+    columns:
+      - name: INTEGRATION_ID
+        description: Identifier for integration processes.
+        tests:
+          - not_null
+      - name: BUR
+        description: BUR value associated with the claim.
+        tests:
+          - not_null
+      - name: SOURCE_NAME
+        description: Name of the source system providing the data.
+        tests:
+          - not_null
+      - name: o_BATCH_ID
+        description: Batch identifier for the data processing.
+        tests:
+          - not_null
+      - name: ROW_WID
+        description: Unique identifier for the row.
+        tests:
+          - unique
+          - not_null
+      - name: o_Flag
+        description: Flag indicating the operation type ('I', 'NC', 'U').
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I', 'NC', 'U']
+      - name: CDM_INSERT_DT
+        description: Timestamp for when the record was inserted into the CDM.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: Timestamp for when the record was last updated in the CDM.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: TGT_TABLE_NAME
+        description: Name of the target table for the processed data.
+        tests:
+          - not_null

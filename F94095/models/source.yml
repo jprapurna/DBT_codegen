@@ -1,0 +1,125 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source tables for GENAI_POWER_BI database
+    database: GENAI_POWER_BI
+    schema: CDH_GWODS
+
+    tables:
+      - name: sq_cdh_gw_bur
+        description: Source query for CDH_GW_BUR table
+        identifier: DUMMY_SQ_CDH_GW_BUR
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+          - name: BUR
+            description: Business unit region
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Source name for the data
+            tests:
+              - not_null
+
+      - name: lkp_w_claim_cd_bur_scd3
+        description: Lookup table for W_CLAIM_CD_BUR_SCD3
+        identifier: DUMMY_LKP_W_CLAIM_CD_BUR_SCD3
+        columns:
+          - name: lkp_ROW_WID
+            description: Lookup row ID
+            tests:
+              - not_null
+              - unique
+          - name: lkp_INTEGRATION_ID
+            description: Integration ID for lookup
+            tests:
+              - not_null
+          - name: lkp_NEW_BUR
+            description: New business unit region
+            tests:
+              - not_null
+
+      - name: lkp_cdm_batch_ctrlid
+        description: Lookup table for CDM_BATCH_CTRLID
+        identifier: DUMMY_mplt_CDM_BATCH_ID_lkp_CDM_BATCH_CTRLID
+        columns:
+          - name: BATCH_ID
+            description: Batch ID for the lookup
+            tests:
+              - not_null
+              - unique
+          - name: SOURCE_NAME
+            description: Source name for the batch
+            tests:
+              - not_null
+
+      - name: lkp_max_row_wid
+        description: Lookup table for maximum ROW_WID
+        identifier: DUMMY_mplt_CDM_ROW_WID_lkp_MAX_ROW_WID
+        columns:
+          - name: ROW_WID
+            description: Maximum row ID
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the target table
+            tests:
+              - not_null
+
+      - name: schema_cdh_gwods
+        description: Schema for CDH_GWODS
+        identifier: CDH_GWODS
+        columns:
+          - name: SCHEMA_CDH_GWODS
+            description: Schema name for CDH_GWODS
+            tests:
+              - not_null
+
+      - name: source_name_gwcdm
+        description: Source name for GWCDM
+        identifier: GWCDH
+        columns:
+          - name: SOURCE_NAME_GWCDM
+            description: Source name for GWCDM
+            tests:
+              - not_null
+
+      - name: mapplet_tgt_table_name
+        description: Target table name for mapplet
+        identifier: W_CLAIM_CD_BUR_SCD3
+        columns:
+          - name: Mapplet_TGT_TABLE_NAME
+            description: Target table name for mapplet
+            tests:
+              - not_null
+
+      - name: mapplet_schema_cdm
+        description: Schema for CDM mapplet
+        identifier: CDM
+        columns:
+          - name: Mapplet_SCHEMA_CDM
+            description: Schema name for CDM mapplet
+            tests:
+              - not_null
+
+      - name: cdm_param
+        description: Parameter file for CDM
+        identifier: CDM_PARAM.prm
+        columns:
+          - name: PARAMETER_FILE
+            description: Parameter file for CDM
+            tests:
+              - not_null
+
+      - name: pmerror
+        description: Error log file
+        identifier: PMError.log
+        columns:
+          - name: ERROR_LOG
+            description: Error log file
+            tests:
+              - not_null

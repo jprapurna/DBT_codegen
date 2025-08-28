@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: fct_claim_bur  # Final model for claim BUR data with SCD3 logic
+    description: This model represents the final claim BUR data with SCD3 logic applied. It includes policy state, BUR, source name, and operational flags for insert and update tracking.
+    meta:
+      owner: data_engineering_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, scd3, bur]
+    columns:
+      - name: POLICY_STATE
+        description: Represents the state of the policy associated with the claim BUR.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['CA', 'NY', 'TX', 'FL']  # Example states
+      - name: BUR
+        description: Business Unit Reporting identifier for the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 10
+      - name: SOURCE_NAME
+        description: Name of the source system providing the claim BUR data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z0-9_]+$"  # Alphanumeric and underscores
+      - name: lkp_ROW_WID
+        description: Lookup row identifier for the claim BUR data.
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('LKP_W_CLAIM_CD_BUR_SCD3')
+              field: ROW_WID
+      - name: operation_flag
+        description: Flag indicating the type of operation performed (Insert or Update).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I', 'U']
+      - name: INSERT_DT
+        description: Timestamp for when the record was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: UPDATE_DT
+        description: Timestamp for when the record was updated.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+```
+
+This `schema.yml` file is tailored for the `fct_claim_bur` model, ensuring comprehensive testing and alignment with dbt and dbt Great Expectations standards.

@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: fct_claims_scd3  # Derived from the file name
+    description: A fact table capturing claims data with SCD3 logic, including integration IDs, batch information, and operation flags for insert and update operations.
+    meta:
+      owner: data_engineering_team
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, scd3, operations]
+    columns:
+      - name: INTEGRATION_ID
+        description: Unique identifier for the integration process.
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('int_scd3_lookup')
+              field: lkp_INTEGRATION_ID
+      - name: BUR
+        description: Business Unit Reference, used for identifying the business unit associated with the claim.
+        tests:
+          - not_null
+      - name: SOURCE_NAME
+        description: Name of the source system providing the data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['source_a', 'source_b', 'source_c']  # Example values inferred from typical source names
+      - name: BATCH_ID
+        description: Identifier for the batch in which the data was processed.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_cdm_batch_ctrlid_transformed')
+              field: BATCH_ID
+      - name: lkp_ROW_WID
+        description: Row identifier from the lookup table, used for SCD3 processing.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_scd3_lookup')
+              field: lkp_ROW_WID
+      - name: lkp_NEW_BUR
+        description: Updated Business Unit Reference from the lookup table.
+        tests:
+          - not_null
+      - name: operation_flag
+        description: Flag indicating the type of operation performed ('I' for insert, 'U' for update, 'NC' for no change).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I', 'U', 'NC']
+      - name: insert_dt
+        description: Timestamp indicating when the record was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: update_dt
+        description: Timestamp indicating when the record was last updated.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable

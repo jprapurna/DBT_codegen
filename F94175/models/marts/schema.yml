@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3  # Required
+    description: This model represents the claim code burden data with mappings to new burden codes. It is sourced from the intermediate table `int_exp_flag`.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, burden_mapping]  # Optional tags
+    columns:
+      - name: BUR
+        description: Represents the burden code for claims.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BUR1', 'BUR2', 'BUR3']  # Example values inferred from business logic
+      - name: LKP_NEW_BUR
+        description: Represents the lookup for new burden codes mapped to the original burden codes.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('other_model')  # Replace 'other_model' with the actual model name if known
+              field: other_column

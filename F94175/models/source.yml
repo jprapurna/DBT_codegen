@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: CDH_GWODS
+    description: Source for CDH Gateway data
+    database: CDH_GWODS
+    schema: CDH_GWODS
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Error: Table does not exist or not authorized
+        identifier: DUMMY_SQ_CDH_GW_BUR
+        columns: []
+
+  - name: CDM
+    description: Claims Data Mart
+    database: CDM
+    schema: CDM
+
+    tables:
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Error: Table does not exist or not authorized
+        identifier: DUMMY_LKP_W_CLAIM_CD_BUR_SCD3
+        columns: []
+
+      - name: LKP_MAX_ROW_WID
+        description: Error: Table does not exist or not authorized
+        identifier: DUMMY_mplt_CDM_ROW_WID_lkp_MAX_ROW_WID
+        columns: []
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Error: Table does not exist or not authorized
+        identifier: DUMMY_mplt_CDM_BATCH_ID_lkp_CDM_BATCH_CTRLID
+        columns: []

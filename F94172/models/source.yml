@@ -1,0 +1,156 @@
+version: 2
+
+sources:
+  - name: CDH_GW_BUR
+    description: Source table for CDH Gateway Burden data
+    database: CDH_GWODS
+    schema: SCHEMA_CDH_GWODS
+    overrides: null
+    freshness:
+      warn_after:
+        count: 60
+        period: minute
+      error_after:
+        count: 120
+        period: minute
+    tables:
+      - name: CDH_GW_BUR
+        description: CDH Gateway Burden table
+        identifier: CDH_GW_BUR
+        freshness:
+          warn_after:
+            count: 60
+            period: minute
+          error_after:
+            count: 120
+            period: minute
+        external: null
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: Burden data
+            tests:
+              - not_null
+              - unique
+          - name: SOURCE_NAME
+            description: Source name for the data
+            tests:
+              - not_null
+              - unique
+
+  - name: W_CLAIM_CD_BUR_SCD3
+    description: Target table for claim burden data
+    database: CDM
+    schema: DEV_CLM_BI
+    overrides: null
+    freshness:
+      warn_after:
+        count: 60
+        period: minute
+      error_after:
+        count: 120
+        period: minute
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Claim burden table
+        identifier: W_CLAIM_CD_BUR_SCD3
+        freshness:
+          warn_after:
+            count: 60
+            period: minute
+          error_after:
+            count: 120
+            period: minute
+        external: null
+        columns:
+          - name: ROW_WID
+            description: Row identifier
+            tests:
+              - not_null
+              - unique
+          - name: INTEGRATION_ID
+            description: Integration identifier
+            tests:
+              - not_null
+              - unique
+          - name: NEW_BUR
+            description: New burden data
+            tests:
+              - not_null
+              - unique
+
+  - name: CDM_BATCH_CTRLID
+    description: Lookup table for batch control ID
+    database: CDM
+    schema: CDM
+    overrides: null
+    freshness:
+      warn_after:
+        count: 60
+        period: minute
+      error_after:
+        count: 120
+        period: minute
+    tables:
+      - name: CDM_BATCH_CTRLID
+        description: Batch control ID table
+        identifier: CDM_BATCH_CTRLID
+        freshness:
+          warn_after:
+            count: 60
+            period: minute
+          error_after:
+            count: 120
+            period: minute
+        external: null
+        columns:
+          - name: BATCH_ID
+            description: Batch identifier
+            tests:
+              - not_null
+              - unique
+          - name: SOURCE_NAME
+            description: Source name for the batch
+            tests:
+              - not_null
+              - unique
+
+  - name: CDM_ROW_WID_MAX
+    description: Lookup table for maximum row ID
+    database: CDM
+    schema: CDM
+    overrides: null
+    freshness:
+      warn_after:
+        count: 60
+        period: minute
+      error_after:
+        count: 120
+        period: minute
+    tables:
+      - name: CDM_ROW_WID_MAX
+        description: Maximum row ID table
+        identifier: CDM_ROW_WID_MAX
+        freshness:
+          warn_after:
+            count: 60
+            period: minute
+          error_after:
+            count: 120
+            period: minute
+        external: null
+        columns:
+          - name: ROW_WID
+            description: Maximum row identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+              - unique

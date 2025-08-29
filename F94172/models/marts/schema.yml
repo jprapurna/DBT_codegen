@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: fct_claim_burden  # Required
+    description: This model calculates the claim burden flags based on integration data and source mappings. It identifies insertions, updates, and no changes using a combination of hash comparisons and null checks.
+    meta:
+      owner: data_engineering_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, integration]
+    columns:
+      - name: INTEGRATION_ID
+        description: Unique identifier for the integration record.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: SOURCE_NAME
+        description: Name of the source system providing the data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50
+      - name: o_Flag
+        description: Flag indicating the type of operation: Insert (I), No Change (NC), or Update (U).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['I', 'NC', 'U']
+      - name: CDM_INSERT_DT
+        description: Timestamp indicating when the record was inserted into the CDM.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: CDM_UPDATE_DT
+        description: Timestamp indicating when the record was last updated in the CDM.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: TGT_TABLE_NAME
+        description: Name of the target table where the data is stored.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 5
+              max_value: 50

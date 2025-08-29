@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: fct_W_CLAIM_CD_BUR_SCD3  # Required
+    description: Represents the final model for reporting and analytics.
+    meta:
+      owner: analytics_team  # Optional metadata
+      domain: claims_reporting
+    config:
+      materialized: table
+    tags: [claims, reporting, analytics]  # Optional tags
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for the row.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: INTEGRATION_ID
+        description: Identifier for integration processes.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: NEW_BUR
+        description: Represents the new business unit reporting structure.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BUR1', 'BUR2', 'BUR3']  # Example enumerated values
+      - name: CDM_INSERT_DT
+        description: Timestamp when the record was inserted.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-12-31'
+      - name: CDM_UPDATE_DT
+        description: Timestamp when the record was last updated.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-12-31'
+      - name: TGT_TABLE_NAME
+        description: Name of the target table for integration.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50

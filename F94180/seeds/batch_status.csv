@@ -1,0 +1,4 @@
+STATUS,DESCRIPTION
+RUNNING,Currently processing
+COMPLETED,Processing completed
+FAILED,Processing failed

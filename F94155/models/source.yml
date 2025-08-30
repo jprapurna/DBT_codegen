@@ -1,0 +1,340 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source data from GENAI_POWER_BI database.
+    database: GENAI_POWER_BI
+    schema: POWER_CENTER
+
+    tables:
+      - name: rbi_ref_auto_terr
+        description: Table containing reference data for auto territories.
+        identifier: RBI_REF_AUTO_TERR
+        columns:
+          - name: ref_auto_terr_sk
+            description: Surrogate key for auto territory reference.
+            tests:
+              - not_null
+              - unique
+          - name: end_eff_dt
+            description: End effective date.
+            tests:
+              - not_null
+          - name: chcksum
+            description: Checksum for data validation.
+          - name: cr_by_mapng_id
+            description: ID of the creator mapping.
+          - name: dw_cr_tmsp
+            description: Timestamp of data warehouse creation.
+          - name: upd_by_mapng_id
+            description: ID of the updater mapping.
+          - name: dw_upd_tmsp
+            description: Timestamp of data warehouse update.
+          - name: wrk_flow_run_id
+            description: Workflow run identifier.
+          - name: niss_terr_cd
+            description: Nissan territory code.
+          - name: cnty_nm
+            description: County name.
+          - name: city_nm
+            description: City name.
+          - name: src_eff_dt
+            description: Source effective date.
+          - name: src_obstlt_dt
+            description: Source obsolete date.
+          - name: niss_st_cd
+            description: Nissan state code.
+          - name: st_abbrv
+            description: State abbreviation.
+          - name: zip_cd
+            description: Zip code.
+          - name: pp_commrcl_cd
+            description: Commercial code.
+
+      - name: wrk_birp_niss_aprm_detl
+        description: Table containing detailed Nissan APRM data.
+        identifier: WRK_BIRP_NISS_APRM_DETL
+        columns:
+          - name: niss_aprm_detl_sk
+            description: Surrogate key for Nissan APRM detail.
+            tests:
+              - not_null
+              - unique
+          - name: clndr_yr
+            description: Calendar year.
+          - name: call_yr
+            description: Call year.
+          - name: naic_cmpny_cd
+            description: NAIC company code.
+          - name: niss_cmpny_cd
+            description: Nissan company code.
+          - name: st_nm
+            description: State name.
+          - name: st_cd
+            description: State code.
+          - name: niss_st_cd
+            description: Nissan state code.
+          - name: st_abbr
+            description: State abbreviation.
+          - name: acctng_lob
+            description: Accounting line of business.
+          - name: cvg_typ_cd
+            description: Coverage type code.
+          - name: cvg_amt
+            description: Coverage amount.
+          - name: bi_lmt
+            description: Bodily injury limit.
+          - name: ga_added_at_fault_ind
+            description: Georgia added at fault indicator.
+          - name: fa2_plcy_ind
+            description: FA2 policy indicator.
+          - name: um_umi_stacking
+            description: UM/UMI stacking.
+          - name: pip_wvr_wl_ind
+            description: PIP waiver indicator.
+          - name: pip_med_sec_ind
+            description: PIP medical section indicator.
+          - name: pip_loss_income_ind
+            description: PIP loss income indicator.
+          - name: mi_ppo_ind
+            description: Michigan PPO indicator.
+          - name: prd_grp_cd
+            description: Product group code.
+          - name: nj_hlth_insr_prim
+            description: New Jersey health insurance primary.
+          - name: nj_extr_pip_pkg
+            description: New Jersey extra PIP package.
+          - name: nj_resdnc_rltnshp_pip_ind
+            description: New Jersey residence relationship PIP indicator.
+          - name: ny_ssl_ind
+            description: New York SSL indicator.
+          - name: ny_full_cvg_glass_comp_ind
+            description: New York full coverage glass comprehensive indicator.
+          - name: grgng_zip_5
+            description: Garage zip code (5 digits).
+          - name: niss_terr_cd
+            description: Nissan territory code.
+          - name: ratng_cmpny_cd
+            description: Rating company code.
+          - name: mlt_car_ind
+            description: Multi-car indicator.
+          - name: rt_cls
+            description: Rate class.
+          - name: age
+            description: Age.
+          - name: gendr
+            description: Gender.
+          - name: mrtl_stat
+            description: Marital status.
+          - name: auto_use_cd
+            description: Auto use code.
+          - name: miles_to_wrk
+            description: Miles to work.
+          - name: good_stdnt_ind
+            description: Good student indicator.
+          - name: drvr_trng_ind
+            description: Driver training indicator.
+          - name: soi_typ
+            description: SOI type.
+          - name: phy_dmg_ind
+            description: Physical damage indicator.
+          - name: nj_ratd_pnts
+            description: New Jersey rated points.
+          - name: veh_mdl_yr
+            description: Vehicle model year.
+          - name: nj_excption_cd
+            description: New Jersey exception code.
+          - name: nj_fgvn_pnts
+            description: New Jersey forgiven points.
+          - name: passv_restra_disc
+            description: Passive restraint discount.
+          - name: snr_drvr_ind
+            description: Senior driver indicator.
+          - name: defns_drvr_disc_ind
+            description: Defensive driver discount indicator.
+          - name: anti_thft_disc
+            description: Anti-theft discount.
+          - name: day_tm_run_lights
+            description: Daytime running lights.
+          - name: lmt_tort
+            description: Limited tort.
+          - name: annl_stmnt_lob_cd
+            description: Annual statement line of business code.
+          - name: cvg_typ_ind
+            description: Coverage type indicator.
+          - name: cvg_exps_val
+            description: Coverage expense value.
+          - name: ttl_writtn_prem_amt
+            description: Total written premium amount.
+          - name: line_cd
+            description: Line code.
+          - name: accdnt_yr
+            description: Accident year.
+          - name: niss_cvg_cd
+            description: Nissan coverage code.
+          - name: rtng_zne_cd
+            description: Rating zone code.
+          - name: term_zne_cd
+            description: Term zone code.
+          - name: niss_class_cd
+            description: Nissan class code.
+          - name: niss_elig_pnts_cd
+            description: Nissan eligible points code.
+          - name: niss_age_grp_cd
+            description: Nissan age group code.
+          - name: niss_cmmcl_ind_cd
+            description: Nissan commercial indicator code.
+          - name: niss_excpn_cd
+            description: Nissan exception code.
+          - name: niss_fgvns_cd
+            description: Nissan forgiveness code.
+          - name: niss_passv_restra_cd
+            description: Nissan passive restraint code.
+          - name: niss_defns_drvr_crd_cd
+            description: Nissan defensive driver credit code.
+          - name: niss_anti_thft_dvc_cd
+            description: Nissan anti-theft device code.
+          - name: niss_day_tm_run_lamps_disc_cd
+            description: Nissan daytime running lamps discount code.
+          - name: niss_plcy_lmt_cd
+            description: Nissan policy limit code.
+          - name: niss_deduc_cd
+            description: Nissan deductible code.
+          - name: niss_ssl_liab_cd
+            description: Nissan SSL liability code.
+          - name: niss_sublob_cd
+            description: Nissan sub-line of business code.
+          - name: niss_typ_loss_cd
+            description: Nissan type of loss code.
+          - name: niss_liab_or_no_fault_cd
+            description: Nissan liability or no-fault code.
+          - name: niss_annl_stmnt_lob_cd
+            description: Nissan annual statement line of business code.
+          - name: niss_pd_loss
+            description: Nissan paid loss.
+          - name: niss_pd_alloc_adjus_expns
+            description: Nissan paid allocated adjustment expenses.
+          - name: niss_outstndg_loss
+            description: Nissan outstanding loss.
+          - name: niss_no_pd_clms
+            description: Nissan number of paid claims.
+          - name: niss_no_outstnd_clms
+            description: Nissan number of outstanding claims.
+          - name: rsvd_niss_use
+            description: Reserved Nissan use.
+          - name: niss_rsvd_cmpny_use
+            description: Reserved company use for Nissan.
+          - name: niss_mnfctrs_mdl_yr
+            description: Nissan manufacturer's model year.
+          - name: cr_by_mapng_id
+            description: ID of the creator mapping.
+          - name: dw_cr_tmsp
+            description: Timestamp of data warehouse creation.
+          - name: upd_by_mapng_id
+            description: ID of the updater mapping.
+          - name: dw_upd_tmsp
+            description: Timestamp of data warehouse update.
+          - name: wrk_flow_run_id
+            description: Workflow run identifier.
+          - name: nj_no_lwst_lmt_ind
+            description: New Jersey no lowest limit indicator.
+          - name: nj_nmd_drvr_excl_ind
+            description: New Jersey named driver exclusion indicator.
+          - name: exps_val_rolled
+            description: Expense value rolled.
+          - name: cvg_cnt_ind
+            description: Coverage count indicator.
+          - name: cvg_cnt
+            description: Coverage count.
+          - name: cvg_cd_sk
+            description: Coverage code surrogate key.
+          - name: cvg_attr_sk
+            description: Coverage attribute surrogate key.
+          - name: rec_drop_ind
+            description: Record drop indicator.
+          - name: rec_drop_rsn_desc
+            description: Record drop reason description.
+          - name: rec_excpn_ind
+            description: Record exception indicator.
+          - name: rec_excpn_rsn_desc
+            description: Record exception reason description.
+          - name: cvg_attr_chcksum
+            description: Coverage attribute checksum.
+          - name: comp_ded
+            description: Comprehensive deductible.
+          - name: coll_ded
+            description: Collision deductible.
+          - name: plcy_cntrct_num
+            description: Policy contract number.
+          - name: unit_num
+            description: Unit number.
+          - name: eff_dt
+            description: Effective date.
+          - name: num_of_cars_in_hh
+            description: Number of cars in household.
+          - name: rdrvr_dt_of_brth
+            description: Rated driver date of birth.
+          - name: term_strt_dt
+            description: Term start date.
+          - name: src_sys_cd
+            description: Source system code.
+          - name: derived_rdrvr_age
+            description: Derived rated driver age.
+          - name: final_rdrvr_age
+            description: Final rated driver age.
+          - name: pni_age
+            description: Policyholder age.
+          - name: lob
+            description: Line of business.
+          - name: principal_oprt
+            description: Principal operator.
+          - name: source_ind_derived
+            description: Source indicator derived.
+
+      - name: wrk_birp_niss_aprm_final
+        description: Table containing final Nissan APRM data.
+        identifier: WRK_BIRP_NISS_APRM_FINAL
+        columns:
+          - name: niss_aprm_final_sk
+            description: Surrogate key for Nissan APRM final.
+            tests:
+              - not_null
+              - unique
+          - name: clndr_yr
+            description: Calendar year.
+          - name: call_yr
+            description: Call year.
+          - name: niss_cmpny_cd
+            description: Nissan company code.
+          - name: st_nm
+            description: State name.
+          - name: st_cd
+            description: State code.
+          - name: st_abbr
+            description: State abbreviation.
+          - name: niss_st_cd
+            description: Nissan state code.
+
+      - name: fdr_lib_wrk_birp_niss_aprm_sumry
+        description: Table containing summary Nissan APRM data.
+        identifier: FDR_LIB_WRK_BIRP_NISS_APRM_SUMRY
+        columns:
+          - name: niss_aprm_sumry_sk
+            description: Surrogate key for Nissan APRM summary.
+            tests:
+              - not_null
+              - unique
+          - name: clndr_yr
+            description: Calendar year.
+          - name: call_yr
+            description: Call year.
+          - name: niss_cmpny_cd
+            description: Nissan company code.
+          - name: st_nm
+            description: State name.
+          - name: st_cd
+            description: State code.
+          - name: st_abbr
+            description: State abbreviation.
+          - name: niss_st_cd
+            description: Nissan state code.

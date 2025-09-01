@@ -1,0 +1,85 @@
+### Generated `schema.yml` for `fct_ABC_MAPPING_AUDIT.sql`
+
+```yaml
+version: 2
+
+models:
+  - name: fct_ABC_MAPPING_AUDIT  # Required
+    description: This model represents audit information for mappings, including details about workflows, folder names, and timestamps for creation and updates.
+    meta:
+      owner: data_engineering_team
+      domain: audit
+    config:
+      materialized: table
+    tags: [audit, mappings]
+    columns:
+      - name: MAPPING_NAME
+        description: The name of the mapping being audited.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: FOLDER_NAME
+        description: The name of the folder associated with the mapping.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: WORKFLOW_NAME
+        description: The name of the workflow associated with the mapping.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: CR_BY_MAPNG_ID
+        description: The ID of the user or process that created the mapping.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000
+      - name: DW_CR_TMSP
+        description: The timestamp when the mapping was created in the data warehouse.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: UPD_BY_MAPNG_ID
+        description: The ID of the user or process that last updated the mapping.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000
+      - name: DW_UPD_TMSP
+        description: The timestamp when the mapping was last updated in the data warehouse.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+      - name: WRK_FLOW_RUN_ID
+        description: The ID of the workflow run associated with the mapping audit.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000
+```
+
+### Explanation:
+1. **Model Name**: Derived from the file name `fct_ABC_MAPPING_AUDIT.sql`.
+2. **Description**: Summarized based on the column names and their apparent purpose.
+3. **Materialization**: Set to `table` as per the SQL configuration.
+4. **Columns**: Extracted directly from the `SELECT` statement in the SQL file.
+5. **Tests**: Applied based on column roles and inferred data types:
+   - `not_null` for essential fields.
+   - `unique` for IDs where uniqueness is expected.
+   - `dbt_expectations` tests for length, range, and date parsing where applicable.
+
+---
+
+### Note on `fct_m_FDR_FIRE_PLCY_TRANS_RSLT_PL.sql`:
+This model references `int_m_FDR_FIRE_PLCY_TRANS_RSLT_PL` and uses `SELECT *`. Since no specific columns are defined in the SQL file, no `schema.yml` can be generated for this model without additional context or column definitions.

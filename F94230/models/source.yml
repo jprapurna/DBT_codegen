@@ -1,0 +1,44 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source data from GENAI_POWER_BI schema in Snowflake.
+    database: Snowflake
+    schema: None
+
+    tables:
+      - name: ABC_BAL_ROW_COUNTS
+        description: Table containing balance row counts.
+        identifier: ABC_BAL_ROW_COUNTS
+
+        columns: []
+
+      - name: STG_TFPLCY_TRAN_RESULT
+        description: Staging table for policy transaction results.
+        identifier: STG_TFPLCY_TRAN_RESULT
+
+        columns: []
+
+      - name: PRE_FDR_FIRE_PLCY_TRANS_RSLT
+        description: Pre-FDR table for fire policy transaction results.
+        identifier: PRE_FDR_FIRE_PLCY_TRANS_RSLT
+
+        columns: []
+
+      - name: FDR_LIB_ABC_BAL_ROW_COUNTS_TARGET_INSERT
+        description: FDR library table for inserting balance row counts.
+        identifier: FDR_LIB_ABC_BAL_ROW_COUNTS_TARGET_INSERT
+
+        columns: []
+
+      - name: FDR_LIB_PRE_FDR_FIRE_PLCY_TRANS_RSLT_INS_UPD
+        description: FDR library table for inserting/updating fire policy transaction results.
+        identifier: FDR_LIB_PRE_FDR_FIRE_PLCY_TRANS_RSLT_INS_UPD
+
+        columns: []
+
+      - name: FDR_LIB_ABC_BAL_DETAIL_AMTS_SOURCE_UPDATE
+        description: FDR library table for updating balance detail amounts.
+        identifier: FDR_LIB_ABC_BAL_DETAIL_AMTS_SOURCE_UPDATE
+
+        columns: []

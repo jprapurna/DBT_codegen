@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fct_cdm_claim_bur  # Required
+    description: This model represents the claims data for CDM (Claim Data Management) after insert and update operations. It is sourced from the intermediate model `int_cdm_insert_update`.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims_management
+    config:
+      materialized: table
+    tags: [claims, cdm]
+    columns: []
+``` 
+
+### Explanation:
+- Since the SQL uses `SELECT *`, no explicit columns are defined in the final SELECT clause, so no column-specific metadata or tests can be added.
+- The model name is inferred from the file name `fct_cdm_claim_bur.sql`.
+- The description is based on the context provided in the SQL file and the naming conventions.
+- No tests are applied because no columns are explicitly defined in the SQL.

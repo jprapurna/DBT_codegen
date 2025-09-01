@@ -1,0 +1,92 @@
+version: 2
+
+sources:
+  - name: GENAI_POWER_BI_CDM
+    description: Source tables from GENAI_POWER_BI database in the CDM schema.
+    database: GENAI_POWER_BI
+    schema: CDM
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Table containing policy state, BUR, and source name information.
+        identifier: SQ_CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy.
+            tests:
+              - not_null
+          - name: BUR
+            description: BUR information.
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Name of the source.
+            tests:
+              - not_null
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim BUR information.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: LKP_ROW_WID
+            description: Row identifier for the lookup table.
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Integration ID for the lookup table.
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: New BUR information.
+            tests:
+              - not_null
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row identifiers.
+        identifier: LKP_MAX_ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Row identifier.
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table.
+            tests:
+              - not_null
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup table for batch control IDs.
+        identifier: LKP_CDM_BATCH_CTRLID
+
+        columns:
+          - name: SOURCE_NAME
+            description: Name of the source.
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch identifier.
+            tests:
+              - not_null
+          - name: STATUS
+            description: Status of the batch.
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['SUCCESS', 'FAILURE', 'PENDING']
+
+      - name: CDH_GW_BUR
+        description: Table for CDH gateway BUR information. Note: Table does not exist or is not authorized.
+        identifier: CDH_GW_BUR
+
+        columns: []
+
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Table for claim BUR information. Note: Syntax error encountered in metadata.
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+        columns: []

@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: fct_claim_cd  # Required
+    description: This model represents the fact table for claim data, sourced from the intermediate claim model (`int_claim_cd`). It provides detailed claim-level information for analysis and reporting.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: insurance
+    config:
+      materialized: table
+    tags: [insurance, claims]
+    columns: []  # No columns explicitly defined in the SELECT statement

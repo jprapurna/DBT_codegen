@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: fct_cdm__w_claim_cd_bur_scd3  # Required
+    description: This model represents the fact table for claim code burden data, sourced from the intermediate model `int_cdm__w_claim_cd_bur_scd3`. It is materialized as a table for optimized querying and analysis.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, fact_table]
+    columns: []  # No columns explicitly defined in the SELECT clause

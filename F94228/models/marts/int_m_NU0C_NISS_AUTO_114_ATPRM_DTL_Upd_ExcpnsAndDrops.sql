@@ -1,0 +1,170 @@
+{{
+  config(materialized='ephemeral')
+}}
+
+WITH EXP_PassThrough_Src1 AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    'Y' AS REC_DROP_IND,
+    '997' AS REC_DROP_RSN_DESC
+  FROM {{ source('genai_power_bi', 'WRK_BIRP_NISS_APRM_DETL') }}
+),
+
+Upd_RecDrop_Ind AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    REC_DROP_IND,
+    REC_DROP_RSN_DESC
+  FROM EXP_PassThrough_Src1
+  -- Update Strategy: DD_UPDATE
+),
+
+EXP_PassThrough_Src AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    NISS_CMPNY_CD,
+    NISS_ST_CD,
+    NISS_CVG_CD,
+    NISS_TERR_CD,
+    GRGNG_ZIP_5,
+    NISS_CLASS_CD,
+    NISS_EXCPN_CD,
+    NISS_FGVNS_CD,
+    NISS_PASSV_RESTRA_CD,
+    NISS_DEFNS_DRVR_CRD_CD,
+    NISS_ANTI_THFT_DVC_CD,
+    NISS_DAY_TM_RUN_LAMPS_DISC_CD,
+    NISS_PLCY_LMT_CD,
+    NISS_DEDUC_CD,
+    NISS_SSL_LIAB_CD,
+    NISS_SUBLOB_CD,
+    NISS_LIAB_OR_NO_FAULT_CD,
+    REC_EXCPN_IND,
+    REC_EXCPN_RSN_DESC,
+    AGE,
+    ACCNTG_LOB,
+    NUM_OF_CARS_IN_HH
+  FROM {{ source('genai_power_bi', 'WRK_BIRP_NISS_APRM_DETL') }}
+),
+
+EXP_Gen_Exceptions AS (
+  SELECT
+    i_REC_EXCPN_IND,
+    i_REC_EXCPN_RSN_DESC,
+    CASE 
+      WHEN SUBSTRING(TRIM(NISS_CMPNY_CD), 1, 1) = '?' THEN 'NISS_CMPNY_CD;'
+      ELSE ''
+    END AS NISS_CMPNY_CD_RecExcpnRsn,
+    CASE 
+      WHEN SUBSTRING(TRIM(NISS_ST_CD), 1, 1) = '?' THEN 'NISS_ST_CD;'
+      ELSE ''
+    END AS NISS_ST_CD_RecExcpnRsn,
+    CASE 
+      WHEN SUBSTRING(TRIM(NISS_CVG_CD), 1, 1) = '?' THEN 'NISS_CVG_CD;'
+      WHEN i_REC_EXCPN_IND = 'Y' AND SUBSTRING(TRIM(NISS_CVG_CD), 1, 1) = 'E' THEN 'Dflt NISS_CVG_CD;'
+      ELSE ''
+    END AS NISS_CVG_CD_RecExcpnRsn,
+    v_REC_EXCPN_RSN_DESC,
+    CASE 
+      WHEN TRIM(i_REC_EXCPN_IND) = '' AND v_REC_EXCPN_RSN_DESC = '' THEN ''
+      ELSE 'Y'
+    END AS REC_EXCPN_IND
+  FROM EXP_PassThrough_Src
+),
+
+EXP_Gen_RecDrops AS (
+  SELECT
+    NISS_CVG_CD,
+    NISS_ST_CD,
+    NISS_CLASS_CD,
+    CASE 
+      WHEN SUBSTRING(TRIM(NISS_CLASS_CD), 1, 1) = '?' THEN 'INVALID CLASS_CD;'
+      ELSE ''
+    END AS NISS_CLASS_CD_RecDropRsn,
+    CASE 
+      WHEN NISS_CVG_CD IN ('na', 'n/a') OR SUBSTRING(TRIM(NISS_CVG_CD), 1, 1) = '?' THEN '999;'
+      ELSE ''
+    END AS NISS_CVG_CD_RecDropRsn,
+    NISS_PLCY_LMT_CD,
+    CASE 
+      WHEN NISS_PLCY_LMT_CD IN ('na', '??') THEN '998;'
+      ELSE ''
+    END AS NISS_PLCY_LMT_CD_RecDropRsn,
+    NISS_DEDUC_CD,
+    CASE 
+      WHEN NISS_DEDUC_CD = '??' THEN 'INVALID DEDUC CD;'
+      ELSE ''
+    END AS NISS_DEDUC_CD_RecDropRsn,
+    ACCNTG_LOB,
+    CASE 
+      WHEN ACCNTG_LOB = '' OR ACCNTG_LOB IS NULL OR ACCNTG_LOB = ' ' THEN 'Blank ACCNTG_LOB;'
+      ELSE ''
+    END AS ACCNTG_LOB_RecDropRsn,
+    NUM_OF_CARS_IN_HH,
+    CASE 
+      WHEN NISS_ST_CD = '09' AND NUM_OF_CARS_IN_HH IS NULL THEN 'Blank Vehicle Count;'
+      ELSE ''
+    END AS NO_OF_CARS_HH_RecDropRsn,
+    CASE 
+      WHEN NISS_ST_CD = '??' THEN 'INVALID ST_CD;'
+      ELSE ''
+    END AS NISS_ST_CD_RecDropRsn,
+    CONCAT(
+      NISS_CVG_CD_RecDropRsn,
+      NISS_PLCY_LMT_CD_RecDropRsn,
+      NISS_ST_CD_RecDropRsn,
+      NISS_CLASS_CD_RecDropRsn,
+      NISS_DEDUC_CD_RecDropRsn,
+      ACCNTG_LOB_RecDropRsn,
+      NO_OF_CARS_HH_RecDropRsn
+    ) AS v_REC_DROP_RSN_DESC,
+    v_REC_DROP_RSN_DESC AS REC_DROP_RSN_DESC,
+    CASE 
+      WHEN v_REC_DROP_RSN_DESC = '' THEN ''
+      ELSE 'Y'
+    END AS REC_DROP_IND
+  FROM EXP_PassThrough_Src
+),
+
+EXP_Dummy AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    REC_DROP_IND,
+    REC_DROP_RSN_DESC,
+    REC_EXCPN_IND,
+    REC_EXCPN_RSN_DESC
+  FROM EXP_Gen_Exceptions
+  UNION ALL
+  SELECT
+    NISS_APRM_DETL_SK,
+    REC_DROP_IND,
+    REC_DROP_RSN_DESC,
+    REC_EXCPN_IND,
+    REC_EXCPN_RSN_DESC
+  FROM EXP_Gen_RecDrops
+),
+
+FIL_OnlyExceptions_or_Drops AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    REC_DROP_IND,
+    REC_DROP_RSN_DESC,
+    REC_EXCPN_IND,
+    REC_EXCPN_RSN_DESC
+  FROM EXP_Dummy
+  WHERE REC_DROP_IND = 'Y' OR REC_EXCPN_IND = 'Y'
+),
+
+Upd_CVG_CD_SK AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    REC_DROP_IND,
+    REC_DROP_RSN_DESC,
+    REC_EXCPN_IND,
+    REC_EXCPN_RSN_DESC
+  FROM FIL_OnlyExceptions_or_Drops
+  -- Update Strategy: DD_UPDATE
+)
+
+SELECT *
+FROM Upd_CVG_CD_SK;

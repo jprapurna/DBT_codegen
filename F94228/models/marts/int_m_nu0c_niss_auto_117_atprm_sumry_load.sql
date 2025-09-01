@@ -1,0 +1,84 @@
+{{ config(materialized='ephemeral') }}
+
+WITH int_abc_mapping_audit_input AS (
+  SELECT
+    MAPPING_NAME,
+    FOLDER_NAME,
+    WORKFLOW_NAME
+  FROM {{ source('schema', 'table') }}
+),
+
+exp_abc_mapping_audit_id_lookup AS (
+  SELECT
+    MAPPING_NAME,
+    FOLDER_NAME,
+    WORKFLOW_NAME,
+    v_RECORD_NUM,
+    v_MAPNG_ID,
+    v_WRK_FLOW_RUN_ID,
+    CR_BY_MAPNG_ID,
+    DW_CR_TMSP,
+    UPD_BY_MAPNG_ID,
+    DW_UPD_TMSP,
+    WRK_FLOW_RUN_ID
+  FROM {{ mplt_fdr_lib_abc_mapping_audit('MAPPING_NAME', 'FOLDER_NAME', 'WORKFLOW_NAME') }}
+),
+
+exp_passthru AS (
+  SELECT
+    NISS_CMPNY_CD,
+    CLNDR_YR,
+    ST_ABBR,
+    NISS_ST_CD,
+    ACCDNT_YR,
+    NISS_CVG_CD,
+    NISS_CLASS_CD,
+    NISS_SUBLOB_CD,
+    NISS_TYP_LOSS_CD,
+    NISS_ANNL_STMNT_LOB_CD,
+    CVG_EXPS_VAL,
+    TTL_WRITTN_PREM_AMT,
+    NISS_PD_LOSS,
+    NISS_PD_ALLOC_ADJUS_EXPNS,
+    NISS_OUTSTNDG_LOSS,
+    NISS_NO_PD_CLMS,
+    NISS_NO_OUTSTND_CLMS,
+    NISS_TERR_CD,
+    MAPPING_NAME,
+    FOLDER_NAME,
+    WORKFLOW_NAME
+  FROM exp_abc_mapping_audit_id_lookup
+),
+
+exp_pass_tgt AS (
+  SELECT
+    ROW_NUMBER() OVER (PARTITION BY NISS_CMPNY_CD ORDER BY CLNDR_YR) AS v_CNT,
+    CONCAT(NISS_CMPNY_CD, CLNDR_YR, ST_ABBR) AS NISS_APRM_SUMRY_SK,
+    NISS_CMPNY_CD,
+    CLNDR_YR,
+    ST_ABBR,
+    NISS_ST_CD,
+    ACCDNT_YR,
+    NISS_CVG_CD,
+    NISS_CLASS_CD,
+    NISS_SUBLOB_CD,
+    NISS_TYP_LOSS_CD,
+    NISS_ANNL_STMNT_LOB_CD,
+    CVG_EXPS_VAL,
+    TTL_WRITTN_PREM_AMT,
+    NISS_PD_LOSS,
+    NISS_PD_ALLOC_ADJUS_EXPNS,
+    NISS_OUTSTNDG_LOSS,
+    NISS_NO_PD_CLMS,
+    NISS_NO_OUTSTND_CLMS,
+    CR_BY_MAPNG_ID,
+    DW_CR_TMSP,
+    UPD_BY_MAPNG_ID,
+    DW_UPD_TMSP,
+    WRK_FLOW_RUN_ID,
+    NISS_TERR_CD
+  FROM exp_passthru
+)
+
+SELECT *
+FROM exp_pass_tgt

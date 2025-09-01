@@ -1,0 +1,88 @@
+{{
+  config(materialized='ephemeral')
+}}
+
+WITH EXP_Pass_Through AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    ST_NM,
+    ST_ABBR,
+    ACCTNG_LOB,
+    CVG_TYP_CD,
+    CVG_AMT,
+    BI_LMT,
+    GA_ADDED_AT_FAULT_IND,
+    FA2_PLCY_IND,
+    UM_UMI_STACKING,
+    PIP_WVR_WL_IND,
+    PIP_MED_SEC_IND,
+    PIP_LOSS_INCOME_IND,
+    MI_PPO_IND,
+    COMP_DED,
+    RATNG_CMPY_CD,
+    COLL_DED,
+    MIS_LOB,
+    SOURCE_IND_DERIVED
+  FROM {{ source('genai_power_bi', 'WRK_BIRP_NISS_APRM_DETL') }}
+),
+
+EXP_BILimit_Split AS (
+  SELECT
+    *,
+    BI_LMT AS v_BI_LMT,
+    SPLIT_PART(BI_LMT, '/', 1) AS v_Limit_FIELD1,
+    SPLIT_PART(BI_LMT, '/', 2) AS v_Limit_FIELD2,
+    SPLIT_PART(BI_LMT, '/', 3) AS v_Limit_FIELD3,
+    CAST(SPLIT_PART(BI_LMT, '/', 1) AS DECIMAL) AS BI_LMT_1_Decimal,
+    CAST(SPLIT_PART(BI_LMT, '/', 2) AS DECIMAL) AS BI_LMT_2_Decimal,
+    CAST(SPLIT_PART(BI_LMT, '/', 3) AS DECIMAL) AS BI_LMT_3_Decimal,
+    CASE 
+      WHEN POSITION('/' IN BI_LMT) > 0 THEN ARRAY_LENGTH(STRING_TO_ARRAY(BI_LMT, '/'))
+      ELSE 1
+    END AS BI_LMT_NO_OF_PARTS
+  FROM EXP_Pass_Through
+),
+
+EXP_CvgAmount_Split AS (
+  SELECT
+    *,
+    CVG_AMT AS v_CVG_AMT,
+    SPLIT_PART(CVG_AMT, '/', 1) AS v_AMOUNT_FIELD1,
+    SPLIT_PART(CVG_AMT, '/', 2) AS v_AMOUNT_FIELD2,
+    SPLIT_PART(CVG_AMT, '/', 3) AS v_AMOUNT_FIELD3,
+    SPLIT_PART(CVG_AMT, '/', 1) AS CVG_AMT_1_String,
+    SPLIT_PART(CVG_AMT, '/', 2) AS CVG_AMT_2_String,
+    SPLIT_PART(CVG_AMT, '/', 3) AS CVG_AMT_3_String,
+    CAST(SPLIT_PART(CVG_AMT, '/', 1) AS DECIMAL) AS CVG_AMT_1_Decimal,
+    CAST(SPLIT_PART(CVG_AMT, '/', 2) AS DECIMAL) AS CVG_AMT_2_Decimal,
+    CAST(SPLIT_PART(CVG_AMT, '/', 3) AS DECIMAL) AS CVG_AMT_3_Decimal,
+    CASE 
+      WHEN POSITION('/' IN CVG_AMT) > 0 THEN ARRAY_LENGTH(STRING_TO_ARRAY(CVG_AMT, '/'))
+      ELSE 1
+    END AS CVG_AMT_NO_OF_PARTS
+  FROM EXP_BILimit_Split
+),
+
+EXP_Derive_NISS_CVG_CD_And_PassThru AS (
+  SELECT
+    *,
+    CASE
+      WHEN ST_ABBR = 'NJ' AND ACCTNG_LOB = 'AUTO' AND CVG_TYP_CD = 'PIP' THEN 'NJ_PIP'
+      WHEN ST_ABBR = 'NY' AND ACCTNG_LOB = 'AUTO' AND CVG_TYP_CD = 'GLASS' THEN 'NY_GLASS'
+      ELSE 'DEFAULT_CVG_CD'
+    END AS o_NISS_CVG_CD
+  FROM EXP_CvgAmount_Split
+),
+
+UPD_NISS_CVG_CD AS (
+  SELECT
+    *,
+    CASE
+      WHEN o_NISS_CVG_CD IS NOT NULL THEN 'DD_UPDATE'
+      ELSE 'DD_REJECT'
+    END AS update_strategy
+  FROM EXP_Derive_NISS_CVG_CD_And_PassThru
+)
+
+SELECT *
+FROM UPD_NISS_CVG_CD;

@@ -1,0 +1,65 @@
+{{
+  config(materialized='ephemeral')
+}}
+
+WITH EXP_PassThru AS (
+  -- Node: EXP_PassThru
+  SELECT
+    NISS_APRM_DETL_SK,
+    ST_ABBR,
+    ACCTNG_LOB,
+    CVG_TYP_CD,
+    CVG_AMT,
+    NISS_ST_CD,
+    NISS_ST_CD1
+  FROM {{ source('genai_power_bi', 'WRK_BIRP_NISS_APRM_DETL') }}
+),
+
+EXP_CvgAmount_Split AS (
+  -- Node: EXP_CvgAmount_Split
+  SELECT
+    CVG_AMT,
+    CVG_AMT AS v_CVG_AMT,
+    SPLIT_PART(CVG_AMT, '/', 1) AS v_AMOUNT_FIELD1,
+    SPLIT_PART(CVG_AMT, '/', 2) AS v_AMOUNT_FIELD2,
+    SPLIT_PART(CVG_AMT, '/', 3) AS v_AMOUNT_FIELD3,
+    POSITION('/' IN CVG_AMT) AS v_CVG_AMT_Part1_Pos,
+    POSITION('/' IN REVERSE(CVG_AMT)) AS v_CVG_AMT_Part2_Pos,
+    CASE WHEN POSITION('/' IN CVG_AMT) > 0 THEN 3 ELSE 1 END AS CVG_AMT_NO_OF_PARTS,
+    CAST(SPLIT_PART(CVG_AMT, '/', 1) AS DECIMAL) AS CVG_AMT_1_Decimal,
+    CAST(SPLIT_PART(CVG_AMT, '/', 2) AS DECIMAL) AS CVG_AMT_2_Decimal,
+    CAST(SPLIT_PART(CVG_AMT, '/', 3) AS DECIMAL) AS CVG_AMT_3_Decimal,
+    SPLIT_PART(CVG_AMT, '/', 1) AS CVG_AMT_1_String,
+    SPLIT_PART(CVG_AMT, '/', 2) AS CVG_AMT_2_String,
+    SPLIT_PART(CVG_AMT, '/', 3) AS CVG_AMT_3_String,
+    CVG_AMT AS SRC_CVG_AMT
+  FROM EXP_PassThru
+),
+
+EXP_Derive_NISS_PLCY_LMT_CD_And_PassThru AS (
+  -- Node: EXP_Derive_NISS_PLCY_LMT_CD_And_PassThru
+  SELECT
+    NISS_APRM_DETL_SK,
+    ST_ABBR,
+    ACCTNG_LOB,
+    CVG_TYP_CD,
+    CVG_AMT,
+    CASE
+      WHEN ST_ABBR = 'VA' AND ACCTNG_LOB = 'AUTO' AND CVG_TYP_CD = 'BI' THEN 'VA_BI_LIMIT'
+      WHEN ST_ABBR = 'VA' AND ACCTNG_LOB = 'AUTO' AND CVG_TYP_CD = 'PD' THEN 'VA_PD_LIMIT'
+      WHEN ST_ABBR = 'VA' AND ACCTNG_LOB = 'AUTO' AND CVG_TYP_CD = 'UM' THEN 'VA_UM_LIMIT'
+      ELSE 'UNKNOWN_LIMIT'
+    END AS v_NISS_PLCY_LMT_CD
+  FROM EXP_CvgAmount_Split
+),
+
+UPDTRANS AS (
+  -- Node: UPDTRANS
+  SELECT
+    NISS_APRM_DETL_SK,
+    v_NISS_PLCY_LMT_CD AS o_NISS_PLCY_LIMIT_CD_VA
+  FROM EXP_Derive_NISS_PLCY_LMT_CD_And_PassThru
+)
+
+SELECT *
+FROM UPDTRANS;

@@ -1,0 +1,56 @@
+{{
+  config(materialized='ephemeral')
+}}
+
+WITH EXP_Gen_CvgAttrCheckSum AS (
+  -- Node: EXP_Gen_CvgAttrCheckSum
+  SELECT
+    NISS_APRM_DETL_SK,
+    MD5(CVG_ATTR) AS CVG_ATTR_CHCKSUM
+  FROM {{ source('genai_power_bi', 'WRK_BIRP_NISS_APRM_DETL') }}
+),
+
+SRT_OrderByChkSum AS (
+  -- Node: SRT_OrderByChkSum
+  SELECT
+    NISS_APRM_DETL_SK,
+    CVG_ATTR_CHCKSUM
+  FROM EXP_Gen_CvgAttrCheckSum
+  ORDER BY CVG_ATTR_CHCKSUM ASC, NISS_APRM_DETL_SK ASC
+),
+
+EXP_Gen_CvgAttrSK AS (
+  -- Node: EXP_Gen_CvgAttrSK
+  SELECT
+    NISS_APRM_DETL_SK,
+    CVG_ATTR_CHCKSUM,
+    CASE 
+      WHEN v_CVG_ATTR_CHCKSUM_NewValInd = 'Y' THEN v_CVG_ATTR_SK + 1
+      ELSE v_CVG_ATTR_SK
+    END AS CVG_ATTR_SK
+  FROM (
+    SELECT
+      NISS_APRM_DETL_SK,
+      CVG_ATTR_CHCKSUM,
+      CVG_ATTR_CHCKSUM AS v_CVG_ATTR_CHCKSUM_Curr,
+      LAG(CVG_ATTR_CHCKSUM) OVER (ORDER BY CVG_ATTR_CHCKSUM ASC) AS v_CVG_ATTR_CHCKSUM_Prev,
+      CASE 
+        WHEN LAG(CVG_ATTR_CHCKSUM) OVER (ORDER BY CVG_ATTR_CHCKSUM ASC) = CVG_ATTR_CHCKSUM THEN 'N'
+        ELSE 'Y'
+      END AS v_CVG_ATTR_CHCKSUM_NewValInd,
+      ROW_NUMBER() OVER (ORDER BY CVG_ATTR_CHCKSUM ASC) AS v_CVG_ATTR_SK
+    FROM SRT_OrderByChkSum
+  ) subquery
+),
+
+Upd_CVG_ATTR_SK AS (
+  -- Node: Upd_CVG_ATTR_SK
+  SELECT
+    NISS_APRM_DETL_SK,
+    CVG_ATTR_SK,
+    CVG_ATTR_CHCKSUM
+  FROM EXP_Gen_CvgAttrSK
+)
+
+SELECT *
+FROM Upd_CVG_ATTR_SK;

@@ -1,0 +1,166 @@
+version: 2
+
+models:
+  - name: fct_m_nu0c_niss_auto_100_atprm_lnd_load
+    description: "Fact table for NISS auto 100 ATPRM land load, containing territorial and state-level data."
+    config:
+      materialized: table
+    tags: ['auto', 'territory', 'state']
+    columns:
+      - name: niss_atprm_lnd_sk
+        description: "Primary key for the NISS ATPRM land data."
+        tests:
+          - unique
+          - not_null
+      - name: reg_per_yr
+        description: "Registration period year."
+        tests:
+          - not_null
+      - name: fisc_per_yr
+        description: "Fiscal period year."
+        tests:
+          - not_null
+      - name: niss_terr_cd
+        description: "NISS territory code."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['A', 'B', 'C', 'D']  # Example values
+      - name: state_abbr
+        description: "State abbreviation."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z]{2}$"
+      - name: ga_umbi_pd_added_ind
+        description: "Indicator for GA UMBI PD added."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: [0, 1]
+      - name: o_niss_cmpny_cd
+        description: "NISS company code."
+        tests:
+          - not_null
+
+  - name: fct_m_nu0c_ta_niss_auto_atprm_dtl_upd_classcd
+    description: "Fact table for NISS auto ATPRM detail update class codes."
+    config:
+      materialized: table
+    tags: ['auto', 'class_code', 'update']
+    columns:
+      - name: NISS_APRM_DETL_SK
+        description: "Primary key for the NISS ATPRM detail data."
+        tests:
+          - unique
+          - not_null
+      - name: NISS_CLASS_CD
+        description: "NISS class code."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z0-9]{3,5}$"
+      - name: REC_EXCPN_IND
+        description: "Indicator for record exception."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: [0, 1]
+      - name: REC_EXCP_DESC
+        description: "Description of the record exception."
+        tests:
+          - not_null
+
+  - name: fct_m_NU0C_NISS_AUTO_114_ATPRM_DTL_Upd_ExcpnsAndDrops
+    description: "Fact table for NISS auto ATPRM detail updates, including exceptions and drops."
+    config:
+      materialized: table
+    tags: ['auto', 'exceptions', 'drops']
+    columns:
+      - name: NISS_APRM_DETL_SK
+        description: "Primary key for the NISS ATPRM detail data."
+        tests:
+          - unique
+          - not_null
+      - name: NISS_CMPNY_CD
+        description: "NISS company code."
+        tests:
+          - not_null
+      - name: NISS_ST_CD
+        description: "NISS state code."
+        tests:
+          - not_null
+      - name: NISS_CVG_CD
+        description: "NISS coverage code."
+        tests:
+          - not_null
+      - name: NISS_TERR_CD
+        description: "NISS territory code."
+        tests:
+          - not_null
+      - name: GRGNG_ZIP_5
+        description: "Garage ZIP code (5 digits)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[0-9]{5}$"
+      - name: AGE
+        description: "Age of the entity."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 120
+      - name: NUM_OF_CARS_IN_HH
+        description: "Number of cars in the household."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10
+
+  - name: fct_m_NU0C_NISS_AUTO_121_ATPRM_BalanceReports
+    description: "Fact table for NISS auto ATPRM balance reports, including premium amounts and balance indicators."
+    config:
+      materialized: table
+    tags: ['auto', 'balance', 'reports']
+    columns:
+      - name: CLNDR_YR
+        description: "Calendar year."
+        tests:
+          - not_null
+      - name: NISS_CMPNY_CD
+        description: "NISS company code."
+        tests:
+          - not_null
+      - name: DET_PREM_AMT
+        description: "Detailed premium amount."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: DROP_PREM_AMT
+        description: "Dropped premium amount."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: FNL_PREM_AMT
+        description: "Final premium amount."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: BAL_DIFF
+        description: "Balance difference."
+        tests:
+          - not_null
+      - name: BAL_IND
+        description: "Balance indicator."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: [0, 1]

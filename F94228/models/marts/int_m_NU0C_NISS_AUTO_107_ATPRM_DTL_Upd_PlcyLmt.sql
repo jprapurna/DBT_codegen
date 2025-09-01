@@ -1,0 +1,96 @@
+{{
+  config(
+    materialized='ephemeral'
+  )
+}}
+
+WITH EXP_PassThru AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    ST_ABBR,
+    ACCTNG_LOB,
+    CVG_TYP_CD,
+    CVG_AMT
+  FROM {{ source('genai_power_bi', 'WRK_BIRP_NISS_APRM_DETL') }}
+),
+
+EXP_CvgAmount_Split AS (
+  SELECT
+    *,
+    REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') AS v_CVG_AMT,
+    LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 AS v_CVG_AMT_Parts,
+    POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) AS v_CVG_AMT_Part1_Pos,
+    POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) + 1) AS v_CVG_AMT_Part2_Pos,
+    CASE 
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 1 THEN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 2 THEN SUBSTRING(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM 1 FOR POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') - 1))
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 3 THEN SUBSTRING(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM 1 FOR POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') - 1))
+      ELSE '0'
+    END AS v_AMOUNT_FIELD1,
+    CASE 
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 1 THEN '0'
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 2 THEN SUBSTRING(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') + 1))
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 3 THEN SUBSTRING(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') + 1) FOR POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') + 1) - POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') - 1)))
+      ELSE '0'
+    END AS v_AMOUNT_FIELD2,
+    CASE 
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 1 THEN '0'
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 2 THEN '0'
+      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 3 THEN SUBSTRING(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') + 1) + 1))
+      ELSE '0'
+    END AS v_AMOUNT_FIELD3,
+    CAST(v_AMOUNT_FIELD1 AS DECIMAL) AS CVG_AMT_1_Decimal,
+    CAST(v_AMOUNT_FIELD2 AS DECIMAL) AS CVG_AMT_2_Decimal,
+    CAST(v_AMOUNT_FIELD3 AS DECIMAL) AS CVG_AMT_3_Decimal,
+    LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 AS CVG_AMT_NO_OF_PARTS,
+    REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') AS SRC_CVG_AMT
+  FROM EXP_PassThru
+),
+
+EXP_Derive_NISS_PLCY_LMT_CD_And_PassThru AS (
+  SELECT
+    *,
+    CASE 
+      WHEN ST_ABBR = 'CT' THEN 
+        CASE 
+          WHEN ACCTNG_LOB = '192MD' THEN 
+            CASE 
+              WHEN CVG_AMT = '500' THEN '01'
+              WHEN CVG_AMT = '750' THEN '02'
+              WHEN CVG_AMT = '1,000' THEN '03'
+              WHEN CVG_AMT = '2,000' THEN '04'
+              WHEN CVG_AMT = '3,000' THEN '05'
+              WHEN CVG_AMT = '5,000' THEN '06'
+              WHEN CVG_AMT = '7,500' THEN '07'
+              WHEN CVG_AMT_1_Decimal > 7500 THEN '08'
+              ELSE '09'
+            END
+          WHEN ACCTNG_LOB = '192BI' THEN 
+            CASE 
+              WHEN CVG_TYP_CD IN ('13003','13023','40015','13029','40021','13046', '13048') THEN 
+                CASE 
+                  WHEN CVG_AMT = '20,000/40,000' THEN '04'
+                  WHEN CVG_AMT = '25,000/50,000' THEN '05'
+                  WHEN CVG_AMT = '50,000/100,000' THEN '06'
+                  WHEN CVG_AMT = '100,000/200,000' THEN '07'
+                  WHEN CVG_AMT = '100,000/300,000' THEN '08'
+                  WHEN CVG_AMT_1_Decimal > 100000 AND CVG_AMT_2_Decimal > 300000 THEN '09'
+                  ELSE '01'
+                END
+              ELSE '90'
+            END
+          ELSE '??'
+        END
+      ELSE ''
+    END AS v_NISS_PLCY_LMT_CD
+  FROM EXP_CvgAmount_Split
+),
+
+UPD_NISS_PLCY_LMT_CD AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    v_NISS_PLCY_LMT_CD AS NISS_PLCY_LMT_CD
+  FROM EXP_Derive_NISS_PLCY_LMT_CD_And_PassThru
+)
+
+SELECT * FROM UPD_NISS_PLCY_LMT_CD;

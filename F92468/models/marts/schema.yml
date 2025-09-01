@@ -1,114 +1,46 @@
 version: 2
 
 models:
-  - name: fct_financial_kpis
-    description: "This model calculates financial KPIs including Revenue, Profit, and Return on Investment (ROI)."
+  - name: fct_claims__processed  # Required
+    description: This model represents processed claims data, including metadata and flags for tracking updates and inserts.
     meta:
-      owner: finance_team
-      domain: financial_metrics
-    config:
-      materialized: table
-    tags: [finance, kpis]
-    columns:
-      - name: Revenue
-        description: "Total revenue generated."
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000000
-      - name: Profit
-        description: "Total profit calculated as revenue minus costs."
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000000
-      - name: ROI
-        description: "Return on Investment calculated as (Profit / Revenue) * 100."
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 100
-
-  - name: fct_operational_metrics
-    description: "This model calculates operational metrics including Efficiency, Volume, and Quality."
-    meta:
-      owner: operations_team
-      domain: operational_metrics
-    config:
-      materialized: table
-    tags: [operations, metrics]
-    columns:
-      - name: Efficiency
-        description: "Operational efficiency metric."
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 100
-      - name: Volume
-        description: "Total volume processed."
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 1000000
-      - name: Quality
-        description: "Quality metric for operational processes."
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-              max_value: 100
-
-  - name: fct_complex_business_rules
-    description: "This model implements complex business rules using advanced formulas."
-    meta:
-      owner: business_rules_team
-      domain: business_logic
-    config:
-      materialized: table
-    tags: [business_rules, advanced_logic]
-    columns:
-      - name: Advanced_Formula_1
-        description: "Result of advanced formula 1."
-        tests:
-          - not_null
-      - name: Advanced_Formula_2
-        description: "Result of advanced formula 2."
-        tests:
-          - not_null
-
-  - name: fct_w_claim_cd_bur_scd3_insert
-    description: "This model handles insert operations for W_CLAIM_CD_BUR_SCD3 based on route action."
-    meta:
-      owner: claims_team
+      owner: data_team  # Optional metadata
       domain: claims_processing
     config:
       materialized: table
-    tags: [claims, insert_operations]
+    tags: [claims, processed_data]
     columns:
-      - name: route_action
-        description: "Action type for routing, filtered to 'INSERT'."
+      - name: ROW_WID
+        description: Unique identifier for each row in the claims data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: o_Flag
+        description: Operational flag indicating the status or type of the claim.
         tests:
           - not_null
-          - accepted_values:
-              values: ['INSERT']
-
-  - name: fct_w_claim_cd_bur_scd3_update
-    description: "This model handles update operations for W_CLAIM_CD_BUR_SCD3 based on route action."
-    meta:
-      owner: claims_team
-      domain: claims_processing
-    config:
-      materialized: table
-    tags: [claims, update_operations]
-    columns:
-      - name: route_action
-        description: "Action type for routing, filtered to 'UPDATE'."
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive', 'pending']  # Example values inferred from flag usage
+      - name: CDM_INSERT_DT
+        description: Timestamp indicating when the claim record was inserted.
         tests:
           - not_null
-          - accepted_values:
-              values: ['UPDATE']
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-01-01'
+      - name: CDM_UPDATE_DT
+        description: Timestamp indicating when the claim record was last updated.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-01-01'
+      - name: TGT_TABLE_NAME
+        description: Name of the target table where the claim data is stored.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50

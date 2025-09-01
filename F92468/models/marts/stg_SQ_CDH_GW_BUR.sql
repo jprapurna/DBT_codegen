@@ -3,9 +3,9 @@
 WITH sq_cdh_gw_bur AS (
     SELECT
         "POLICY_STATE" AS policy_state, -- State of the policy
-        "BUR" AS bur,                  -- BUR identifier
-        "SOURCE_NAME" AS source_name   -- Source name for the data
-    FROM {{ source('cdh_gw_bur', 'sq_cdh_gw_bur') }}
+        "BUR" AS bur,                  -- BUR information
+        "SOURCE_NAME" AS source_name   -- Name of the source
+    FROM {{ source('GENAI_POWER_BI_CDM', 'SQ_CDH_GW_BUR') }}
 )
 SELECT
     policy_state,

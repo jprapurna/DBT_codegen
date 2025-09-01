@@ -1,63 +1,56 @@
 version: 2
 
 sources:
-  - name: cdh_gw_bur
-    description: Source table for CDH Gateway BUR data
-    database: CDH_GWODS
-    schema: CDH_GWODS
+  - name: GENAI_POWER_BI_CDM
+    description: Source tables from GENAI_POWER_BI database in CDM schema
+    database: GENAI_POWER_BI
+    schema: CDM
+
     tables:
-      - name: sq_cdh_gw_bur
-        description: Staging table for CDH Gateway BUR data
-        identifier: CDH_GW_BUR
+      - name: SQ_CDH_GW_BUR
+        description: Table containing policy state, BUR, and source name information
+        identifier: SQ_CDH_GW_BUR
+
         columns:
           - name: POLICY_STATE
             description: State of the policy
             tests:
               - not_null
-              - unique
           - name: BUR
-            description: BUR identifier
+            description: BUR information
             tests:
               - not_null
           - name: SOURCE_NAME
-            description: Source name for the data
+            description: Name of the source
             tests:
               - not_null
 
-  - name: claim_cd_bur_scd3
-    description: Lookup table for claim CD BUR SCD3 data
-    database: CDM
-    schema: CDM
-    tables:
-      - name: lkp_w_claim_cd_bur_scd3
-        description: Lookup table for claim CD BUR SCD3
-        identifier: W_CLAIM_CD_BUR_SCD3
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim codes and BUR information
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
         columns:
           - name: LKP_ROW_WID
-            description: Lookup row identifier
+            description: Row identifier for lookup
             tests:
               - not_null
               - unique
           - name: LKP_INTEGRATION_ID
-            description: Lookup integration ID
+            description: Integration ID for lookup
             tests:
               - not_null
           - name: LKP_NEW_BUR
-            description: Lookup new BUR value
+            description: New BUR value for lookup
             tests:
               - not_null
 
-  - name: max_row_wid
-    description: Lookup table for maximum row WID
-    database: CDM
-    schema: CDM
-    tables:
-      - name: lkp_max_row_wid
-        description: Lookup table for maximum row WID
-        identifier: MAX_ROW_WID
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row identifiers
+        identifier: LKP_MAX_ROW_WID
+
         columns:
           - name: ROW_WID
-            description: Maximum row identifier
+            description: Row identifier
             tests:
               - not_null
               - unique
@@ -66,17 +59,13 @@ sources:
             tests:
               - not_null
 
-  - name: cdm_batch_ctrlid
-    description: Lookup table for CDM batch control ID
-    database: CDM
-    schema: CDM
-    tables:
-      - name: lkp_cdm_batch_ctrlid
-        description: Lookup table for CDM batch control ID
-        identifier: CDM_BATCH_CTRLID
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup table for batch control IDs
+        identifier: LKP_CDM_BATCH_CTRLID
+
         columns:
           - name: SOURCE_NAME
-            description: Source name for the batch
+            description: Name of the source
             tests:
               - not_null
           - name: BATCH_ID
@@ -89,4 +78,4 @@ sources:
             tests:
               - not_null
               - accepted_values:
-                  values: ['RUNNING', 'COMPLETED', 'FAILED']
+                  values: ['SUCCESS', 'FAILURE', 'PENDING']

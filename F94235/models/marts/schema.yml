@@ -1,12 +1,3 @@
-version: 2
+Based on the provided SQL files, the models are intermediate or staging models (`int_claim_cd__upd_bur` and `int_claim_cd__rtr_clm_insert_upd`) and do not qualify as marts. Therefore, no `schema.yml` file will be generated for these models. 
 
-models:
-  - name: fct_claim_cd  # Required
-    description: This model represents the fact table for claim data, sourced from the intermediate claim model (`int_claim_cd`). It provides detailed claim-level information for analysis and reporting.
-    meta:
-      owner: data_team  # Optional metadata
-      domain: insurance
-    config:
-      materialized: table
-    tags: [insurance, claims]
-    columns: []  # No columns explicitly defined in the SELECT statement
+If you have any mart-level SQL files, please provide them for schema generation.

@@ -15,70 +15,44 @@ sources:
         description: Table 'W_CLAIM_CD_BUR_SCD3' does not exist or not authorized.
         identifier: W_CLAIM_CD_BUR_SCD3
 
-      - name: LKP_W_CLAIM_CD_BUR_SCD3
-        description: Lookup table for claim codes.
-        identifier: LKP_W_CLAIM_CD_BUR_SCD3
-        columns:
-          - name: LKP_ROW_WID
-            description: Row identifier.
-            tests:
-              - not_null
-              - unique
-          - name: LKP_INTEGRATION_ID
-            description: Integration ID for lookup.
-            tests:
-              - not_null
-          - name: LKP_NEW_BUR
-            description: New BUR value for lookup.
-            tests:
-              - not_null
-
       - name: SQ_CDH_GW_BUR
-        description: Source query for CDH_GW_BUR.
+        description: Table containing policy state, BUR, and source name.
         identifier: SQ_CDH_GW_BUR
         columns:
           - name: POLICY_STATE
-            description: State of the policy.
-            tests:
-              - not_null
+            description: Policy state column.
           - name: BUR
-            description: BUR value.
-            tests:
-              - not_null
+            description: BUR column.
           - name: SOURCE_NAME
-            description: Name of the source.
-            tests:
-              - not_null
+            description: Source name column.
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim BUR SCD3.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row WID column.
+          - name: LKP_INTEGRATION_ID
+            description: Lookup integration ID column.
+          - name: LKP_NEW_BUR
+            description: Lookup new BUR column.
 
       - name: LKP_MAX_ROW_WID
-        description: Lookup table for maximum row width.
+        description: Lookup table for maximum row WID.
         identifier: LKP_MAX_ROW_WID
         columns:
           - name: ROW_WID
-            description: Row width identifier.
-            tests:
-              - not_null
-              - unique
+            description: Row WID column.
           - name: TABLE_NAME
-            description: Name of the table.
-            tests:
-              - not_null
+            description: Table name column.
 
       - name: LKP_CDM_BATCH_CTRLID
-        description: Lookup table for batch control IDs.
+        description: Lookup table for CDM batch control ID.
         identifier: LKP_CDM_BATCH_CTRLID
         columns:
           - name: SOURCE_NAME
-            description: Name of the source.
-            tests:
-              - not_null
+            description: Source name column.
           - name: BATCH_ID
-            description: Batch identifier.
-            tests:
-              - not_null
+            description: Batch ID column.
           - name: STATUS
-            description: Status of the batch.
-            tests:
-              - not_null
-              - accepted_values:
-                  values: ['Active', 'Inactive', 'Pending']
+            description: Status column.

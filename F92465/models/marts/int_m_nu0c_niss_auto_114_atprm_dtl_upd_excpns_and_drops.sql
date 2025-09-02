@@ -1,0 +1,120 @@
+
+WITH source_fdr_lib_wrk_birp_niss_aprm_detl2 AS (
+  SELECT 
+    DET.NISS_APRM_DETL_SK
+  FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_NISS_APRM_DETL') }} DET
+  WHERE DET.CVG_ATTR_SK IN (
+    SELECT DETL.CVG_ATTR_SK
+    FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_NISS_APRM_DETL') }} DETL
+    GROUP BY DETL.CVG_ATTR_SK
+    HAVING SUM(DETL.TTL_WRITTN_PREM_AMT) = 0 AND SUM(DETL.EXPS_VAL_ROLLED) = 0
+  )
+),
+
+source_shortcut_to_wrk_birp_niss_aprm_detl_2 AS (
+  SELECT 
+    DETL.NISS_APRM_DETL_SK,
+    DETL.NISS_CMPNY_CD,
+    DETL.NISS_ST_CD,
+    DETL.NISS_CVG_CD,
+    DETL.NISS_TERR_CD,
+    DETL.GRGNG_ZIP_5,
+    DETL.NISS_CLASS_CD,
+    DETL.NISS_EXCPN_CD,
+    DETL.NISS_FGVNS_CD,
+    DETL.NISS_PASSV_RESTRA_CD,
+    DETL.NISS_DEFNS_DRVR_CRD_CD,
+    DETL.NISS_ANTI_THFT_DVC_CD,
+    DETL.NISS_DAY_TM_RUN_LAMPS_DISC_CD,
+    DETL.NISS_PLCY_LMT_CD,
+    DETL.NISS_DEDUC_CD,
+    DETL.NISS_SSL_LIAB_CD,
+    DETL.NISS_SUBLOB_CD,
+    DETL.NISS_LIAB_OR_NO_FAULT_CD,
+    DETL.AGE,
+    DETL.ACCTNG_LOB,
+    DETL.NUM_OF_CARS_IN_HH
+  FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_NISS_APRM_DETL2') }} DETL
+),
+
+exp_passthrough_src1 AS (
+  SELECT
+    NISS_CVG_CD,
+    NISS_ST_CD,
+    NISS_CLASS_CD,
+    NISS_PLCY_LMT_CD,
+    NISS_DEDUC_CD,
+    ACCTNG_LOB,
+    NUM_OF_CARS_IN_HH,
+    NISS_APRM_DETL_SK,
+    'Y' AS REC_DROP_IND,
+    '997' AS REC_DROP_RSN_DESC
+  FROM source_shortcut_to_wrk_birp_niss_aprm_detl_2
+),
+
+upd_rec_drop_ind AS (
+  SELECT
+    NISS_CVG_CD,
+    NISS_ST_CD,
+    NISS_CLASS_CD,
+    NISS_PLCY_LMT_CD,
+    NISS_DEDUC_CD,
+    ACCTNG_LOB,
+    NUM_OF_CARS_IN_HH,
+    NISS_APRM_DETL_SK,
+    REC_DROP_IND,
+    REC_DROP_RSN_DESC
+  FROM exp_passthrough_src1
+),
+
+exp_dummy AS (
+  SELECT
+    NISS_CVG_CD,
+    NISS_ST_CD,
+    NISS_CLASS_CD,
+    NISS_PLCY_LMT_CD,
+    NISS_DEDUC_CD,
+    ACCTNG_LOB,
+    NUM_OF_CARS_IN_HH,
+    NISS_APRM_DETL_SK,
+    REC_DROP_IND,
+    REC_DROP_RSN_DESC,
+  FROM upd_rec_drop_ind
+),
+
+fil_only_exceptions_or_drops AS (
+  SELECT
+    *
+  FROM exp_dummy
+  WHERE REC_DROP_IND = 'Y'
+),
+
+exp_gen_rec_drops AS (
+  SELECT
+    NISS_CVG_CD,
+    NISS_ST_CD,
+    NISS_CLASS_CD,
+    NISS_PLCY_LMT_CD,
+    NISS_DEDUC_CD,
+    ACCTNG_LOB,
+    NUM_OF_CARS_IN_HH,
+    CONCAT(
+      CASE WHEN NISS_CVG_CD IN ('na', 'n/a') OR SUBSTRING(TRIM(NISS_CVG_CD), 1, 1) = '?' THEN '999;' ELSE '' END,
+      CASE WHEN NISS_PLCY_LMT_CD IN ('na', '??') THEN '998;' ELSE '' END,
+      CASE WHEN NISS_ST_CD = '??' THEN 'INVALID ST_CD;' ELSE '' END,
+      CASE WHEN SUBSTRING(TRIM(NISS_CLASS_CD), 1, 1) = '?' THEN 'INVALID CLASS_CD;' ELSE '' END,
+      CASE WHEN NISS_DEDUC_CD = '??' THEN 'INVALID DEDUC CD;' ELSE '' END,
+      CASE WHEN ACCTNG_LOB IS NULL OR ACCTNG_LOB = '' OR ACCTNG_LOB = ' ' THEN 'Blank ACCTNG_LOB;' ELSE '' END,
+      CASE WHEN NISS_ST_CD = '09' AND NUM_OF_CARS_IN_HH IS NULL THEN 'Blank Vehicle Count;' ELSE '' END
+    ) AS REC_DROP_RSN_DESC,
+    CASE WHEN REC_DROP_RSN_DESC = '' THEN '' ELSE 'Y' END AS REC_DROP_IND
+  FROM fil_only_exceptions_or_drops
+),
+
+final AS (
+  SELECT
+    *
+  FROM exp_gen_rec_drops
+)
+
+SELECT * FROM final

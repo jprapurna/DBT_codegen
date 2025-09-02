@@ -1,0 +1,48 @@
+{{ config(materialized='ephemeral') }}
+
+WITH source_data AS (
+  SELECT
+    NISS_CVG_CD,
+    NISS_APRM_DETL_SK,
+    TRIM(ST_CD) AS ST_CD,
+    TRIM(ST_ABBR) AS ST_ABBR,
+    TRIM(ACCTNG_LOB) AS ACCTNG_LOB,
+    TRIM(CVG_TYP_CD) AS CVG_TYP_CD,
+    TRIM(RATNG_CMPY_CD) AS RATNG_CMPY_CD,
+    TRIM(MLT_CAR_IND) AS MLT_CAR_IND,
+    TRIM(RT_CLS) AS RT_CLS,
+    TRIM(FINAL_RDRVR_AGE) AS FINAL_RDRVR_AGE,
+    TRIM(GENDR) AS GENDR,
+    TRIM(MRTL_STAT) AS MRTL_STAT,
+    TRIM(AUTO_USE_CD) AS AUTO_USE_CD,
+    TRIM(MILES_TO_WRK) AS MILES_TO_WRK,
+    TRIM(GOOD_STDNT_IND) AS GOOD_STDNT_IND,
+    TRIM(DRVR_TRNG_IND) AS DRVR_TRNG_IND,
+    CASE 
+      WHEN TRIM(SOI_TYP) = '#' THEN '01'
+      ELSE TRIM(SOI_TYP)
+    END AS SOI_TYP,
+    PHY_DMG_IND,
+    REC_EXCPN_IND,
+    REC_EXCPN_RSN_DESC
+  FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_NISS_APRM_DETL') }}
+  WHERE ST_ABBR IN ('NY', 'NJ')
+),
+
+exp_to_drv_class_cd AS (
+  SELECT
+    *
+  FROM source_data
+),
+
+upd_niss_class_cd AS (
+  SELECT
+    NISS_APRM_DETL_SK,
+    NISS_CVG_CD,
+    REC_EXCPN_IND,
+    REC_EXCPN_RSN_DESC
+  FROM exp_to_drv_class_cd
+)
+
+SELECT *
+FROM upd_niss_class_cd

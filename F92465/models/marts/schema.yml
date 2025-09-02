@@ -1,0 +1,141 @@
+version: 2
+
+models:
+  - name: fct_m_dummy_no_records
+    description: A dummy model that generates a success email with predefined content.
+    meta:
+      owner: data_team
+      domain: notifications
+    config:
+      materialized: table
+    tags: [dummy, notifications]
+    columns:
+      - name: EmailToList
+        description: The email address to which the success email is sent.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"
+      - name: EmailSubject
+        description: The subject of the success email.
+        tests:
+          - not_null
+      - name: EmailBody
+        description: The body content of the success email.
+        tests:
+          - not_null
+
+  - name: fct_m_NU0C_NISS_AUTO_102_ATPRM_DTL_Load
+    description: Detailed auto insurance data including coverage types, premiums, and policy attributes.
+    meta:
+      owner: insurance_team
+      domain: auto_insurance
+    config:
+      materialized: table
+    tags: [insurance, auto]
+    columns:
+      - name: NISS_APRM_DETL_SK
+        description: Unique identifier for the auto insurance detail record.
+        tests:
+          - unique
+          - not_null
+      - name: CLNDR_YR
+        description: Calendar year associated with the record.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1900
+              max_value: 2100
+      - name: CALL_YR
+        description: Year of the insurance call or claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1900
+              max_value: 2100
+      - name: NAIC_CMPNY_CD
+        description: NAIC company code for the insurance provider.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 4
+              max_value: 10
+      - name: NISS_CMPNY_CD
+        description: NISS company code for the insurance provider.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 4
+              max_value: 10
+      - name: ST_NM
+        description: Name of the state associated with the record.
+        tests:
+          - not_null
+      - name: ST_CD
+        description: State code associated with the record.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z]{2}$"
+      - name: CVG_TYP_CD
+        description: Coverage type code for the insurance policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BI', 'PD', 'UM', 'PIP', 'COMP', 'COLL']
+      - name: CVG_AMT
+        description: Coverage amount for the insurance policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: BI_LMT
+        description: Bodily injury limit for the insurance policy.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: AGE
+        description: Age of the insured individual.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 120
+      - name: GENDR
+        description: Gender of the insured individual.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['M', 'F', 'U']
+      - name: MRTL_STAT
+        description: Marital status of the insured individual.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['S', 'M', 'D', 'W']
+      - name: AUTO_USE_CD
+        description: Code indicating the use of the insured vehicle.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['P', 'C', 'B']
+      - name: TTL_WRITTN_PREM_AMT
+        description: Total written premium amount for the policy.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: NISS_PD_LOSS
+        description: Paid loss amount for the policy.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: NISS_OUTSTNDG_LOSS
+        description: Outstanding loss amount for the policy.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: WRK_FLOW_RUN_ID
+        description: Workflow run identifier for the record.
+        tests:
+          - not_null

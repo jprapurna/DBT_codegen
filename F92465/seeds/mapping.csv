@@ -1,0 +1,5 @@
+v_MAPNG_ID,SESSSTARTTIME,v_WRK_FLOW_RUN_ID,mapping_name,folder_name,workflow_name,lkp_WORKFLOW_RUN_ID,lkp_WORKFLOW_RUN_ID_ABC
+1001,2025-08-20 08:30:00,50001,Sales_Mapping,Sales_Folder,Sales_Workflow,70001,ABC70001
+1002,2025-08-20 09:00:00,50002,Inventory_Mapping,Inventory_Folder,Inventory_Workflow,70002,ABC70002
+1003,2025-08-20 09:30:00,50003,Finance_Mapping,Finance_Folder,Finance_Workflow,70003,ABC70003
+1004,2025-08-20 10:00:00,50004,HR_Mapping,HR_Folder,HR_Workflow,70004,ABC70004

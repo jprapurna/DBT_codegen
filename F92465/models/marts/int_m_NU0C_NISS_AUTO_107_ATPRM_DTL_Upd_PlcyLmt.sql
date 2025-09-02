@@ -1,4 +1,4 @@
-{{ config(materialized='ephemeral') }}
+{{ config(materialized='view') }}
 
 WITH source_data_1 AS (
   SELECT
@@ -147,11 +147,12 @@ EXP_CvgAmount_Split AS (
   SELECT
     CVG_AMT,
     REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') AS v_CVG_AMT,
-    LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 AS v_CVG_AMT_Parts,
-    POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) AS v_CVG_AMT_Part1_Pos,
-    POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') FROM POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '') + 1) AS v_CVG_AMT_Part2_Pos,
-    CASE
-      WHEN LENGTH(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - LENGTH(REPLACE(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', '')) + 1 = 1 THEN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')
-      ELSE SUBSTRING(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), 1, POSITION('/' IN REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', '')) - 1)
-    END AS v_AMOUNT_FIELD1,
-    ...
+    ARRAY_SIZE(SPLIT(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/')) AS v_CVG_AMT_Parts,
+    SPLIT_PART(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', 1) AS v_AMOUNT_FIELD1,
+    SPLIT_PART(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', 2) AS v_AMOUNT_FIELD2,
+    SPLIT_PART(REPLACE(LTRIM(RTRIM(CVG_AMT)), ',', ''), '/', 3) AS v_AMOUNT_FIELD3
+  FROM EXP_PassThru
+)
+
+SELECT *
+FROM EXP_CvgAmount_Split

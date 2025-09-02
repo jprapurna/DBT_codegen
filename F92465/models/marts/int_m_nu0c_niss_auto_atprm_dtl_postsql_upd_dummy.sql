@@ -1,20 +1,12 @@
 {{
   config(
-    materialized='ephemeral'
+    materialized='view'
   )
 }}
 
 WITH source_wrk_birp_niss_aprm_detl_1 AS (
   SELECT
-    *,
-    NISS_APRM_DETL_SK,
-    ST_ABBR,
-    ACCTNG_LOB,
-    BI_LMT,
-    PRD_GRP_CD,
-    NJ_NO_LWST_LMT_IND,
-    NJ_NMD_DRVR_EXCL_IND,
-    CVG_TYP_CD
+    *
   FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_NISS_APRM_DETL') }}
 ),
 

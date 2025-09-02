@@ -1,72 +1,7 @@
-{{
-  config(
-    materialized='ephemeral'
-  )
-}}
+{{ config(materialized='view') }}
 
 WITH source_data AS (
-  SELECT
-    FISC_PER_YR,
-    NAIC_CMPNY_CD,
-    NISS_CMPNY_CD,
-    ST_NM,
-    ST_CD,
-    NISS_ST_CD,
-    ST_ABBR,
-    ACCTNG_LOB,
-    CVG_TYP_CD,
-    CVG_AMT,
-    BI_LMT,
-    GA_ADDED_AT_FAULT_IND,
-    PLCY_IND,
-    UM_UMI_STACKING,
-    PIP_WVR_WL_IND,
-    PIP_MED_SEC_IND,
-    PIP_LOSS_INCOME_IND,
-    MI_PPO_IND,
-    PRD_GRP_CD,
-    NJ_HLTH_INSR_PRIM,
-    NJ_EXTR_PIP_PKG,
-    NJ_RESDNC_RLTNSHP_PIP_IND,
-    NY_SSL_IND,
-    NY_FULL_CVG_GLASS_COMP_IND,
-    GRGNG_ZIP,
-    NISS_TERR_CD,
-    RATNG_CMPY_CD,
-    MLT_CAR_IND,
-    RT_CLS,
-    AGE,
-    GENDR,
-    MRTL_STAT,
-    AUTO_USE_CD,
-    MILES_TO_WRK,
-    GOOD_STDNT_IND,
-    DRVR_TRNG_IND,
-    SOI_TYP,
-    PHY_DMG_IND,
-    NJ_RATD_PNTS,
-    VEH_MDL_YR,
-    NJ_EXCPTION_CD,
-    NJ_FGVN_PNTS,
-    PASSV_RESTRA_DISC,
-    SNR_DRVR_IND,
-    DEFNS_DRVR_DISC_IND,
-    ANTI_THFT_DISC,
-    DAY_TM_RUN_LIGHTS,
-    LMT_TORT,
-    ANNL_STMNT_LOB_CD,
-    CVG_TYP_IND,
-    UNIT_NUM,
-    EFF_DT,
-    NUM_OF_CARS_IN_HH,
-    RDRVR_DT_OF_BRTH,
-    TERM_STRT_DT,
-    SRC_SYS_CD,
-    PNI_AGE,
-    MIS_LOB,
-    PRINCIPAL_OPRT,
-    SOURCE_IND_DERIVED,
-    ANTI_THFT_CTGY_CD
+  SELECT *
   FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_TA_NISS_NU0C_APRM_DTL') }}
 ),
 
@@ -81,7 +16,11 @@ exptrans AS (
     ST_ABBR,
     ACCTNG_LOB,
     CVG_TYP_CD,
-    CVG_AMT
+    CVG_AMT,
+    GRNG_ZIP,
+    PP_COMMRCL_CD,
+    AUTO_USE_CD,
+    NISS_TERR_CD
   FROM source_data
 ),
 
@@ -96,29 +35,30 @@ exp_passthru AS (
     ST_ABBR,
     ACCTNG_LOB,
     CVG_TYP_CD,
-    CVG_AMT
+    CVG_AMT,
+    GRNG_ZIP,
+    PP_COMMRCL_CD,
+    AUTO_USE_CD,
+    NISS_TERR_CD
   FROM exptrans
 ),
 
 lkp_fdr_lib_rbi_ref_auto_terr_bystziplob AS (
   SELECT
-    NISS_ST_CD,
-    ST_ABBRV,
-    ZIP_CD,
-    PP_COMMRCL_CD,
-    END_EFF_DT
-  FROM {{ source('GENAI_POWER_BI', 'RBI_REF_AUTO_TERR') }}
-  WHERE NISS_ST_CD = exp_passthru.o_NISS_ST_CD
-    AND ST_ABBRV = exp_passthru.ST_ABBR
-    AND ZIP_CD = exp_passthru.GRNG_ZIP
-    AND PP_COMMRCL_CD = exp_passthru.PP_COMMRCL_CD
+    r.*
+  FROM {{ source('GENAI_POWER_BI', 'RBI_REF_AUTO_TERR') }} r
+  JOIN exp_passthru e
+    ON r.NISS_ST_CD = e.o_NISS_ST_CD
+   AND r.ST_ABBRV = e.ST_ABBR
+   AND r.ZIP_CD = e.GRNG_ZIP
+   AND r.PP_COMMRCL_CD = e.PP_COMMRCL_CD
 ),
 
 exp_passthru_tgt AS (
   SELECT
     ROW_NUMBER() OVER (ORDER BY FISC_PER_YR) AS v_CNT,
     CONCAT(FISC_PER_YR, NAIC_CMPNY_CD) AS NISS_APRM_DETL_SK,
-    YEAR(FISC_PER_YR) AS CALL_YR,
+    EXTRACT(YEAR FROM TRY_TO_DATE(FISC_PER_YR, 'YYYY-MM-DD')) AS CALL_YR,
     AUTO_USE_CD AS o_AUTO_USE_CD,
     NISS_TERR_CD AS o_NISS_TERR_CD
   FROM exp_passthru

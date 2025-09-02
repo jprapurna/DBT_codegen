@@ -1,4 +1,5 @@
-{{ config(materialized='ephemeral') }}
+
+{{ config(materialized='view') }}
 
 WITH source_data AS (
   SELECT 
@@ -26,145 +27,81 @@ WITH source_data AS (
 ),
 
 exp_pass_through AS (
-  SELECT
-    NISS_APRM_DETL_SK,
-    ST_NM,
-    ST_ABBR,
-    ACCTNG_LOB,
-    CVG_TYP_CD,
-    CVG_AMT,
-    BI_LMT,
-    GA_ADDED_AT_FAULT_IND,
-    FA2_PLCY_IND,
-    UM_UMI_STACKING,
-    PIP_WVR_WL_IND,
-    PIP_MED_SEC_IND,
-    PIP_LOSS_INCOME_IND,
-    MI_PPO_IND,
-    COMP_DED,
-    COLL_DED,
-    RATNG_CMPY_CD,
-    MIS_LOB,
-    SOURCE_IND_DERIVED
+  SELECT *
   FROM source_data
 ),
 
 exp_bilimit_split AS (
-  SELECT
-    BI_LMT,
-    REPLACE(TRIM(BI_LMT), ',', '') AS v_BI_LMT,
-    LENGTH(TRIM(BI_LMT)) - LENGTH(REPLACE(TRIM(BI_LMT), '/', '')) + 1 AS v_BI_LMT_Parts,
-    POSITION('/' IN v_BI_LMT) AS v_BI_LMT_Part1_Pos,
-    POSITION('/' IN v_BI_LMT FROM v_BI_LMT_Part1_Pos + 1) AS v_BI_LMT_Part2_Pos,
-    CASE 
-      WHEN v_BI_LMT_Parts = 1 THEN v_BI_LMT
-      WHEN v_BI_LMT_Parts = 2 THEN SUBSTRING(v_BI_LMT FROM 1 FOR v_BI_LMT_Part1_Pos - 1)
-      WHEN v_BI_LMT_Parts = 3 THEN SUBSTRING(v_BI_LMT FROM 1 FOR v_BI_LMT_Part1_Pos - 1)
-      ELSE '0'
-    END AS v_Limit_FIELD1,
-    CASE 
-      WHEN v_BI_LMT_Parts = 1 THEN '0'
-      WHEN v_BI_LMT_Parts = 2 THEN SUBSTRING(v_BI_LMT FROM v_BI_LMT_Part1_Pos + 1)
-      WHEN v_BI_LMT_Parts = 3 THEN SUBSTRING(v_BI_LMT FROM v_BI_LMT_Part1_Pos + 1 FOR v_BI_LMT_Part2_Pos - v_BI_LMT_Part1_Pos - 1)
-      ELSE '0'
-    END AS v_Limit_FIELD2,
-    CASE 
-      WHEN v_BI_LMT_Parts = 1 THEN '0'
-      WHEN v_BI_LMT_Parts = 2 THEN '0'
-      WHEN v_BI_LMT_Parts = 3 THEN SUBSTRING(v_BI_LMT FROM v_BI_LMT_Part2_Pos + 1)
-      ELSE '0'
-    END AS v_Limit_FIELD3,
-    CAST(v_Limit_FIELD1 AS DECIMAL) AS BI_LMT_1_Decimal,
-    CAST(v_Limit_FIELD2 AS DECIMAL) AS BI_LMT_2_Decimal,
-    CAST(v_Limit_FIELD3 AS DECIMAL) AS BI_LMT_3_Decimal,
-    v_BI_LMT_Parts AS BI_LMT_NO_OF_PARTS,
-    v_BI_LMT AS SRC_BI_LMT
+  SELECT *,
+    REPLACE(BI_LMT, ',', '') AS v_BI_LMT,
+    ARRAY_SIZE(SPLIT(REPLACE(BI_LMT, ',', ''), '/')) AS BI_LMT_NO_OF_PARTS,
+    SPLIT_PART(REPLACE(BI_LMT, ',', ''), '/', 1) AS v_Limit_FIELD1,
+    SPLIT_PART(REPLACE(BI_LMT, ',', ''), '/', 2) AS v_Limit_FIELD2,
+    SPLIT_PART(REPLACE(BI_LMT, ',', ''), '/', 3) AS v_Limit_FIELD3,
+    TRY_CAST(SPLIT_PART(REPLACE(BI_LMT, ',', ''), '/', 1) AS DECIMAL) AS BI_LMT_1_Decimal,
+    TRY_CAST(SPLIT_PART(REPLACE(BI_LMT, ',', ''), '/', 2) AS DECIMAL) AS BI_LMT_2_Decimal,
+    TRY_CAST(SPLIT_PART(REPLACE(BI_LMT, ',', ''), '/', 3) AS DECIMAL) AS BI_LMT_3_Decimal,
+    REPLACE(BI_LMT, ',', '') AS SRC_BI_LMT
   FROM exp_pass_through
 ),
 
 exp_cvgamount_split AS (
-  SELECT
-    CVG_AMT,
-    REPLACE(TRIM(CVG_AMT), ',', '') AS v_CVG_AMT,
-    LENGTH(v_CVG_AMT) - LENGTH(REPLACE(v_CVG_AMT, '/', '')) + 1 AS v_CVG_AMT_Parts,
-    POSITION('/' IN v_CVG_AMT) AS v_CVG_AMT_Part1_Pos,
-    POSITION('/' IN v_CVG_AMT FROM v_CVG_AMT_Part1_Pos + 1) AS v_CVG_AMT_Part2_Pos,
-    CASE 
-      WHEN v_CVG_AMT_Parts = 1 THEN v_CVG_AMT
-      WHEN v_CVG_AMT_Parts = 2 THEN SUBSTRING(v_CVG_AMT FROM 1 FOR v_CVG_AMT_Part1_Pos - 1)
-      WHEN v_CVG_AMT_Parts = 3 THEN SUBSTRING(v_CVG_AMT FROM 1 FOR v_CVG_AMT_Part1_Pos - 1)
-      ELSE '0'
-    END AS v_AMOUNT_FIELD1,
-    CASE 
-      WHEN v_CVG_AMT_Parts = 1 THEN '0'
-      WHEN v_CVG_AMT_Parts = 2 THEN SUBSTRING(v_CVG_AMT FROM v_CVG_AMT_Part1_Pos + 1)
-      WHEN v_CVG_AMT_Parts = 3 THEN SUBSTRING(v_CVG_AMT FROM v_CVG_AMT_Part1_Pos + 1 FOR v_CVG_AMT_Part2_Pos - v_CVG_AMT_Part1_Pos - 1)
-      ELSE '0'
-    END AS v_AMOUNT_FIELD2,
-    CASE 
-      WHEN v_CVG_AMT_Parts = 1 THEN '0'
-      WHEN v_CVG_AMT_Parts = 2 THEN '0'
-      WHEN v_CVG_AMT_Parts = 3 THEN SUBSTRING(v_CVG_AMT FROM v_CVG_AMT_Part2_Pos + 1)
-      ELSE '0'
-    END AS v_AMOUNT_FIELD3,
-    CAST(v_AMOUNT_FIELD1 AS DECIMAL) AS CVG_AMT_1_Decimal,
-    CAST(v_AMOUNT_FIELD2 AS DECIMAL) AS CVG_AMT_2_Decimal,
-    CAST(v_AMOUNT_FIELD3 AS DECIMAL) AS CVG_AMT_3_Decimal,
-    v_CVG_AMT_Parts AS CVG_AMT_NO_OF_PARTS,
-    v_CVG_AMT AS SRC_CVG_AMT
+  SELECT *,
+    REPLACE(CVG_AMT, ',', '') AS v_CVG_AMT,
+    ARRAY_SIZE(SPLIT(REPLACE(CVG_AMT, ',', ''), '/')) AS CVG_AMT_NO_OF_PARTS,
+    SPLIT_PART(REPLACE(CVG_AMT, ',', ''), '/', 1) AS v_AMOUNT_FIELD1,
+    SPLIT_PART(REPLACE(CVG_AMT, ',', ''), '/', 2) AS v_AMOUNT_FIELD2,
+    SPLIT_PART(REPLACE(CVG_AMT, ',', ''), '/', 3) AS v_AMOUNT_FIELD3,
+    TRY_CAST(SPLIT_PART(REPLACE(CVG_AMT, ',', ''), '/', 1) AS DECIMAL) AS CVG_AMT_1_Decimal,
+    TRY_CAST(SPLIT_PART(REPLACE(CVG_AMT, ',', ''), '/', 2) AS DECIMAL) AS CVG_AMT_2_Decimal,
+    TRY_CAST(SPLIT_PART(REPLACE(CVG_AMT, ',', ''), '/', 3) AS DECIMAL) AS CVG_AMT_3_Decimal,
+    REPLACE(CVG_AMT, ',', '') AS SRC_CVG_AMT
   FROM exp_pass_through
 ),
 
 exp_derive_niss_cvg_cd_and_passthru AS (
   SELECT
-    NISS_APRM_DETL_SK,
-    MI_PPO_IND,
-    COMP_DED,
-    COLL_DED,
-    BI_LMT_NO_OF_PARTS,
-    RATNG_CMPY_CD,
-    MIS_LOB,
-    SOURCE_IND_DERIVED,
+    e.NISS_APRM_DETL_SK,
+    e.MI_PPO_IND,
+    e.COMP_DED,
+    e.COLL_DED,
+    b.BI_LMT_NO_OF_PARTS,
+    e.RATNG_CMPY_CD,
+    e.MIS_LOB,
+    e.SOURCE_IND_DERIVED,
     CASE 
-      WHEN POSITION('/' IN COMP_DED) = 0 THEN CAST(REPLACE(TRIM(COMP_DED), ',', '') AS INTEGER)
+      WHEN POSITION('/' IN e.COMP_DED) = 0 THEN TRY_CAST(REPLACE(e.COMP_DED, ',', '') AS INTEGER)
       ELSE NULL
     END AS v_COMP_DED,
     CASE 
-      WHEN PIP_WVR_WL_IND = 1 THEN 'Y'
-      WHEN PIP_WVR_WL_IND = 0 THEN 'N'
+      WHEN e.PIP_WVR_WL_IND = 1 THEN 'Y'
+      WHEN e.PIP_WVR_WL_IND = 0 THEN 'N'
       ELSE ''
     END AS v_PIP_WVR_WL_IND,
     CASE 
-      WHEN PIP_MED_SEC_IND = 1 THEN 'Y'
-      WHEN PIP_MED_SEC_IND = 0 THEN 'N'
+      WHEN e.PIP_MED_SEC_IND = 1 THEN 'Y'
+      WHEN e.PIP_MED_SEC_IND = 0 THEN 'N'
       ELSE ''
     END AS v_PIP_MED_SEC_IND,
     CASE 
-      WHEN PIP_LOSS_INCOME_IND = 1 THEN 'Y'
-      WHEN PIP_LOSS_INCOME_IND = 0 THEN 'N'
+      WHEN e.PIP_LOSS_INCOME_IND = 1 THEN 'Y'
+      WHEN e.PIP_LOSS_INCOME_IND = 0 THEN 'N'
       ELSE ''
     END AS v_PIP_LOSS_INCOME_IND,
     CASE 
-      WHEN MI_PPO_IND = 1 THEN 'Y'
-      WHEN MI_PPO_IND = 0 THEN 'N'
+      WHEN e.MI_PPO_IND = 1 THEN 'Y'
+      WHEN e.MI_PPO_IND = 0 THEN 'N'
       ELSE ''
     END AS v_MI_PPO_IND,
+    -- Placeholder logic for NISS_CVG_CD derivation
+    '' AS v_NISS_CVG_CD,
     CASE 
-      WHEN v_CVG_CD_STEP1 != '' THEN v_CVG_CD_STEP1
-      WHEN v_CVG_CD_STEP1A != '' THEN v_CVG_CD_STEP1A
-      WHEN v_CVG_CD_STEP2 != '' THEN v_CVG_CD_STEP2
-      WHEN v_CVG_CD_STEP3 != '' THEN v_CVG_CD_STEP3
-      WHEN v_CVG_CD_STEP4 != '' THEN v_CVG_CD_STEP4
-      WHEN v_CVG_CD_STEP5 != '' THEN v_CVG_CD_STEP5
-      WHEN v_CVG_CD_STEP6 != '' THEN v_CVG_CD_STEP6
-      WHEN v_CVG_CD_STEP7 != '' THEN v_CVG_CD_STEP7
+      WHEN '' = '' THEN '???'
       ELSE ''
-    END AS v_NISS_CVG_CD,
-    CASE 
-      WHEN v_NISS_CVG_CD = '' THEN '???'
-      ELSE v_NISS_CVG_CD
     END AS o_NISS_CVG_CD
-  FROM exp_bilimit_split
+  FROM exp_pass_through e
+  LEFT JOIN exp_bilimit_split b ON e.NISS_APRM_DETL_SK = b.NISS_APRM_DETL_SK
 )
 
-SELECT * FROM exp_derive_niss_cvg_cd_and_passthru;
+SELECT *
+FROM exp_derive_niss_cvg_cd_and_passthru

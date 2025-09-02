@@ -1,6 +1,5 @@
-{{
-  config(materialized='ephemeral')
-}}
+
+{{ config(materialized='view') }}
 
 WITH source_data AS (
   SELECT 
@@ -9,7 +8,6 @@ WITH source_data AS (
     ST_ABBR,
     ACCTNG_LOB,
     LTRIM(RTRIM(CVG_TYP_CD)) AS CVG_TYP_CD,
-    LTRIM(RTRIM(CVG_AMT)) AS CVG_AMT,
     LTRIM(RTRIM(BI_LMT)) AS BI_LMT,
     PIP_LOSS_INCOME_IND,
     LTRIM(RTRIM(COALESCE(PRD_GRP_CD, ''))) AS PRD_GRP_CD,
@@ -21,8 +19,9 @@ WITH source_data AS (
     LTRIM(RTRIM(COMP_DED)) AS COMP_DED,
     LTRIM(RTRIM(COLL_DED)) AS COLL_DED,
     REC_EXCPN_IND,
-    REC_EXCPN_RSN_DESC
-  FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_NISS_APRM_DETL_1') }}
+    REC_EXCPN_RSN_DESC,
+    CVG_AMT
+  FROM {{ source('GENAI_POWER_BI', 'WRK_BIRP_NISS_APRM_DETL1') }}
   WHERE ST_ABBR IN ('NY', 'NJ')
 ),
 
@@ -30,27 +29,17 @@ EXP_BILimit_Split AS (
   SELECT
     *,
     REPLACE(TRIM(BI_LMT), ',', '') AS v_BI_LMT,
-
-    -- Count parts by counting slashes + 1
     (LENGTH(REPLACE(BI_LMT, ',', '')) 
      - LENGTH(REPLACE(REPLACE(BI_LMT, ',', ''), '/', '')) + 1) AS v_BI_LMT_Parts,
-
-    -- First slash position
     CHARINDEX('/', REPLACE(BI_LMT, ',', '')) AS v_BI_LMT_Part1_Pos,
-
-    -- Second slash position
     CHARINDEX('/', REPLACE(BI_LMT, ',', ''), CHARINDEX('/', REPLACE(BI_LMT, ',', '')) + 1) AS v_BI_LMT_Part2_Pos,
-
-    -- Extract the first number before the first slash
     CASE 
       WHEN (LENGTH(REPLACE(BI_LMT, ',', '')) 
             - LENGTH(REPLACE(REPLACE(BI_LMT, ',', ''), '/', '')) + 1) = 1 
         THEN REPLACE(BI_LMT, ',', '')
-
       WHEN (LENGTH(REPLACE(BI_LMT, ',', '')) 
             - LENGTH(REPLACE(REPLACE(BI_LMT, ',', ''), '/', '')) + 1) IN (2,3) 
         THEN SUBSTRING(REPLACE(BI_LMT, ',', ''), 1, CHARINDEX('/', REPLACE(BI_LMT, ',', '')) - 1)
-
       ELSE '0'
     END AS BI_LMT_1_Decimal
   FROM source_data
@@ -58,6 +47,7 @@ EXP_BILimit_Split AS (
 
 EXP_CvgAmount_Split AS (
   SELECT
+    *,
     REPLACE(TRIM(CVG_AMT), ',', '') AS v_CVG_AMT,
     (LENGTH(REPLACE(CVG_AMT, ',', '')) 
      - LENGTH(REPLACE(REPLACE(CVG_AMT, ',', ''), '/', '')) + 1) AS v_CVG_AMT_Parts,
@@ -77,7 +67,7 @@ EXP_CvgAmount_Split AS (
 
 EXP_Derive_NISS_CVG_CD_And_PassThru AS (
   SELECT
-    REPLACE(TRIM(CVG_AMT), ',', '') AS v_CVG_AMT,
+    *,
     CASE 
       WHEN PIP_LOSS_INCOME_IND = 1 THEN 'Y'
       WHEN PIP_LOSS_INCOME_IND = 0 THEN 'N'
@@ -99,7 +89,7 @@ EXP_Derive_NISS_CVG_CD_And_PassThru AS (
 UPD_NISS_CVG_CD AS (
   SELECT
     *,
-    'UPDATE' AS update_strategy   -- static since DD_UPDATE was undefined
+    'UPDATE' AS update_strategy
   FROM EXP_Derive_NISS_CVG_CD_And_PassThru
 )
 

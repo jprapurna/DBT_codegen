@@ -1,3 +1,4 @@
+{{ config(materialized='view') }}
 
 WITH source_fdr_lib_wrk_birp_niss_aprm_detl2 AS (
   SELECT 

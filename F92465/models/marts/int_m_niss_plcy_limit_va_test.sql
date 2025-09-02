@@ -1,5 +1,5 @@
 {{
-  config(materialized='ephemeral')
+  config(materialized='view')
 }}
 
 WITH source_fdr_wrk_birp_niss_aprm_detl AS (

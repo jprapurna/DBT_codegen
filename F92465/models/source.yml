@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: GENAI_POWER_BI
     description: Source tables for GENAI_POWER_BI database
-    database: GENAI_POWER_BI
-    schema: POWER_CENTER
+    database: DBA_COMMON_UTILS
+    schema: DBA
 
     tables:
       - name: RBI_REF_AUTO_TERR
@@ -1387,12 +1387,12 @@ sources:
         identifier: WRK_BIRP_NISS_APRM_DETL2
         columns: []
 
-      - name: WRK_BIRP_NISS_APRM_DETL_1
+      - name: WRK_BIRP_NISS_APRM_DETL1
         description: Table containing summary NISS APRM data from FDR library
         identifier: WRK_BIRP_NISS_APRM_DETL1
         columns: []
 
-      - name: SOME_TABLE
+      - name: MAPPING
         description: Table containing summary NISS APRM data from FDR library
-        identifier: SOME_TABLE
+        identifier: MAPPING
         columns: []

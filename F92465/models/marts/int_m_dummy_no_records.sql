@@ -1,4 +1,4 @@
-{{ config(materialized='ephemeral') }}
+{{ config(materialized='view') }}
 
 WITH source_dim_ag_trans_typ_plcy AS (
   SELECT 

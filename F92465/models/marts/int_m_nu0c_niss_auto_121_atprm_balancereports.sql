@@ -1,4 +1,4 @@
-{{ config(materialized='ephemeral') }}
+{{ config(materialized='view') }}
 
 WITH source_wrk_birp_niss_aprm_final AS (
   SELECT 

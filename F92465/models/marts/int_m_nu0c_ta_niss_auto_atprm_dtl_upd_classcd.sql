@@ -1,10 +1,9 @@
 {{
-  config(materialized='ephemeral')
+  config(materialized='view')
 }}
 
 WITH source_data AS (
   SELECT
-    *,
     NISS_APRM_DETL_SK,
     TRIM(ST_CD) AS ST_CD,
     TRIM(ST_ABBR) AS ST_ABBR,

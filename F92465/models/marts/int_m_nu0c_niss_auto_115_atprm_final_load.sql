@@ -1,4 +1,5 @@
-{{ config(materialized='ephemeral') }}
+
+{{ config(materialized='view') }}
 
 WITH source_data AS (
   SELECT
@@ -78,8 +79,6 @@ WITH source_data AS (
     NISS_TYP_LOSS_CD,
     NISS_LIAB_OR_NO_FAULT_CD,
     NISS_ANNL_STMNT_LOB_CD,
-    CVG_EXPS_VAL,
-    TTL_WRITTN_PREM_AMT,
     NISS_PD_LOSS,
     NISS_PD_ALLOC_ADJUS_EXPNS,
     NISS_OUTSTNDG_LOSS,
@@ -185,11 +184,6 @@ exp_passthru_tgt AS (
   FROM exp_passthru
 ),
 
-audit_data AS (
-  SELECT *
-  FROM {{ mplt_abc_mapping_audit('m_nu0c_niss_auto_115_atprm_final_load', 'models/int', 'workflow_name') }}
-),
-
 final AS (
   SELECT
     exp_passthru_tgt.*,
@@ -199,7 +193,9 @@ final AS (
     audit_data.DW_UPD_TMSP,
     audit_data.WRK_FLOW_RUN_ID
   FROM exp_passthru_tgt
-  LEFT JOIN audit_data ON TRUE
+  LEFT JOIN (
+    {{ mplt_abc_mapping_audit('m_nu0c_niss_auto_115_atprm_final_load', 'POWER_CENTER', 'workflow_XYZ') }}
+  ) audit_data ON TRUE
 )
 
 SELECT *

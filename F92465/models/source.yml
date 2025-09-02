@@ -1391,3 +1391,8 @@ sources:
         description: Table containing summary NISS APRM data from FDR library
         identifier: WRK_BIRP_NISS_APRM_DETL1
         columns: []
+
+      - name: SOME_TABLE
+        description: Table containing summary NISS APRM data from FDR library
+        identifier: SOME_TABLE
+        columns: []

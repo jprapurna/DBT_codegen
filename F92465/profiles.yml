@@ -12,3 +12,4 @@ snowflake:
       user: svc-dtecnmy-np-rw
       warehouse: DEV_IT_DATAECONOMY_WH
   target: dev
+  

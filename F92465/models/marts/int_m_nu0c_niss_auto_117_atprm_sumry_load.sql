@@ -48,7 +48,6 @@ EXP_Pass_Tgt AS (
     SELECT * FROM EXP_Passthru
 ),
 
--- 👇 expand the macro inline so it’s a valid CTE
 audit_data AS (
     {{ mplt_abc_mapping_audit('m_NU0C_NISS_AUTO_117_ATPRM_SUMRY_Load', 'POWER_CENTER', 'Workflow_ABC') }}
 ),

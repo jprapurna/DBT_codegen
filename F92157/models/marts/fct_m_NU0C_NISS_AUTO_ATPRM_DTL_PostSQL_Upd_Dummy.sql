@@ -1,0 +1,21 @@
+{{
+  config(
+    materialized='table'
+  )
+}}
+
+WITH intermediate_data AS (
+  SELECT *
+  FROM {{ ref('int_m_NU0C_NISS_AUTO_ATPRM_DTL_PostSQL_Upd_Dummy') }}
+)
+
+SELECT
+  NISS_APRM_DETL_SK,
+  ST_ABBR,
+  ACCTNG_LOB,
+  BI_LMT,
+  PRD_GRP_CD,
+  NJ_NO_LWST_LMT_IND,
+  NJ_NMD_DRVR_EXCL_IND,
+  CVG_TYP_CD
+FROM intermediate_data

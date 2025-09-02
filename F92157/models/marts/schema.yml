@@ -1,211 +1,188 @@
 version: 2
 
 models:
-  - name: fct_niss_auto_load
-    description: Model for mapping NISS state codes to Farmers state codes with additional territory code transformations.
+  - name: fct_m_NU0C_TA_NISS_AUTO_ATPRM_DTL_Upd_ClassCd
+    description: This model provides detailed information about class codes, including exception indicators and descriptions.
     meta:
-      owner: data_engineering
-      domain: auto_insurance
+      owner: data_team
+      domain: insurance
     config:
       materialized: table
-    tags: [auto_insurance, mapping]
-    columns:
-      - name: unique_id
-        description: Surrogate key generated from FARMERS_STATE_NAME and FARMERS_STATE_CD.
-        tests:
-          - unique
-          - not_null
-      - name: NISS_STATE_CODE
-        description: NISS state code mapped from the reference table.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_not_be_null
-      - name: STATE_CODE
-        description: Farmers state code mapped from the reference table.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_not_be_null
-      - name: TERR_CD
-        description: Territory code derived from NISS_STATE_CODE with whitespace and null handling.
-        tests:
-          - dbt_expectations.expect_column_values_to_not_be_null
-          - dbt_expectations.expect_column_value_lengths_to_be_between:
-              min_value: 1
-              max_value: 10
-
-  - name: fct_policy_details
-    description: Model for policy details including state and territory mappings.
-    meta:
-      owner: data_engineering
-      domain: policy_management
-    config:
-      materialized: table
-    tags: [policy_management, mapping]
-    columns:
-      - name: POLICY_ID
-        description: Unique identifier for policies.
-        tests:
-          - unique
-          - not_null
-      - name: NISS_STATE_CODE
-        description: NISS state code mapped from the reference table.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_not_be_null
-      - name: STATE_CODE
-        description: Farmers state code mapped from the reference table.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_not_be_null
-      - name: ST_ABBRV
-        description: State abbreviation for Farmers state codes.
-        tests:
-          - dbt_expectations.expect_column_values_to_match_regex:
-              regex: "^[A-Z]{2}$"
-      - name: NISS_TERR_CD
-        description: NISS territory code mapped from the reference table.
-        tests:
-          - dbt_expectations.expect_column_values_to_not_be_null
-
-
-  - name: fct_territory_details
-    description: Model for detailed territory information including effective dates and checksum values.
-    meta:
-      owner: data_engineering
-      domain: territory_management
-    config:
-      materialized: table
-    tags: [territory_management, details]
-    columns:
-      - name: REF_AUTO_TERR_SK
-        description: Surrogate key for auto territory reference.
-        tests:
-          - unique
-          - not_null
-      - name: END_EFF_DT
-        description: End effective date for the territory.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
-      - name: CHCKSUM
-        description: Checksum value for data integrity validation.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_unique
-      - name: NISS_TERR_CD
-        description: NISS territory code.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_not_be_null
-      - name: CNTY_NM
-        description: County name associated with the territory.
-        tests:
-          - dbt_expectations.expect_column_value_lengths_to_be_between:
-              min_value: 1
-              max_value: 50
-      - name: CITY_NM
-        description: City name associated with the territory.
-        tests:
-          - dbt_expectations.expect_column_value_lengths_to_be_between:
-              min_value: 1
-              max_value: 50
-
-  - name: fct_audit_details
-    description: Model for audit details including workflow run IDs and timestamps.
-    meta:
-      owner: data_engineering
-      domain: audit_management
-    config:
-      materialized: table
-    tags: [audit_management, details]
-    columns:
-      - name: WRK_FLOW_RUN_ID
-        description: Workflow run identifier for audit tracking.
-        tests:
-          - unique
-          - not_null
-      - name: DW_CR_TMSP
-        description: Timestamp for data warehouse creation.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
-      - name: DW_UPD_TMSP
-        description: Timestamp for data warehouse updates.
-        tests:
-          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
-
-  - name: fct_niss_auto_atprm_dtl
-    description: Model for detailed NISS auto APRM data including exception indicators and descriptions.
-    meta:
-      owner: data_engineering
-      domain: auto_insurance
-    config:
-      materialized: table
-    tags: [auto_insurance, details]
+    tags: ['insurance', 'class_codes']
     columns:
       - name: NISS_APRM_DETL_SK
-        description: Surrogate key for NISS APRM details.
+        description: Unique identifier for the APRM detail record.
         tests:
           - unique
           - not_null
       - name: NISS_CLASS_CD
-        description: NISS classification code.
+        description: Code representing the class of the APRM detail.
         tests:
-          - dbt_expectations.expect_column_values_to_match_regex:
-              regex: "^[A-Z0-9]{1,10}$"
-      - name: REC_EXCP_IND
-        description: Record exception indicator.
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['A', 'B', 'C', 'D']  # Example values inferred from business logic
+      - name: REC_EXCPN_IND
+        description: Indicator for record exceptions.
         tests:
+          - not_null
           - dbt_expectations.expect_column_values_to_be_in_set:
               value_set: ['Y', 'N']
       - name: REC_EXCP_DESC
-        description: Description of record exceptions.
+        description: Description of the record exception.
         tests:
           - dbt_expectations.expect_column_value_lengths_to_be_between:
-              min_value: 1
+              min_value: 0
               max_value: 255
 
-  - name: fct_auto_territory
-    description: Model for auto territory mappings including state and ZIP codes.
+  - name: fct_m_NU0C_NISS_AUTO_ATPRM_DTL_PostSQL_Upd_Dummy
+    description: This model provides post-update details for APRM records, including state abbreviations, accounting lines of business, and coverage types.
     meta:
-      owner: data_engineering
-      domain: territory_management
+      owner: data_team
+      domain: insurance
     config:
       materialized: table
-    tags: [territory_management, mapping]
+    tags: ['insurance', 'post_update']
     columns:
-      - name: NISS_TERR_CD
-        description: NISS territory code.
+      - name: NISS_APRM_DETL_SK
+        description: Unique identifier for the APRM detail record.
+        tests:
+          - unique
+          - not_null
+      - name: ST_ABBR
+        description: State abbreviation.
         tests:
           - not_null
-          - dbt_expectations.expect_column_values_to_not_be_null
-      - name: NISS_ST_CD
-        description: NISS state code.
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_not_be_null
-      - name: ST_ABBRV
-        description: State abbreviation for NISS state codes.
-        tests:
           - dbt_expectations.expect_column_values_to_match_regex:
               regex: "^[A-Z]{2}$"
-      - name: ZIP_CD
-        description: ZIP code for the territory.
+      - name: ACCTNG_LOB
+        description: Accounting line of business.
         tests:
+          - not_null
+      - name: BI_LMT
+        description: Bodily injury limit.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: PRD_GRP_CD
+        description: Product group code.
+        tests:
+          - not_null
+      - name: NJ_NO_LWST_LMT_IND
+        description: Indicator for New Jersey no lowest limit.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: NJ_NMD_DRVR_EXCL_IND
+        description: Indicator for New Jersey named driver exclusion.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: CVG_TYP_CD
+        description: Coverage type code.
+        tests:
+          - not_null
+
+  - name: fct_m_NU0C_NISS_AUTO_105_ATPRM_DTL_Upd_CvgCd
+    description: This model provides detailed coverage information, including coverage amounts, limits, and indicators.
+    meta:
+      owner: data_team
+      domain: insurance
+    config:
+      materialized: table
+    tags: ['insurance', 'coverage']
+    columns:
+      - name: NISS_APRM_DETL_SK
+        description: Unique identifier for the APRM detail record.
+        tests:
+          - unique
+          - not_null
+      - name: ST_NM
+        description: State name.
+        tests:
+          - not_null
+      - name: ST_ABBR
+        description: State abbreviation.
+        tests:
+          - not_null
           - dbt_expectations.expect_column_values_to_match_regex:
-              regex: "^[0-9]{5}$"
-
-  - name: fct_WRK_BIRP_NISS_APRM_LND
-    description: Final model for reporting and analytics on NISS APRM LND data.
-    meta:
-      owner: data_engineering
-      domain: reporting
-    config:
-      materialized: table
-    tags: [reporting, analytics]
-
-  - name: fct_WRK_BIRP_NISS_APRM_DETL
-    description: Final model for reporting and analytics on detailed NISS APRM data.
-    meta:
-      owner: data_engineering
-      domain: reporting
-    config:
-      materialized: table
-    tags: [reporting, analytics]
+              regex: "^[A-Z]{2}$"
+      - name: ACCTNG_LOB
+        description: Accounting line of business.
+        tests:
+          - not_null
+      - name: CVG_TYP_CD
+        description: Coverage type code.
+        tests:
+          - not_null
+      - name: CVG_AMT
+        description: Coverage amount.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: BI_LMT
+        description: Bodily injury limit.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: GA_ADDED_AT_FAULT_IND
+        description: Indicator for Georgia added-at-fault coverage.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: FA2_PLCY_IND
+        description: Indicator for FA2 policy.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: UM_UMI_STACKING
+        description: Indicator for UM/UMI stacking.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: PIP_WVR_WL_IND
+        description: Indicator for PIP waiver.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: PIP_MED_SEC_IND
+        description: Indicator for PIP medical section.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: PIP_LOSS_INCOME_IND
+        description: Indicator for PIP loss income.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: MI_PPO_IND
+        description: Indicator for Michigan PPO.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Y', 'N']
+      - name: COMP_DED
+        description: Comprehensive deductible.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000
+      - name: RATNG_CMPY_CD
+        description: Rating company code.
+        tests:
+          - not_null
+      - name: COLL_DED
+        description: Collision deductible.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000
+      - name: MIS_LOB
+        description: Miscellaneous line of business.
+        tests:
+          - not_null
+      - name: SOURCE_IND_DERIVED
+        description: Derived source indicator.
+        tests:
+          - not_null

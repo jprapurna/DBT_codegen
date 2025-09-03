@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: fct_claim_cd_bur_scd3  # Required
+    description: This model combines claim data from two intermediate sources using a UNION ALL operation. It serves as a consolidated table for claim-related information.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, union, consolidated]
+    columns:
+      - name: claim_id
+        description: Unique identifier for each claim.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: claim_status
+        description: Status of the claim, such as 'open', 'closed', or 'pending'.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['open', 'closed', 'pending']
+      - name: claim_amount
+        description: Monetary value of the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: claim_date
+        description: Date when the claim was filed.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2030-12-31'
+      - name: customer_id
+        description: Unique identifier for the customer associated with the claim.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: policy_id
+        description: Unique identifier for the policy associated with the claim.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_policy')
+              field: policy_id

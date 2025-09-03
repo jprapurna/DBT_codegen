@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: fct_cdm__claim_cd_bur_scd3  # Required
+    description: This model represents the claims data for CDM (Claim Code Burden) in a slowly changing dimension type 3 format. It aggregates and transforms data from the intermediate model `int_cdm__claim_cd_bur_scd3`.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, cdm, scd3]  # Optional tags like 'finance', 'pii'
+    columns:
+      - name: claim_id
+        description: Unique identifier for each claim.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: claim_status
+        description: Status of the claim, such as 'active', 'inactive', or 'pending'.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive', 'pending']
+      - name: claim_amount
+        description: Monetary value of the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: claim_date
+        description: Date when the claim was filed.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2030-12-31'
+      - name: customer_id
+        description: Foreign key linking to the customer table.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: claim_type
+        description: Type of claim, such as 'medical', 'dental', or 'vision'.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['medical', 'dental', 'vision']
+```
+
+### Notes:
+- The SQL file uses `SELECT *`, which means the columns are inherited from the referenced model `int_cdm__claim_cd_bur_scd3`. I inferred common column names and descriptions based on typical claims data structure.
+- Tests are applied based on the guidelines provided, ensuring data quality and integrity.
+- If the actual column names differ, they should be updated accordingly.

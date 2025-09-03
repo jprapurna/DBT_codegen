@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: CDH_GWODS
+    description: Source data from CDH Gateway Operational Data Store
+    database: CDH_GWODS
+    schema: CDM
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Error: 002003 (02000): 01becd34-0003-7138-0017-750320dc9fbb: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: SQ_CDH_GW_BUR
+
+        columns: []
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Error: 002003 (02000): 01becd34-0003-7139-0017-750320dccbb3: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns: []
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Error: 002003 (02000): 01becd34-0003-713a-0017-750320dcaf1f: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: LKP_CDM_BATCH_CTRLID
+
+        columns: []
+
+      - name: LKP_MAX_ROW_WID
+        description: Error: 002003 (02000): 01becd34-0003-7138-0017-750320dc9fbf: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: LKP_MAX_ROW_WID
+
+        columns: []

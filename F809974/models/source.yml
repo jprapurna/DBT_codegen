@@ -1,0 +1,1398 @@
+version: 2
+
+sources:
+  - name: GENAI_POWER_BI
+    description: Source tables for GENAI_POWER_BI database
+    database: GENAI_POWER_BI
+    schema: POWER_CENTER
+
+    tables:
+      - name: RBI_REF_AUTO_TERR
+        description: Table containing auto territory reference data
+        identifier: RBI_REF_AUTO_TERR
+        columns:
+          - name: REF_AUTO_TERR_SK
+            description: Primary key for auto territory reference
+          - name: END_EFF_DT
+            description: End effective date
+          - name: CHCKSUM
+            description: Checksum value
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: NISS_TERR_CD
+            description: NISS territory code
+          - name: CNTY_NM
+            description: County name
+          - name: CITY_NM
+            description: City name
+          - name: SRC_EFF_DT
+            description: Source effective date
+          - name: SRC_OBSLT_DT
+            description: Source obsolete date
+          - name: NISS_ST_CD
+            description: NISS state code
+          - name: ST_ABBRV
+            description: State abbreviation
+          - name: ZIP_CD
+            description: ZIP code
+          - name: PP_COMMRCL_CD
+            description: PP commercial code
+
+      - name: WRK_BIRP_NISS_APRM_DETL
+        description: Table containing detailed NISS APRM data
+        identifier: WRK_BIRP_NISS_APRM_DETL
+        columns:
+          - name: NISS_APRM_DETL_SK
+            description: Primary key for NISS APRM detail
+          - name: CLNDR_YR
+            description: Calendar year
+          - name: CALL_YR
+            description: Call year
+          - name: NAIC_CMPNY_CD
+            description: NAIC company code
+          - name: NISS_CMPNY_CD
+            description: NISS company code
+          - name: ST_NM
+            description: State name
+          - name: ST_CD
+            description: State code
+          - name: NISS_ST_CD
+            description: NISS state code
+          - name: ST_ABBR
+            description: State abbreviation
+          - name: ACCTNG_LOB
+            description: Accounting line of business
+          - name: CVG_TYP_CD
+            description: Coverage type code
+          - name: CVG_AMT
+            description: Coverage amount
+          - name: BI_LMT
+            description: BI limit
+          - name: GA_ADDED_AT_FAULT_IND
+            description: Georgia added at fault indicator
+          - name: FA2_PLCY_IND
+            description: FA2 policy indicator
+          - name: UM_UMI_STACKING
+            description: UM/UMI stacking
+          - name: PIP_WVR_WL_IND
+            description: PIP waiver indicator
+          - name: PIP_MED_SEC_IND
+            description: PIP medical section indicator
+          - name: PIP_LOSS_INCOME_IND
+            description: PIP loss income indicator
+          - name: MI_PPO_IND
+            description: Michigan PPO indicator
+          - name: PRD_GRP_CD
+            description: Product group code
+          - name: NJ_HLTH_INSR_PRIM
+            description: New Jersey health insurance primary
+          - name: NJ_EXTR_PIP_PKG
+            description: New Jersey extra PIP package
+          - name: NJ_RESDNC_RLTNSHP_PIP_IND
+            description: New Jersey residence relationship PIP indicator
+          - name: NY_SSL_IND
+            description: New York SSL indicator
+          - name: NY_FULL_CVG_GLASS_COMP_IND
+            description: New York full coverage glass comprehensive indicator
+          - name: GRGNG_ZIP_5
+            description: Garage ZIP code (5 digits)
+          - name: NISS_TERR_CD
+            description: NISS territory code
+          - name: RATNG_CMPY_CD
+            description: Rating company code
+          - name: MLT_CAR_IND
+            description: Multi-car indicator
+          - name: RT_CLS
+            description: Rating class
+          - name: AGE
+            description: Age
+          - name: GENDR
+            description: Gender
+          - name: MRTL_STAT
+            description: Marital status
+          - name: AUTO_USE_CD
+            description: Auto use code
+          - name: MILES_TO_WRK
+            description: Miles to work
+          - name: GOOD_STDNT_IND
+            description: Good student indicator
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator
+          - name: SOI_TYP
+            description: SOI type
+          - name: PHY_DMG_IND
+            description: Physical damage indicator
+          - name: NJ_RATD_PNTS
+            description: New Jersey rated points
+          - name: VEH_MDL_YR
+            description: Vehicle model year
+          - name: NJ_EXCPTION_CD
+            description: New Jersey exception code
+          - name: NJ_FGVN_PNTS
+            description: New Jersey forgiven points
+          - name: PASSV_RESTRA_DISC
+            description: Passive restraint discount
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator
+          - name: ANTI_THFT_DISC
+            description: Anti-theft discount
+          - name: DAY_TM_RUN_LIGHTS
+            description: Daytime running lights
+          - name: LMT_TORT
+            description: Limited tort
+          - name: ANNL_STMNT_LOB_CD
+            description: Annual statement line of business code
+          - name: CVG_TYP_IND
+            description: Coverage type indicator
+          - name: CVG_EXPS_VAL
+            description: Coverage expense value
+          - name: TTL_WRITTN_PREM_AMT
+            description: Total written premium amount
+          - name: LINE_CD
+            description: Line code
+          - name: ACCDNT_YR
+            description: Accident year
+          - name: NISS_CVG_CD
+            description: NISS coverage code
+          - name: RTNG_ZNE_CD
+            description: Rating zone code
+          - name: TERM_ZNE_CD
+            description: Term zone code
+          - name: NISS_CLASS_CD
+            description: NISS class code
+          - name: NISS_ELIG_PNTS_CD
+            description: NISS eligible points code
+          - name: NISS_AGE_GRP_CD
+            description: NISS age group code
+          - name: NISS_CMMCL_IND_CD
+            description: NISS commercial indicator code
+          - name: NISS_EXCPN_CD
+            description: NISS exception code
+          - name: NISS_FGVNS_CD
+            description: NISS forgiven code
+          - name: NISS_PASSV_RESTRA_CD
+            description: NISS passive restraint code
+          - name: NISS_DEFNS_DRVR_CRD_CD
+            description: NISS defensive driver credit code
+          - name: NISS_ANTI_THFT_DVC_CD
+            description: NISS anti-theft device code
+          - name: NISS_DAY_TM_RUN_LAMPS_DISC_CD
+            description: NISS daytime running lamps discount code
+          - name: NISS_PLCY_LMT_CD
+            description: NISS policy limit code
+          - name: NISS_DEDUC_CD
+            description: NISS deductible code
+          - name: NISS_SSL_LIAB_CD
+            description: NISS SSL liability code
+          - name: NISS_SUBLOB_CD
+            description: NISS sub-line of business code
+          - name: NISS_TYP_LOSS_CD
+            description: NISS type loss code
+          - name: NISS_LIAB_OR_NO_FAULT_CD
+            description: NISS liability or no-fault code
+          - name: NISS_ANNL_STMNT_LOB_CD
+            description: NISS annual statement line of business code
+          - name: NISS_PD_LOSS
+            description: NISS paid loss
+          - name: NISS_PD_ALLOC_ADJUS_EXPNS
+            description: NISS paid allocated adjustment expense
+          - name: NISS_OUTSTNDG_LOSS
+            description: NISS outstanding loss
+          - name: NISS_NO_PD_CLMS
+            description: NISS number of paid claims
+          - name: NISS_NO_OUTSTND_CLMS
+            description: NISS number of outstanding claims
+          - name: RSVD_NISS_USE
+            description: Reserved NISS use
+          - name: NISS_RSVD_CMPNY_USE
+            description: NISS reserved company use
+          - name: NISS_MNFCTRS_MDL_YR
+            description: NISS manufacturers model year
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: NJ_NO_LWST_LMT_IND
+            description: New Jersey no lowest limit indicator
+          - name: NJ_NMD_DRVR_EXCL_IND
+            description: New Jersey named driver exclusion indicator
+          - name: EXPS_VAL_ROLLED
+            description: Expense value rolled
+          - name: CVG_CNT_IND
+            description: Coverage count indicator
+          - name: CVG_CNT
+            description: Coverage count
+          - name: CVG_CD_SK
+            description: Coverage code SK
+          - name: CVG_ATTR_SK
+            description: Coverage attribute SK
+          - name: REC_DROP_IND
+            description: Record drop indicator
+          - name: REC_DROP_RSN_DESC
+            description: Record drop reason description
+          - name: REC_EXCPN_IND
+            description: Record exception indicator
+          - name: REC_EXCPN_RSN_DESC
+            description: Record exception reason description
+          - name: CVG_ATTR_CHCKSUM
+            description: Coverage attribute checksum
+          - name: COMP_DED
+            description: Comprehensive deductible
+          - name: COLL_DED
+            description: Collision deductible
+          - name: PLCY_CNTRCT_NUM
+            description: Policy contract number
+          - name: UNIT_NUM
+            description: Unit number
+          - name: EFF_DT
+            description: Effective date
+          - name: NUM_OF_CARS_IN_HH
+            description: Number of cars in household
+          - name: RDRVR_DT_OF_BRTH
+            description: Rated driver date of birth
+          - name: TERM_STRT_DT
+            description: Term start date
+          - name: SRC_SYS_CD
+            description: Source system code
+          - name: DERIVED_RDRVR_AGE
+            description: Derived rated driver age
+          - name: FINAL_RDRVR_AGE
+            description: Final rated driver age
+          - name: PNI_AGE
+            description: Policyholder age
+          - name: LOB
+            description: Line of business
+          - name: PRINCIPAL_OPRT
+            description: Principal operator
+          - name: SOURCE_IND_DERIVED
+            description: Source indicator derived
+
+      - name: WRK_BIRP_NISS_APRM_FINAL
+        description: Table containing final NISS APRM data
+        identifier: WRK_BIRP_NISS_APRM_FINAL
+        columns:
+          - name: NISS_APRM_FINAL_SK
+            description: Primary key for NISS APRM final
+          - name: CLNDR_YR
+            description: Calendar year
+          - name: CALL_YR
+            description: Call year
+          - name: NISS_CMPNY_CD
+            description: NISS company code
+          - name: ST_NM
+            description: State name
+          - name: ST_CD
+            description: State code
+          - name: ST_ABBR
+            description: State abbreviation
+          - name: NISS_ST_CD
+            description: NISS state code
+
+      - name: WRK_BIRP_TA_NISS_NU0C_APRM_DTL
+        description: Table containing detailed NISS NU0C APRM data
+        identifier: WRK_BIRP_TA_NISS_NU0C_APRM_DTL
+        columns:
+          - name: FISC_PER_YR
+            description: Fiscal period year
+          - name: NAIC_CMPNY_CD
+            description: NAIC company code
+          - name: NISS_CMPNY_CD
+            description: NISS company code
+          - name: ST_NM
+            description: State name
+          - name: ST_CD
+            description: State code
+          - name: NISS_ST_CD
+            description: NISS state code
+          - name: ST_ABBR
+            description: State abbreviation
+          - name: ACCTNG_LOB
+            description: Accounting line of business
+          - name: CVG_TYP_CD
+            description: Coverage type code
+          - name: CVG_AMT
+            description: Coverage amount
+          - name: BI_LMT
+            description: BI limit
+          - name: GA_ADDED_AT_FAULT_IND
+            description: Georgia added at fault indicator
+          - name: PLCY_IND
+            description: Policy indicator
+          - name: UM_UMI_STACKING
+            description: UM/UMI stacking
+          - name: PIP_WVR_WL_IND
+            description: PIP waiver indicator
+          - name: PIP_MED_SEC_IND
+            description: PIP medical section indicator
+          - name: PIP_LOSS_INCOME_IND
+            description: PIP loss income indicator
+          - name: MI_PPO_IND
+            description: Michigan PPO indicator
+          - name: PRD_GRP_CD
+            description: Product group code
+          - name: NJ_HLTH_INSR_PRIM
+            description: New Jersey health insurance primary
+          - name: NJ_EXTR_PIP_PKG
+            description: New Jersey extra PIP package
+          - name: NJ_RESDNC_RLTNSHP_PIP_IND
+            description: New Jersey residence relationship PIP indicator
+          - name: NY_SSL_IND
+            description: New York SSL indicator
+          - name: NY_FULL_CVG_GLASS_COMP_IND
+            description: New York full coverage glass comprehensive indicator
+          - name: GRGNG_ZIP
+            description: Garage ZIP code
+          - name: NISS_TERR_CD
+            description: NISS territory code
+          - name: RATNG_CMPY_CD
+            description: Rating company code
+          - name: MLT_CAR_IND
+            description: Multi-car indicator
+          - name: RT_CLS
+            description: Rating class
+          - name: AGE
+            description: Age
+          - name: GENDR
+            description: Gender
+          - name: MRTL_STAT
+            description: Marital status
+          - name: AUTO_USE_CD
+            description: Auto use code
+          - name: MILES_TO_WRK
+            description: Miles to work
+          - name: GOOD_STDNT_IND
+            description: Good student indicator
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator
+          - name: SOI_TYP
+            description: SOI type
+          - name: PHY_DMG_IND
+            description: Physical damage indicator
+          - name: NJ_RATD_PNTS
+            description: New Jersey rated points
+          - name: VEH_MDL_YR
+            description: Vehicle model year
+          - name: NJ_EXCPTION_CD
+            description: New Jersey exception code
+          - name: NJ_FGVN_PNTS
+            description: New Jersey forgiven points
+          - name: PASSV_RESTRA_DISC
+            description: Passive restraint discount
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator
+          - name: ANTI_THFT_DISC
+            description: Anti-theft discount
+          - name: DAY_TM_RUN_LIGHTS
+            description: Daytime running lights
+          - name: LMT_TORT
+            description: Limited tort
+          - name: ANNL_STMNT_LOB_CD
+            description: Annual statement line of business code
+          - name: CVG_TYP_IND
+            description: Coverage type indicator
+
+      - name: WRK_BIRP_TA_NISS_NU0C_APRM_LND
+        description: Table containing NISS NU0C APRM landing data
+        identifier: WRK_BIRP_TA_NISS_NU0C_APRM_LND
+        columns:
+          - name: NISS_APRM_LND_SK
+            description: Primary key for NISS APRM landing
+          - name: REG_PER_YR
+            description: Registration period year
+          - name: FISC_PER_YR
+            description: Fiscal period year
+          - name: NAIC_CMPNY_CD
+            description: NAIC company code
+          - name: NISS_CMPNY_CD
+            description: NISS company code
+          - name: ST_NM
+            description: State name
+          - name: ST_CD
+            description: State code
+          - name: NISS_ST_CD
+            description: NISS state code
+          - name: ST_ABBR
+            description: State abbreviation
+          - name: ACCTNG_LOB
+            description: Accounting line of business
+          - name: CVG_TYP_CD
+            description: Coverage type code
+          - name: CVG_AMT
+            description: Coverage amount
+          - name: BI_LMT
+            description: BI limit
+          - name: GA_ADDED_AT_FAULT_IND
+            description: Georgia added at fault indicator
+          - name: PLCY_IND
+            description: Policy indicator
+          - name: UM_UMI_STACKING
+            description: UM/UMI stacking
+          - name: PIP_WVR_WL_IND
+            description: PIP waiver indicator
+          - name: PIP_MED_SEC_IND
+            description: PIP medical section indicator
+          - name: PIP_LOSS_INCOME_IND
+            description: PIP loss income indicator
+          - name: MI_PPO_IND
+            description: Michigan PPO indicator
+          - name: PRD_GRP_CD
+            description: Product group code
+          - name: NJ_HLTH_INSR_PRIM
+            description: New Jersey health insurance primary
+          - name: NJ_EXTR_PIP_PKG
+            description: New Jersey extra PIP package
+          - name: NJ_RESDNC_RLTNSHP_PIP_IND
+            description: New Jersey residence relationship PIP indicator
+          - name: NY_SSL_IND
+            description: New York SSL indicator
+          - name: NY_FULL_CVG_GLASS_COMP_IND
+            description: New York full coverage glass comprehensive indicator
+          - name: GRGNG_ZIP
+            description: Garage ZIP code
+          - name: NISS_TERR_CD
+            description: NISS territory code
+          - name: RATNG_CMPY_CD
+            description: Rating company code
+          - name: MLT_CAR_IND
+            description: Multi-car indicator
+          - name: RT_CLS
+            description: Rating class
+          - name: AGE
+            description: Age
+          - name: GENDR
+            description: Gender
+          - name: MRTL_STAT
+            description: Marital status
+          - name: AUTO_USE_CD
+            description: Auto use code
+          - name: MILES_TO_WRK
+            description: Miles to work
+          - name: GOOD_STDNT_IND
+            description: Good student indicator
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator
+          - name: SOI_TYP
+            description: SOI type
+          - name: PHY_DMG_IND
+            description: Physical damage indicator
+          - name: NJ_RATD_PNTS
+            description: New Jersey rated points
+          - name: VEH_MDL_YR
+            description: Vehicle model year
+          - name: NJ_EXCPTION_CD
+            description: New Jersey exception code
+          - name: NJ_FGVN_PNTS
+            description: New Jersey forgiven points
+          - name: PASSV_RESTRA_DISC
+            description: Passive restraint discount
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator
+          - name: ANTI_THFT_DISC
+            description: Anti-theft discount
+          - name: DAY_TM_RUN_LIGHTS
+            description: Daytime running lights
+          - name: LMT_TORT
+            description: Limited tort
+          - name: ANNL_STMNT_LOB_CD
+            description: Annual statement line of business code
+          - name: CVG_TYP_IND
+            description: Coverage type indicator
+          - name: CVG_EXPS_VAL
+            description: Coverage expense value
+          - name: WRITTN_PREM_AMT
+            description: Written premium amount
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: NJ_NO_LWST_LMT_IND
+            description: New Jersey no lowest limit indicator
+          - name: NJ_NMD_DRVR_EXCL_IND
+            description: New Jersey named driver exclusion indicator
+          - name: EXPS_VAL_ROLLED
+            description: Expense value rolled
+          - name: COMP_DED
+            description: Comprehensive deductible
+          - name: COLL_DED
+            description: Collision deductible
+          - name: PLCY_CNTRCT_NUM
+            description: Policy contract number
+          - name: UNIT_NUM
+            description: Unit number
+          - name: EFF_DT
+            description: Effective date
+          - name: NUM_OF_CARS_IN_HH
+            description: Number of cars in household
+          - name: RDRVR_DT_OF_BRTH
+            description: Rated driver date of birth
+          - name: TERM_STRT_DT
+            description: Term start date
+          - name: SRC_SYS_CD
+            description: Source system code
+          - name: PNI_AGE
+            description: Policyholder age
+          - name: MIS_LOB
+            description: MIS line of business
+          - name: PRINCIPAL_OPRT
+            description: Principal operator
+          - name: SOURCE_IND_DERIVED
+            description: Source indicator derived
+
+      - name: DIM_AG_TRANS_TYP_PLCY
+        description: Table containing transaction type policy dimension data
+        identifier: DIM_AG_TRANS_TYP_PLCY
+        columns:
+          - name: TRANS_TYP_PLCY_SK
+            description: Primary key for transaction type policy
+          - name: TRANS_TYP_PLCY_CD
+            description: Transaction type policy code
+          - name: TRANS_TYP_PLCY_DESC
+            description: Transaction type policy description
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+
+      - name: DIM_AG_FARMR_GEO_ST
+        description: Table containing farmer geographic state dimension data
+        identifier: DIM_AG_FARMR_GEO_ST
+        columns:
+          - name: FARMR_GEO_ST_SK
+            description: Primary key for farmer geographic state
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute
+          - name: ST_CD
+            description: State code
+          - name: ST_NM
+            description: State name
+          - name: ZONE
+            description: Zone
+          - name: CORE_29_IND
+            description: Core 29 indicator
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+
+      - name: DIM_AG_MINI_SOI
+        description: Table containing mini SOI dimension data
+        identifier: DIM_AG_MINI_SOI
+        columns:
+          - name: MINI_SOI_SK
+            description: Primary key for mini SOI
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute
+          - name: VEH_TYP_CD
+            description: Vehicle type code
+          - name: VEH_TYP_DESC
+            description: Vehicle type description
+          - name: SOI_CTGY
+            description: SOI category
+          - name: VEH_USE_CD
+            description: Vehicle use code
+          - name: MCA_PNT_CNT_RNGE
+            description: MCA point count range
+          - name: ANN_MIL_RNGE
+            description: Annual mileage range
+          - name: CAR_SYM_RNGE
+            description: Car symbol range
+          - name: RDRVR_AGE_RNGE
+            description: Rated driver age range
+          - name: RATE_CLS_CD
+            description: Rate class code
+          - name: OCCUPTN_CD
+            description: Occupation code
+          - name: OCCUPTN_DESC
+            description: Occupation description
+          - name: OCCUPTN_CD_PRGM
+            description: Occupation code program
+          - name: COLL_DED
+            description: Collision deductible
+          - name: CA_PNTD_IND
+            description: California painted indicator
+          - name: GRP_DISC_IND
+            description: Group discount indicator
+          - name: NEW_CAR_CRED_IND
+            description: New car credit indicator
+          - name: RETRMNT_CMNTY_DISC_IND
+            description: Retirement community discount indicator
+          - name: VEH_USE_SURCHRG_IND
+            description: Vehicle use surcharge indicator
+          - name: LXRY_VEH_IND
+            description: Luxury vehicle indicator
+          - name: FULL_CVG_IND
+            description: Full coverage indicator
+          - name: YTHFL_RDRVR_IND
+            description: Youthful rated driver indicator
+          - name: GOOD_DRVR_IND
+            description: Good driver indicator
+          - name: GOOD_STDNT_IND
+            description: Good student indicator
+          - name: YES_IND
+            description: Yes indicator
+          - name: MAT_DRVR_DISC_IND
+            description: Mature driver discount indicator
+          - name: SAFE_DRVNG_DISC_IND
+            description: Safe driving discount indicator
+          - name: COMPRE_WTHT_COLL_SURCHRG_IND
+            description: Comprehensive without collision surcharge indicator
+          - name: ERLY_SHOPPNG_DISC_IND
+            description: Early shopping discount indicator
+          - name: EFT_IND
+            description: EFT indicator
+          - name: PD_IN_FULL_IND
+            description: Paid in full indicator
+          - name: NON_FIG_HO_CRED_IND
+            description: Non-figure homeowner credit indicator
+          - name: TRNSFR_DISC_IND
+            description: Transfer discount indicator
+          - name: MLT_CAR_IND
+            description: Multi-car indicator
+          - name: MLT_LINE_IND
+            description: Multi-line indicator
+          - name: NEW_HH_IND
+            description: New household indicator
+          - name: SUM_SOI_CHK_SUM
+            description: Summary SOI checksum
+          - name: SUM_SOI_SK
+            description: Summary SOI SK
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: CA_SNR_DRVR_DISC_IND
+            description: California senior driver discount indicator
+          - name: CA_STDNT_AWAY_IND
+            description: California student away indicator
+
+      - name: DIM_AG_MINI_PLCY
+        description: Table containing mini policy dimension data
+        identifier: DIM_AG_MINI_PLCY
+        columns:
+          - name: MINI_PLCY_SK
+            description: Primary key for mini policy
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute
+          - name: MKT_TIER_FA2
+            description: Market tier FA2
+          - name: PAY_PLAN_CD
+            description: Payment plan code
+          - name: PAY_PLAN_DESC
+            description: Payment plan description
+          - name: PERSTNCY_YRS_RNGE
+            description: Persistency years range
+          - name: PNI_AGE_RNGE
+            description: Policyholder age range
+          - name: TERM_LNGTH_MNTHS
+            description: Term length in months
+          - name: CMPY_CD
+            description: Company code
+          - name: CMPY_DESC
+            description: Company description
+          - name: RATNG_CMPY_CD
+            description: Rating company code
+          - name: RATNG_CMPY_DESC
+            description: Rating company description
+          - name: FIRST_PRTY_CRED_TIER_MDL_C
+            description: First party credit tier model C
+          - name: LIAB_CRED_TIER_MDL_A
+            description: Liability credit tier model A
+          - name: PD_CRED_TIER_MDL_D
+            description: Paid credit tier model D
+          - name: UW_TIER_CD
+            description: Underwriting tier code
+          - name: DAYS_LPS_CD
+            description: Days lapse code
+          - name: PRI_INS_NAIC_CMPY_CD
+            description: Primary insurance NAIC company code
+          - name: PRI_CARR_TYP
+            description: Primary carrier type
+          - name: PRI_BI_LMT_AMT
+            description: Primary BI limit amount
+          - name: PRI_BI_LMT_CD
+            description: Primary BI limit code
+          - name: BI_LMT
+            description: BI limit
+          - name: COMPRE_WTHT_COLL_SURCHRG_IND
+            description: Comprehensive without collision surcharge indicator
+          - name: ERLY_SHOPPNG_DISC_IND
+            description: Early shopping discount indicator
+          - name: EFT_IND
+            description: EFT indicator
+          - name: PD_IN_FULL_IND
+            description: Paid in full indicator
+          - name: MLT_CAR_IND
+            description: Multi-car indicator
+          - name: MLT_LINE_IND
+            description: Multi-line indicator
+          - name: NEW_HH_IND
+            description: New household indicator
+          - name: NON_FIG_HO_CRED_IND
+            description: Non-figure homeowner credit indicator
+          - name: TRNSFR_DISC_IND
+            description: Transfer discount indicator
+          - name: FA2_PLCY_IND
+            description: FA2 policy indicator
+          - name: YTHFL_PNI_IND
+            description: Youthful policyholder indicator
+          - name: DPS_IND
+            description: DPS indicator
+          - name: GRP_DISC_IND
+            description: Group discount indicator
+          - name: NEW_CAR_CRED_IND
+            description: New car credit indicator
+          - name: RETRMNT_CMNTY_DISC_IND
+            description: Retirement community discount indicator
+          - name: VEH_USE_SURCHRG_IND
+            description: Vehicle use surcharge indicator
+          - name: GOOD_DRVR_IND
+            description: Good driver indicator
+          - name: GOOD_STDNT_IND
+            description: Good student indicator
+          - name: YES_IND
+            description: Yes indicator
+          - name: MAT_DRVR_DISC_IND
+            description: Mature driver discount indicator
+          - name: SAFE_DRVNG_DISC_IND
+            description: Safe driving discount indicator
+          - name: SUM_PLCY_CHK_SUM
+            description: Summary policy checksum
+          - name: SUM_PLCY_SK
+            description: Summary policy SK
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: CA_SNR_DRVR_DISC_IND
+            description: California senior driver discount indicator
+          - name: CA_STDNT_AWAY_IND
+            description: California student away indicator
+
+      - name: DIM_AG_PLCY_ENH
+        description: Table containing policy enhancement dimension data
+        identifier: DIM_AG_PLCY_ENH
+        columns:
+          - name: PLCY_ENH_SK
+            description: Primary key for policy enhancement
+          - name: PLCY_ID_SK
+            description: Policy ID SK
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp
+          - name: SRC_EFF_DT
+            description: Source effective date
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record
+          - name: CIF_CD
+            description: CIF code
+          - name: CIF_CD_DESC
+            description: CIF code description
+          - name: E_PLCY_IND
+            description: E-policy indicator
+          - name: E_PLCY_SRC_CD
+            description: E-policy source code
+          - name: E_PLCY_SRC_CD_DESC
+            description: E-policy source code description
+          - name: DISTNT_STDNT_DISC_IND
+            description: Distant student discount indicator
+          - name: AUTO_SPLTY_MTRC_DISC_IND
+            description: Auto specialty metric discount indicator
+          - name: AUTO_SPLTY_BOAT_WC_DISC_IND
+            description: Auto specialty boat WC discount indicator
+          - name: AUTO_SPLTY_OFFRD_OTH_DISC_IND
+            description: Auto specialty offered other discount indicator
+          - name: AUTO_SPLTY_MTRHM_TRLR_DISC_IND
+            description: Auto specialty motorhome trailer discount indicator
+          - name: DRVR_IMPRV_DISC_IND
+            description: Driver improvement discount indicator
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+
+      - name: FACT_AG_WRITTN_PREM_CVG_LVL
+        description: Table containing written premium coverage level fact data
+        identifier: FACT_AG_WRITTN_PREM_CVG_LVL
+        columns:
+          - name: ON_OFF_PREM_SK
+            description: On/off premium SK
+          - name: REGSTR_PER_SK
+            description: Registration period SK
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp
+          - name: TRANS_DT_SK
+            description: Transaction date SK
+          - name: DNSTRM_DT_SK
+            description: Downstream date SK
+          - name: EFF_DT_SK
+            description: Effective date SK
+          - name: TERM_STRT_DT_SK
+            description: Term start date SK
+          - name: FISC_PER_SK
+            description: Fiscal period SK
+          - name: ADJ_PER_SK
+            description: Adjustment period SK
+          - name: PLCY_PER_SK
+            description: Policy period SK
+          - name: TRANS_TYP_SK
+            description: Transaction type SK
+          - name: TRANS_TYP_PLCY_SK
+            description: Transaction type policy SK
+          - name: MINI_HH_SK
+            description: Mini household SK
+          - name: MINI_PLCY_SK
+            description: Mini policy SK
+          - name: MINI_SOI_SK
+            description: Mini SOI SK
+          - name: MINI_CVG_SK
+            description: Mini coverage SK
+          - name: MINI_AGT_SK
+            description: Mini agent SK
+          - name: MINI_RDRVR_SK
+            description: Mini rated driver SK
+          - name: HH_SK
+            description: Household SK
+          - name: PLCY_SK
+            description: Policy SK
+          - name: SOI_SK
+            description: SOI SK
+          - name: CVG_SK
+            description: Coverage SK
+          - name: PNI_SK
+            description: Policyholder SK
+          - name: AGT_SK
+            description: Agent SK
+          - name: RDRVR_SK
+            description: Rated driver SK
+          - name: FARMR_GEO_DISTR_SK
+            description: Farmer geographic distribution SK
+          - name: RATED_GEO_SK
+            description: Rated geographic SK
+          - name: DNSTRM_REGSTR_PER_SK
+            description: Downstream registration period SK
+          - name: DNSTRM_FISC_PER_SK
+            description: Downstream fiscal period SK
+          - name: MINI_PNI_SK
+            description: Mini policyholder SK
+          - name: DC_VER_IND_CVG
+            description: DC verification indicator coverage
+          - name: DC_VER_IND_SOI
+            description: DC verification indicator SOI
+          - name: DC_VER_IND_PLCY
+            description: DC verification indicator policy
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record
+          - name: PLCY_KOR_CD
+            description: Policy KOR code
+          - name: UNIT_KOR_CD
+            description: Unit KOR code
+          - name: WRITTN_PREM_AMT
+            description: Written premium amount
+          - name: TTL_WRITTN_PREM_AMT
+            description: Total written premium amount
+          - name: UNCAP_WRITTN_PREM_AMT
+            description: Uncapped written premium amount
+          - name: ALLOC_TDC_AMT
+            description: Allocated TDC amount
+          - name: ALLOC_MANL_ADJ_AMT
+            description: Allocated manual adjustment amount
+          - name: ALLOC_ASGN_RSK_INSTL_FEE_AMT
+            description: Allocated assigned risk installation fee amount
+          - name: ALLOC_EP_WRIT_OFF_AMT
+            description: Allocated EP write-off amount
+          - name: CVG_EXPS_VAL
+            description: Coverage expense value
+          - name: PLCY_FEE_AMT
+            description: Policy fee amount
+          - name: DRVR_FILNG_FEE_AMT
+            description: Driver filing fee amount
+          - name: REINST_FEE_AMT
+            description: Reinstatement fee amount
+          - name: PREM_CAP_FCTR
+            description: Premium cap factor
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: FULL_TERM_PREM_AMT
+            description: Full term premium amount
+          - name: PLCY_ENH_SK
+            description: Policy enhancement SK
+          - name: SOI_ENH_SK
+            description: SOI enhancement SK
+          - name: REGSTR_CUST_SGMTN_SK
+            description: Registration customer segmentation SK
+          - name: TERM_CUST_SGMTN_SK
+            description: Term customer segmentation SK
+          - name: REGSTR_CUST_SGMTN_V2_SK
+            description: Registration customer segmentation V2 SK
+          - name: TERM_CUST_SGMTN_V2_SK
+            description: Term customer segmentation V2 SK
+          - name: FL_HURR_CAT_FUND_AMT
+            description: Florida hurricane catastrophe fund amount
+          - name: FL_CPIC_REG_ASSMNT_AMT
+            description: Florida CPIC regular assessment amount
+          - name: FL_CPIC_EMERG_SURCHRG_AMT
+            description: Florida CPIC emergency surcharge amount
+          - name: FL_IGA_REG_AMT
+            description: Florida IGA regular amount
+          - name: FL_IGA_EMERG_AMT
+            description: Florida IGA emergency amount
+
+      - name: DIM_AG_SOI
+        description: Table containing SOI dimension data
+        identifier: DIM_AG_SOI
+        columns:
+          - name: SOI_SK
+            description: Primary key for SOI
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute
+          - name: SOI_ID
+            description: SOI ID
+          - name: VIN
+            description: Vehicle identification number
+          - name: VEH_INCEPT_DT
+            description: Vehicle inception date
+          - name: UNIT_NUM
+            description: Unit number
+          - name: VEH_MK_NM
+            description: Vehicle make name
+          - name: VEH_MDL_NM
+            description: Vehicle model name
+          - name: VEH_MDL_YR
+            description: Vehicle model year
+          - name: SOI_TYP
+            description: SOI type
+          - name: SOI_TYP_DESC
+            description: SOI type description
+          - name: ANN_MIL
+            description: Annual mileage
+          - name: MCA_PNT_CNT
+            description: MCA point count
+          - name: CAR_SYM
+            description: Car symbol
+          - name: LIAB_BI_SYM
+            description: Liability BI symbol
+          - name: LIAB_BI_SYM_RNGE
+            description: Liability BI symbol range
+          - name: LIAB_PD_SYM
+            description: Liability PD symbol
+          - name: LIAB_PD_SYM_RNGE
+            description: Liability PD symbol range
+          - name: MED_PIP_SYM
+            description: Medical PIP symbol
+          - name: MED_PIP_SYM_RNGE
+            description: Medical PIP symbol range
+          - name: COLL_SYM_RNGE
+            description: Collision symbol range
+          - name: COLL_SYM
+            description: Collision symbol
+          - name: COMPRE_SYM
+            description: Comprehensive symbol
+          - name: COMPRE_SYM_RNGE
+            description: Comprehensive symbol range
+          - name: CNCL_FORM_CD
+            description: Cancellation form code
+          - name: CNCL_FORM_DESC
+            description: Cancellation form description
+          - name: RDRVR_AGE
+            description: Rated driver age
+          - name: ADVNC_PURCH_IND
+            description: Advance purchase indicator
+          - name: ALTR_VEH_IND
+            description: Alternative vehicle indicator
+          - name: ALTRN_FUEL_IND
+            description: Alternative fuel indicator
+          - name: ABS_IND
+            description: ABS indicator
+          - name: ANTI_THFT_IND
+            description: Anti-theft indicator
+          - name: ANTIQ_CAR_IND
+            description: Antique car indicator
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator
+          - name: ELECTRNC_STABLTY_CTRL_DISC_IND
+            description: Electronic stability control discount indicator
+          - name: HI_PERF_IND
+            description: High performance indicator
+          - name: NEW_PARENT_IND
+            description: New parent indicator
+          - name: PASSV_RESTRA_IND
+            description: Passive restraint indicator
+          - name: PRI_INS_DISC_IND
+            description: Primary insurance discount indicator
+          - name: CONVICT_FREE_IND
+            description: Conviction-free indicator
+          - name: SR22_FILNG_IND
+            description: SR22 filing indicator
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator
+          - name: TEEN_DRVR_IND
+            description: Teen driver indicator
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator
+          - name: UNVERFYBL_DRVNG_RECRD_IND
+            description: Unverifiable driving record indicator
+          - name: MINI_SOI_SK
+            description: Mini SOI SK
+          - name: MINI_SOI_CHK_SUM
+            description: Mini SOI checksum
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+
+      - name: DIM_AG_CVG
+        description: Table containing coverage dimension data
+        identifier: DIM_AG_CVG
+        columns:
+          - name: CVG_SK
+            description: Primary key for coverage
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute
+          - name: ACCTNG_LOB
+            description: Accounting line of business
+          - name: LOB
+            description: Line of business
+          - name: CVG_TYP_CD
+            description: Coverage type code
+          - name: CVG_TYP_DESC
+            description: Coverage type description
+          - name: DED_PCT
+            description: Deductible percentage
+          - name: MINI_CVG_SK
+            description: Mini coverage SK
+          - name: MINI_CVG_CHK_SUM
+            description: Mini coverage checksum
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+
+      - name: DIM_AG_PLCY
+        description: Table containing policy dimension data
+        identifier: DIM_AG_PLCY
+        columns:
+          - name: PLCY_SK
+            description: Primary key for policy
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute
+          - name: PLCY_ID_SK
+            description: Policy ID SK
+          - name: PLCY_CNTRCT_NUM
+            description: Policy contract number
+          - name: PLCY_INCEPT_DT
+            description: Policy inception date
+          - name: PERSTNCY_YRS
+            description: Persistency years
+          - name: LPS_DAYS_CNT
+            description: Lapse days count
+          - name: TERM_STRT_DT
+            description: Term start date
+          - name: TERM_END_DT
+            description: Term end date
+          - name: PNI_AGE
+            description: Policyholder age
+          - name: XCLUDED_DRVR_CHLD_IND
+            description: Excluded driver child indicator
+          - name: XCLUDED_DRVR_OTH_IND
+            description: Excluded driver other indicator
+          - name: XCLUDED_DRVR_PARENT_IND
+            description: Excluded driver parent indicator
+          - name: XCLUDED_DRVR_SPS_IND
+            description: Excluded driver spouse indicator
+          - name: LIFE_PLCY_IND
+            description: Life policy indicator
+          - name: ADVNC_PURCH_IND
+            description: Advance purchase indicator
+          - name: ALTR_VEH_IND
+            description: Alternative vehicle indicator
+          - name: ALTRN_FUEL_IND
+            description: Alternative fuel indicator
+          - name: ABS_IND
+            description: ABS indicator
+          - name: ANTI_THFT_IND
+            description: Anti-theft indicator
+          - name: ANTIQ_CAR_IND
+            description: Antique car indicator
+          - name: DRVR_TRNG_IND
+            description: Driver training indicator
+          - name: ELECTRNC_STABLTY_CTRL_DISC_IND
+            description: Electronic stability control discount indicator
+          - name: HI_PERF_IND
+            description: High performance indicator
+          - name: NEW_PARENT_IND
+            description: New parent indicator
+          - name: PASSV_RESTRA_IND
+            description: Passive restraint indicator
+          - name: PRI_INS_DISC_IND
+            description: Primary insurance discount indicator
+          - name: CONVICT_FREE_IND
+            description: Conviction-free indicator
+          - name: SR22_FILNG_IND
+            description: SR22 filing indicator
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator
+          - name: TEEN_DRVR_IND
+            description: Teen driver indicator
+          - name: SNR_DRVR_IND
+            description: Senior driver indicator
+          - name: UNVERFYBL_DRVNG_RECRD_IND
+            description: Unverifiable driving record indicator
+          - name: MINI_PLCY_SK
+            description: Mini policy SK
+          - name: MINI_PLCY_CHK_SUM
+            description: Mini policy checksum
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+
+      - name: DIM_AG_SOI_ENH
+        description: Table containing SOI enhancement dimension data
+        identifier: DIM_AG_SOI_ENH
+        columns:
+          - name: SOI_ENH_SK
+            description: Primary key for SOI enhancement
+          - name: PLCY_ID_SK
+            description: Policy ID SK
+          - name: SOI_ID
+            description: SOI ID
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp
+          - name: SRC_EFF_DT
+            description: Source effective date
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record
+          - name: ADD_UNIT_IND
+            description: Add unit indicator
+          - name: RPLC_VEH_IND
+            description: Replace vehicle indicator
+          - name: DISTNT_STDNT_DISC_IND
+            description: Distant student discount indicator
+          - name: AUTO_SPLTY_MTRC_DISC_IND
+            description: Auto specialty metric discount indicator
+          - name: AUTO_SPLTY_BOAT_WC_DISC_IND
+            description: Auto specialty boat WC discount indicator
+          - name: AUTO_SPLTY_OFFRD_OTH_DISC_IND
+            description: Auto specialty offered other discount indicator
+          - name: AUTO_SPLTY_MTRHM_TRLR_DISC_IND
+            description: Auto specialty motorhome trailer discount indicator
+          - name: DRVR_IMPRV_DISC_IND
+            description: Driver improvement discount indicator
+          - name: DEFNS_DRVR_DISC_IND
+            description: Defensive driver discount indicator
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: LSE_VEH_IND
+            description: Lease vehicle indicator
+          - name: MLT_LINE_DISC_DESC
+            description: Multi-line discount description
+          - name: PRD_TYP
+            description: Product type
+          - name: AUTO_USE_CD
+            description: Auto use code
+          - name: AUTO_USE_DESC
+            description: Auto use description
+          - name: RT_CLS
+            description: Rating class
+          - name: FARM_DISC_CD
+            description: Farm discount code
+          - name: NON_SMKR
+            description: Non-smoker
+          - name: FIRE_TAX_CD_CNTY
+            description: Fire tax code county
+          - name: FIRE_TAX_CD_CITY
+            description: Fire tax code city
+          - name: NEW_BUS_REINSTMT_DT
+            description: New business reinstatement date
+          - name: LMT_TORT
+            description: Limited tort
+
+      - name: DIM_AG_RATED_GEO
+        description: Table containing rated geographic dimension data
+        identifier: DIM_AG_RATED_GEO
+        columns:
+          - name: RATED_GEO_SK
+            description: Primary key for rated geographic
+          - name: CHK_SUM_ATTR
+            description: Checksum attribute
+          - name: GRGNG_ZIP_3
+            description: Garage ZIP code (3 digits)
+          - name: GRGNG_ZIP_5
+            description: Garage ZIP code (5 digits)
+          - name: GRGNG_ZIP_PLUS4
+            description: Garage ZIP code plus 4
+          - name: FARMR_GEO_ST_SK
+            description: Farmer geographic state SK
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+
+      - name: DIM_AG_CVG_ENH
+        description: Table containing coverage enhancement dimension data
+        identifier: DIM_AG_CVG_ENH
+        columns:
+          - name: ON_OFF_PREM_SK
+            description: On/off premium SK
+          - name: PLCY_ID_SK
+            description: Policy ID SK
+          - name: SOI_ID
+            description: SOI ID
+          - name: CVG_CD
+            description: Coverage code
+          - name: LOB
+            description: Line of business
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp
+          - name: EFF_DT
+            description: Effective date
+          - name: ON_OFF_PREM_TYP_RECRD
+            description: On/off premium type record
+          - name: REGSTR_PER_SK
+            description: Registration period SK
+          - name: DIP
+            description: DIP
+          - name: SAP_CMPY
+            description: SAP company
+          - name: NC_TIER
+            description: NC tier
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID
+          - name: NJ_FRGVN_PNTS
+            description: New Jersey forgiven points
+          - name: NJ_RTD_PNTS
+            description: New Jersey rated points
+          - name: CVG_TYP_IND
+            description: Coverage type indicator
+          - name: DRV_RCRD_SRCHRG_PCT
+            description: Driver record surcharge percentage
+          - name: FARA_CD
+            description: FARA code
+
+      - name: FDR_LIB_WRK_BIRP_NISS_APRM_FINAL
+        description: Table containing final NISS APRM data from FDR library
+        identifier: FDR_LIB_WRK_BIRP_NISS_APRM_FINAL
+        columns: []
+
+      - name: FDR_LIB_WRK_BIRP_NISS_APRM_SUMRY
+        description: Table containing summary NISS APRM data from FDR library
+        identifier: FDR_LIB_WRK_BIRP_NISS_APRM_SUMRY
+        columns: []
+      
+      - name: WRK_BIRP_NISS_APRM_DETL2
+        description: Table containing summary NISS APRM data from FDR library
+        identifier: WRK_BIRP_NISS_APRM_DETL2
+        columns: []
+
+      - name: WRK_BIRP_NISS_APRM_DETL_1
+        description: Table containing summary NISS APRM data from FDR library
+        identifier: WRK_BIRP_NISS_APRM_DETL1
+        columns: []
+
+      - name: SOME_TABLE
+        description: Table containing summary NISS APRM data from FDR library
+        identifier: SOME_TABLE
+        columns: []

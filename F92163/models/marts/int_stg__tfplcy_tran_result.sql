@@ -1,0 +1,40 @@
+{{
+  config(
+    materialized='ephemeral'
+  )
+}}
+
+WITH source_data AS (
+  SELECT * 
+  FROM {{ source('DBA_COMMON_UTILS', 'STG_TFPLCY_TRAN_RESULT') }}
+),
+
+flt_SRC_DUP AS (
+  SELECT
+    SRC_INSERT_TRANS_TMSP,
+    SRC_EFF_DT,
+    o_DERIVED_FACESHEET_PRINT_DT,
+    o_UPD_FLAG,
+    CR_BY_MAPNG_ID,
+    DW_CR_TMSP,
+    UPD_BY_MAPNG_ID,
+    DW_UPD_TMSP,
+    WRK_FLOW_RUN_ID
+  FROM source_data
+  WHERE o_UPD_FLAG = 1
+),
+
+upd_FACESHEET_DT AS (
+  SELECT
+    SRC_PLCY_ID_SK,
+    SRC_INSERT_TRANS_TMSP,
+    SRC_EFF_DT,
+    o_DERIVED_FACESHEET_PRINT_DT,
+    CR_BY_MAPNG_ID,
+    DW_CR_TMSP,
+    UPD_BY_MAPNG_ID,
+    DW_UPD_TMSP
+  FROM flt_SRC_DUP
+)
+
+SELECT * FROM upd_FACESHEET_DT

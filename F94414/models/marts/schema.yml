@@ -1,0 +1,209 @@
+version: 2
+
+models:
+  - name: fct_m_fdr_fire_plcy_trans_rslt_pl  # Required
+    description: Fact table for fire policy transaction results, capturing detailed metrics and timestamps for various workflow components and policy transactions.
+    meta:
+      owner: data_engineering_team
+      domain: insurance
+    config:
+      materialized: table
+    tags: [insurance, fire_policy, transactions]
+    columns:
+      - name: BAL_ROW_COUNTS_SK
+        description: Surrogate key for balance row counts.
+        tests:
+          - not_null
+          - unique
+
+      - name: WRKFL_CMPNT_OBJ_ID
+        description: Identifier for workflow component objects.
+        tests:
+          - not_null
+
+      - name: FIN_DETAIL_AMT
+        description: Financial detail amount associated with the transaction.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+
+      - name: SRC_PLCY_ID_SK
+        description: Surrogate key for source policy ID.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_policy')
+              field: policy_id
+
+      - name: SRC_INSERT_TRANS_TMSP
+        description: Timestamp of the source insert transaction.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: SRC_EFF_DT
+        description: Effective date of the source transaction.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: o_DERIVED_FACESHEET_PRINT_DT
+        description: Derived date for facesheet printing.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: CR_BY_MAPNG_ID
+        description: Mapping ID for the creator of the record.
+        tests:
+          - not_null
+
+      - name: DW_CR_TMSP
+        description: Data warehouse creation timestamp.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: UPD_BY_MAPNG_ID
+        description: Mapping ID for the updater of the record.
+        tests:
+          - not_null
+
+      - name: DW_UPD_TMSP
+        description: Data warehouse update timestamp.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: WRK_FLOW_RUN_ID
+        description: Identifier for the workflow run.
+        tests:
+          - not_null
+
+      - name: TFPLCY_TRAN_RESULT_SK1
+        description: Surrogate key for transaction result (version 1).
+        tests:
+          - not_null
+          - unique
+
+      - name: LAT_DATE1
+        description: Latest date for transaction (version 1).
+        tests:
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: LAT_TIME1
+        description: Latest time for transaction (version 1).
+        tests:
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$"
+
+      - name: LAT_ACTION1
+        description: Latest action performed (version 1).
+        tests:
+          - not_null
+
+      - name: POLICY_NUMBER1
+        description: Policy number associated with transaction (version 1).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 5
+              max_value: 20
+
+      - name: TFPLCY_TRAN_RESULT_SK3
+        description: Surrogate key for transaction result (version 3).
+        tests:
+          - not_null
+          - unique
+
+      - name: POLICY_NUMBER3
+        description: Policy number associated with transaction (version 3).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 5
+              max_value: 20
+
+      - name: APPLIED_DTSTMP3
+        description: Timestamp when the transaction was applied (version 3).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: TFPLCY_TRAN_RESULT_SK4
+        description: Surrogate key for transaction result (version 4).
+        tests:
+          - not_null
+          - unique
+
+      - name: POLICY_NUMBER4
+        description: Policy number associated with transaction (version 4).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 5
+              max_value: 20
+
+      - name: TFPLCY_TRAN_RESULT_SK6
+        description: Surrogate key for transaction result (version 6).
+        tests:
+          - not_null
+          - unique
+
+      - name: SRC_SYS_HH_NUM6
+        description: Source system household number (version 6).
+        tests:
+          - not_null
+
+      - name: SRC_TRANS_TMSP6
+        description: Timestamp of the source transaction (version 6).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: COMPONENT_MODULE_NAME6
+        description: Name of the component module (version 6).
+        tests:
+          - not_null
+
+      - name: LOB_CD6
+        description: Line of business code (version 6).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['FIRE', 'AUTO', 'HOME']
+
+      - name: GATE_KPR_IND
+        description: Indicator for gatekeeper status.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: [0, 1]
+
+      - name: CR_BY_MAPNG_ID6
+        description: Mapping ID for the creator of the record (version 6).
+        tests:
+          - not_null
+
+      - name: DW_CR_TMSP6
+        description: Data warehouse creation timestamp (version 6).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: UPD_BY_MAPNG_ID6
+        description: Mapping ID for the updater of the record (version 6).
+        tests:
+          - not_null
+
+      - name: DW_UPD_TMSP6
+        description: Data warehouse update timestamp (version 6).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+
+      - name: WRK_FLOW_RUN_ID6
+        description: Identifier for the workflow run (version 6).
+        tests:
+          - not_null

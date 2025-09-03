@@ -1,0 +1,456 @@
+version: 2
+
+sources:
+  - name: DBA_COMMON_UTILS
+    description: Source tables from the DBA_COMMON_UTILS database.
+    database: DBA_COMMON_UTILS
+    schema: DBA
+
+    tables:
+      - name: PRE_FDR_FIRE_PLCY_TRANS_RSLT
+        description: Table containing policy transaction results.
+        identifier: PRE_FDR_FIRE_PLCY_TRANS_RSLT
+
+        columns:
+          - name: PLCY_ID_SK
+            description: Policy ID surrogate key.
+            tests:
+              - not_null
+              - unique
+          - name: TRANS_TMSP
+            description: Transaction timestamp.
+            tests:
+              - not_null
+          - name: EFF_DT
+            description: Effective date.
+            tests:
+              - not_null
+          - name: END_EFF_DT
+            description: End effective date.
+          - name: OLD_FULL_TERM_PREM_AMT
+            description: Old full-term premium amount.
+          - name: NEW_FULL_TERM_PREM_AMT
+            description: New full-term premium amount.
+          - name: TRANS_NEW_BUS_COMM_PREM_AMT
+            description: Transaction new business commission premium amount.
+          - name: TRANS_RNCOMM_PREM_AMT
+            description: Transaction renewal commission premium amount.
+          - name: TRANS_NEW_BUS_COMM_PRO_AMT
+            description: Transaction new business commission pro amount.
+          - name: TRANS_RNCOMM_PRO_AMT
+            description: Transaction renewal commission pro amount.
+          - name: FSB_UNPD_BAL
+            description: Unpaid balance.
+          - name: ACS_NEW_BUS_COMM_PREM_AMT
+            description: ACS new business commission premium amount.
+          - name: PLCY_FEE_CD
+            description: Policy fee code.
+          - name: PLCY_FEE_AMT
+            description: Policy fee amount.
+          - name: REINST_FEE_AMT
+            description: Reinstatement fee amount.
+          - name: ST_CHRG_AMT
+            description: State charge amount.
+          - name: TRANS_PLCY_FEE_AMT
+            description: Transaction policy fee amount.
+          - name: TRANS_REINST_FEE_AMT
+            description: Transaction reinstatement fee amount.
+          - name: ACS_PLCY_FEE_AMT
+            description: ACS policy fee amount.
+          - name: ACS_REINST_FEE_AMT
+            description: ACS reinstatement fee amount.
+          - name: TRANS_ST_CHRG_AMT
+            description: Transaction state charge amount.
+          - name: SLS_CNT_TTL_PD
+            description: Sales count total paid.
+          - name: TRANS_SLS_CNT_PD
+            description: Transaction sales count paid.
+          - name: EXP_DT
+            description: Expiration date.
+          - name: ACS_RNCOMM_PREM_AMT
+            description: ACS renewal commission premium amount.
+          - name: FACESHEET_PRNT_DT
+            description: Facesheet print date.
+          - name: TRANS_OPERTNG_COST
+            description: Transaction operating cost.
+          - name: ACS_NEW_BUS_COMM_AMT
+            description: ACS new business commission amount.
+          - name: ACS_RNCOMM_AMT
+            description: ACS renewal commission amount.
+          - name: ACS_NEW_BUS_CITY_TAX_AMT
+            description: ACS new business city tax amount.
+          - name: ACS_NEW_BUS_CNTY_TAX_AMT
+            description: ACS new business county tax amount.
+          - name: ACS_NEW_BUS_SURCHRG_AMT
+            description: ACS new business surcharge amount.
+          - name: ACS_NEW_BUS_CLCT_FEE
+            description: ACS new business collection fee.
+          - name: ACS_RNWL_CITY_TAX_AMT
+            description: ACS renewal city tax amount.
+          - name: ACS_RNWL_CNTY_TAX_AMT
+            description: ACS renewal county tax amount.
+          - name: ACS_RNWL_SURCHRG_AMT
+            description: ACS renewal surcharge amount.
+          - name: ACS_RNWL_CLCT_FEE
+            description: ACS renewal collection fee.
+          - name: TRANS_BILL_TAX_AMT
+            description: Transaction billed tax amount.
+          - name: TRANS_SURCHRG_AMT
+            description: Transaction surcharge amount.
+          - name: TRANS_CLCT_FEE
+            description: Transaction collection fee.
+          - name: TRANS_PRORT_FCTR
+            description: Transaction prorate factor.
+          - name: ROLLUP_PLCY_FEE
+            description: Rollup policy fee.
+          - name: ROLLUP_REINST_FEE
+            description: Rollup reinstatement fee.
+          - name: MISC_AMT
+            description: Miscellaneous amount.
+          - name: CAP_TERM_NUM
+            description: Capital term number.
+          - name: RTG_CAP_CD
+            description: Rating capital code.
+          - name: RTG_CAP_FCTR
+            description: Rating capital factor.
+          - name: REVERSAL_OLD_FULL_TERM_PREM
+            description: Reversal old full-term premium.
+          - name: REVERSAL_NEW_FULL_TERM_PREM
+            description: Reversal new full-term premium.
+          - name: OFF_PREM_AMT
+            description: Off premium amount.
+          - name: ON_PREM_AMT
+            description: On premium amount.
+          - name: REVERSAL_OFF_PREM_AMT
+            description: Reversal off premium amount.
+          - name: REVERSAL_ON_PREM_AMT
+            description: Reversal on premium amount.
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+          - name: SRC_TRANS_TMSP
+            description: Source transaction timestamp.
+          - name: SRC_HH_NUM
+            description: Source household number.
+          - name: PROC_CD
+            description: Process code.
+          - name: MAJOR_SOI_ID
+            description: Major SOI ID.
+          - name: ALTRN_PRORT_FCTR
+            description: Alternate prorate factor.
+          - name: HAZARD_DIS_PCT
+            description: Hazard discount percentage.
+          - name: FL_CPIC_EMERG_SURCHRG_AMT
+            description: Florida CPIC emergency surcharge amount.
+          - name: FL_CPIC_REG_ASSMNT_AMT
+            description: Florida CPIC regular assessment amount.
+          - name: FL_EMERG_PREP_ASSMNT_AMT
+            description: Florida emergency preparedness assessment amount.
+          - name: FL_HURR_CAT_FUND_AMT
+            description: Florida hurricane catastrophe fund amount.
+          - name: FL_IGA_EMERG_AMT
+            description: Florida IGA emergency amount.
+          - name: FL_IGA_REG_AMT
+            description: Florida IGA regular amount.
+          - name: MERG_TYP_CD
+            description: Merge type code.
+          - name: NON_RNWL_IND
+            description: Non-renewal indicator.
+          - name: NR_RVRSL_IND
+            description: Non-renewal reversal indicator.
+          - name: SRC_SYS_CD
+            description: Source system code.
+          - name: SRC_TRN_ID
+            description: Source transaction ID.
+          - name: TRANS_CITY_TAX_AMT
+            description: Transaction city tax amount.
+          - name: TRANS_CNTY_TAX_AMT
+            description: Transaction county tax amount.
+          - name: TRANS_CITY_TAX_FEE_AMT
+            description: Transaction city tax fee amount.
+          - name: TRANS_CNTY_TAX_FEE_AMT
+            description: Transaction county tax fee amount.
+          - name: TRANS_SURCHRG_FEE_AMT
+            description: Transaction surcharge fee amount.
+          - name: LA_CST_PLAN_REG_ASSMNT
+            description: Louisiana cost plan regular assessment.
+          - name: LA_CST_PLAN_EMERG_ASSMNT
+            description: Louisiana cost plan emergency assessment.
+          - name: LA_FAIR_PLAN_REG_ASSMNT
+            description: Louisiana fair plan regular assessment.
+          - name: LA_FAIR_PLAN_EMERG_ASSMNT
+            description: Louisiana fair plan emergency assessment.
+          - name: NCRB_PREM_AMT
+            description: NCRB premium amount.
+          - name: FRMS_NC_PREM_AMT
+            description: Forms NC premium amount.
+          - name: CAT_RCVRY_CHRG_AMT
+            description: Catastrophe recovery charge amount.
+          - name: FRMS_UNCPD_PREM_AMT
+            description: Forms unpaid premium amount.
+          - name: BNDG_USR_ROLE_DESC
+            description: Binding user role description.
+          - name: EVNT_INTIATD_BY_SHRT_DESC
+            description: Event initiated by short description.
+          - name: ROLLUP_PLCY_FEE_AMT
+            description: Rollup policy fee amount.
+          - name: ROLLUP_RNSTTMNT_FEE_AMT
+            description: Rollup reinstatement fee amount.
+          - name: RATE_CHNG_IND
+            description: Rate change indicator.
+          - name: FIGA_PRPTY_CRDT_AMT
+            description: FIGA property credit amount.
+          - name: ACCM_TRN_NTRL_DISMIT_FEE
+            description: Accumulated transaction neutral dismissal fee.
+          - name: TRN_NTRL_DISMIT_FEE
+            description: Transaction neutral dismissal fee.
+
+      - name: FDR_LIB_STG_TFPLCY_TRAN_RESULT
+        description: Table containing staging policy transaction results.
+        identifier: FDR_LIB_STG_TFPLCY_TRAN_RESULT
+
+        columns:
+          - name: TFPLCY_TRAN_RESULT_SK
+            description: Policy transaction result surrogate key.
+            tests:
+              - not_null
+              - unique
+          - name: LAT_DATE
+            description: Latest date.
+          - name: LAT_TIME
+            description: Latest time.
+          - name: LAT_ACTION
+            description: Latest action.
+          - name: CR_BY_MAPNG_ID
+            description: Created by mapping ID.
+          - name: DW_CR_TMSP
+            description: Data warehouse creation timestamp.
+          - name: UPD_BY_MAPNG_ID
+            description: Updated by mapping ID.
+          - name: DW_UPD_TMSP
+            description: Data warehouse update timestamp.
+          - name: WRK_FLOW_RUN_ID
+            description: Workflow run ID.
+          - name: REPROC_CNT
+            description: Reprocess count.
+          - name: POLICY_NUMBER
+            description: Policy number.
+          - name: APPLIED_DTSTMP
+            description: Applied timestamp.
+          - name: OLD_FT_PRM_AMT
+            description: Old full-term premium amount.
+          - name: NEW_FT_PRM_AMT
+            description: New full-term premium amount.
+          - name: TRN_NBCOMM_PRM_AMT
+            description: Transaction new business commission premium amount.
+          - name: TRN_RNCOMM_PRM_AMT
+            description: Transaction renewal commission premium amount.
+          - name: TRN_NBCOMM_PRO_AMT
+            description: Transaction new business commission pro amount.
+          - name: TRN_RNCOMM_PRO_AMT
+            description: Transaction renewal commission pro amount.
+          - name: FSB_UNPAID_BALANCE
+            description: Unpaid balance.
+          - name: ACS_NBCOMM_PRM_AMT
+            description: ACS new business commission premium amount.
+          - name: POLICY_FEE_CD
+            description: Policy fee code.
+          - name: POLICY_FEE_AMT
+            description: Policy fee amount.
+          - name: REINST_FEE_AMT
+            description: Reinstatement fee amount.
+          - name: STATE_CHRG_AMT
+            description: State charge amount.
+          - name: TRN_POLICY_FEE_AMT
+            description: Transaction policy fee amount.
+          - name: TRN_REINST_FEE_AMT
+            description: Transaction reinstatement fee amount.
+          - name: ACS_POLICY_FEE_AMT
+            description: ACS policy fee amount.
+          - name: ACS_REINST_FEE_AMT
+            description: ACS reinstatement fee amount.
+          - name: TRN_STATE_CHRG_AMT
+            description: Transaction state charge amount.
+          - name: SALES_COUNT_TOT_PD
+            description: Sales count total paid.
+          - name: TRN_SALES_COUNT_PD
+            description: Transaction sales count paid.
+          - name: EFF_DT
+            description: Effective date.
+          - name: EXP_DT
+            description: Expiration date.
+          - name: ACS_RNCOMM_PRM_AMT
+            description: ACS renewal commission premium amount.
+          - name: FACESHEET_PRINT_DT
+            description: Facesheet print date.
+          - name: TRN_OPERATING_COST
+            description: Transaction operating cost.
+          - name: ACS_NB_COMM_AMT
+            description: ACS new business commission amount.
+          - name: ACS_RN_COMM_AMT
+            description: ACS renewal commission amount.
+          - name: ACS_NB_CITY_TX_AMT
+            description: ACS new business city tax amount.
+          - name: ACS_NB_CNTY_TX_AMT
+            description: ACS new business county tax amount.
+          - name: ACS_NB_SURCHG_AMT
+            description: ACS new business surcharge amount.
+          - name: ACS_NB_CLCTN_FEE
+            description: ACS new business collection fee.
+          - name: ACS_RN_CITY_TX_AMT
+            description: ACS renewal city tax amount.
+          - name: ACS_RN_CNTY_TX_AMT
+            description: ACS renewal county tax amount.
+          - name: ACS_RN_SURCHG_AMT
+            description: ACS renewal surcharge amount.
+          - name: ACS_RN_CLCTN_FEE
+            description: ACS renewal collection fee.
+          - name: TRN_BILLED_TAX_AMT
+            description: Transaction billed tax amount.
+          - name: TRN_SURCHARGE_AMT
+            description: Transaction surcharge amount.
+          - name: TRN_COLLECTION_FEE
+            description: Transaction collection fee.
+          - name: TRN_PRORATE_FACTOR
+            description: Transaction prorate factor.
+          - name: ROLLUP_POLICY_FEE
+            description: Rollup policy fee.
+          - name: ROLLUP_REINST_FEE
+            description: Rollup reinstatement fee.
+          - name: PRE_FDR_MAPNG_ID
+            description: Pre-FDR mapping ID.
+          - name: MISC_AMT
+            description: Miscellaneous amount.
+          - name: RVRSL_OLD_FT_PRM
+            description: Reversal old full-term premium.
+          - name: RVRSL_NEW_FT_PRM
+            description: Reversal new full-term premium.
+          - name: OFF_PRM_AMT
+            description: Off premium amount.
+          - name: ON_PRM_AMT
+            description: On premium amount.
+          - name: RVRSL_OFF_PRM_AMT
+            description: Reversal off premium amount.
+          - name: RVRSL_ON_PRM_AMT
+            description: Reversal on premium amount.
+          - name: CAP_TERM_NUM
+            description: Capital term number.
+          - name: RTG_CAP_CD
+            description: Rating capital code.
+          - name: RTG_CAP_FCTR
+            description: Rating capital factor.
+          - name: HOUSEHOLD_NUM
+            description: Household number.
+          - name: ALT_PRORATE_FCTR
+            description: Alternate prorate factor.
+          - name: HAZARD_DIS_PCT
+            description: Hazard discount percentage.
+
+      - name: FDR_LIB_PRE_FDR_FIRE_PLCY_TRANS_RSLT
+        description: Table containing pre-FDR policy transaction results.
+        identifier: FDR_LIB_PRE_FDR_FIRE_PLCY_TRANS_RSLT
+
+        columns:
+          - name: TRGT_TBL_NM
+            description: Target table name.
+          - name: SRC_TBL_NM
+            description: Source table name.
+          - name: WRKFL_CMPNT_NM
+            description: Workflow component name.
+          - name: RECRD_CNT_TYP_CD
+            description: Record count type code.
+          - name: RECRD_CNT_ACTN_CD
+            description: Record count action code.
+          - name: RECRD_CNT_QTY
+            description: Record count quantity.
+          - name: WRKFL_RUN_ID
+            description: Workflow run ID.
+          - name: WRKFL_NM
+            description: Workflow name.
+          - name: OLD_FULL_TERM_PREM_AMT
+            description: Old full-term premium amount.
+          - name: NEW_FULL_TERM_PREM_AMT
+            description: New full-term premium amount.
+          - name: TRANS_NEW_BUS_COMM_PREM_AMT
+            description: Transaction new business commission premium amount.
+          - name: TRANS_RNCOMM_PREM_AMT
+            description: Transaction renewal commission premium amount.
+          - name: TRANS_NEW_BUS_COMM_PRO_AMT
+            description: Transaction new business commission pro amount.
+          - name: TRANS_RNCOMM_PRO_AMT
+            description: Transaction renewal commission pro amount.
+          - name: FSB_UNPD_BAL
+            description: Unpaid balance.
+          - name: ACS_NEW_BUS_COMM_PREM_AMT
+            description: ACS new business commission premium amount.
+          - name: PLCY_FEE_AMT
+            description: Policy fee amount.
+          - name: REINST_FEE_AMT
+            description: Reinstatement fee amount.
+          - name: ST_CHRG_AMT
+            description: State charge amount.
+          - name: TRANS_PLCY_FEE_AMT
+            description: Transaction policy fee amount.
+          - name: TRANS_REINST_FEE_AMT
+            description: Transaction reinstatement fee amount.
+          - name: ACS_PLCY_FEE_AMT
+            description: ACS policy fee amount.
+          - name: ACS_REINST_FEE_AMT
+            description: ACS reinstatement fee amount.
+          - name: TRANS_ST_CHRG_AMT
+            description: Transaction state charge amount.
+          - name: ACS_RNCOMM_PREM_AMT
+            description: ACS renewal commission premium amount.
+          - name: TRANS_OPERTNG_COST
+            description: Transaction operating cost.
+          - name: ACS_NEW_BUS_COMM_AMT
+            description: ACS new business commission amount.
+          - name: ACS_RNCOMM_AMT
+            description: ACS renewal commission amount.
+          - name: ACS_NEW_BUS_CITY_TAX_AMT
+            description: ACS new business city tax amount.
+          - name: ACS_NEW_BUS_CNTY_TAX_AMT
+            description: ACS new business county tax amount.
+          - name: ACS_NEW_BUS_SURCHRG_AMT
+            description: ACS new business surcharge amount.
+          - name: ACS_NEW_BUS_CLCT_FEE
+            description: ACS new business collection fee.
+          - name: ACS_RNWL_CITY_TAX_AMT
+            description: ACS renewal city tax amount.
+          - name: ACS_RNWL_CNTY_TAX_AMT
+            description: ACS renewal county tax amount.
+          - name: ACS_RNWL_SURCHRG_AMT
+            description: ACS renewal surcharge amount.
+          - name: ACS_RNWL_CLCT_FEE
+            description: ACS renewal collection fee.
+          - name: TRANS_BILL_TAX_AMT
+            description: Transaction billed tax amount.
+          - name: TRANS_SURCHRG_AMT
+            description: Transaction surcharge amount.
+          - name: TRANS_CLCT_FEE
+            description: Transaction collection fee.
+          - name: ROLLUP_PLCY_FEE
+            description: Rollup policy fee.
+          - name: ROLLUP_REINST_FEE
+            description: Rollup reinstatement fee.
+          - name: MISC_AMT
+            description: Miscellaneous amount.
+          - name: REVERSAL_OLD_FULL_TERM_PREM
+            description: Reversal old full-term premium.
+          - name: REVERSAL_NEW_FULL_TERM_PREM
+            description: Reversal new full-term premium.
+          - name: OFF_PREM_AMT
+            description: Off premium amount.
+          - name: ON_PREM_AMT
+            description: On premium amount.
+          - name: REVERSAL_OFF_PREM_AMT
+            description: Reversal off premium amount.
+          - name: REVERSAL_ON_PREM_AMT
+            description: Reversal on premium amount.

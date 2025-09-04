@@ -1,0 +1,50 @@
+version: 2
+
+sources:
+  - name: SQ_CDH_GW_BUR
+    description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+    database: None
+    schema: None
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+        identifier: SQ_CDH_GW_BUR
+
+        columns: []
+
+  - name: LKP_W_CLAIM_CD_BUR_SCD3
+    description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+    database: None
+    schema: None
+
+    tables:
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns: []
+
+  - name: lkp_CDM_BATCH_CTRLID
+    description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+    database: None
+    schema: None
+
+    tables:
+      - name: lkp_CDM_BATCH_CTRLID
+        description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+        identifier: lkp_CDM_BATCH_CTRLID
+
+        columns: []
+
+  - name: lkp_MAX_ROW_WID
+    description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+    database: None
+    schema: None
+
+    tables:
+      - name: lkp_MAX_ROW_WID
+        description: Schema 'DBA_COMMON_UTILS.NONE' does not exist or not authorized.
+        identifier: lkp_MAX_ROW_WID
+
+        columns: []

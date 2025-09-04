@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: fct_wf_W_CLAIM_CD_SCD3_IU  # Required
+    description: This model represents the final claim codes after transformation, sourced from the intermediate model `int_wf_W_CLAIM_CD_SCD3_IU`.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, pii]  # Optional tags
+    columns:
+      - name: final_claim_code
+        description: The transformed claim code representing the final processed claim identifier.
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_match_regex:
+              regex: "^[A-Z0-9]{5,10}$"  # Assuming claim codes follow a specific alphanumeric format
+```
+
+### Explanation:
+1. **Model Name**: Derived from the file name `fct_wf_W_CLAIM_CD_SCD3_IU.sql`.
+2. **Description**: Based on the SQL logic and the transformation of claim codes.
+3. **Materialization**: Set to `table` as per the `config` directive in the SQL file.
+4. **Tags**: Added relevant tags like `claims` and `pii` based on the context.
+5. **Columns**:
+   - **final_claim_code**: Extracted from the `SELECT` statement. Tests applied:
+     - `not_null`: Claim codes should not be null.
+     - `unique`: Claim codes should be unique.
+     - `dbt_expectations.expect_column_values_to_match_regex`: Added regex validation for alphanumeric claim codes of specific length.
+
+No additional columns were described as the SQL only explicitly selects `final_claim_code`.

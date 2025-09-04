@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: fct_cdh_gw__bur  # Required
+    description: Fact table for CDH Gateway BUR integration data.
+    meta:
+      owner: data_team
+      domain: integration
+    config:
+      materialized: table
+    tags: [integration, cdh]
+    columns:
+      - name: INTEGRATION_ID
+        description: Unique identifier for the integration.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: BATCH_ID
+        description: Identifier for the batch of data processed.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_not_null
+      - name: SOURCE_NAME
+        description: Name of the source system providing the data.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_not_null
+
+  - name: fct_cdm__row_wid  # Required
+    description: Fact table for CDM row-level data with unique row identifiers.
+    meta:
+      owner: data_team
+      domain: data_management
+    config:
+      materialized: table
+    tags: [data_management, cdm]
+    columns:
+      - name: ROW_WID
+        description: Unique row identifier for the table.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: TABLE_NAME
+        description: Name of the table associated with the row.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_not_null

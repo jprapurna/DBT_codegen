@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: fct_claims__w_claim_cd_bur_scd3  # Required
+    description: This model represents claims data with associated claim codes and burden information, using a Type 3 Slowly Changing Dimension approach.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, scd3]
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the claims table.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: o_Flag
+        description: Operational flag indicating the status or type of the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive', 'pending']
+      - name: CDM_INSERT_DT
+        description: Timestamp indicating when the record was initially inserted into the system.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-01-01'
+      - name: CDM_UPDATE_DT
+        description: Timestamp indicating the last update to the record.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: '2000-01-01'
+              max_value: '2100-01-01'
+      - name: TGT_TABLE_NAME
+        description: Name of the target table where the claim data is stored.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 100

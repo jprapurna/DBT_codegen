@@ -1,0 +1,3 @@
+Based on the provided SQL files, both `fct_w_claim_cd_bur_scd3.sql` files are referencing intermediate models (`int_w_claim_cd_bur_scd3_u` and `int_w_claim_cd_bur_scd3_i`). Since the task specifies to only generate `schema.yml` files for marts and exclude staging or intermediate models, these files do not qualify for schema generation.
+
+No `schema.yml` will be generated for these files as they are intermediate models. If you have other SQL files that represent mart models, please provide them for processing.

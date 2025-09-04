@@ -1,11 +1,14 @@
-{% macro mplt_CDM_ROW_WID(table_name) %}
-WITH row_wid_data AS (
-  SELECT
-    NVL(MAX(ROW_WID), 0) AS max_row_wid,
-    table_name
-  FROM {{ source('schema_cdm', 'custom_table') }}
-  WHERE table_name = {{ table_name }}
+{% macro mplt_CDM_ROW_WID(TGT_TABLE_NAME) %}
+WITH lkp_max_row_wid AS (
+  SELECT 
+    NVL(MAX(ROW_WID), 0) AS ROW_WID, 
+    '$$TGT_TABLE_NAME' AS TABLE_NAME
+  FROM $$SCHEMA_CDM.$$TGT_TABLE_NAME
 )
-SELECT max_row_wid
-FROM row_wid_data
+SELECT 
+  CASE 
+    WHEN V2 = 0 THEN lkp_max_row_wid.ROW_WID
+    ELSE V2
+  END AS ROW_WID
+FROM lkp_max_row_wid
 {% endmacro %}

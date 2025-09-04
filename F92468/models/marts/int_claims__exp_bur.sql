@@ -2,7 +2,7 @@
 
 WITH source_data AS (
   SELECT *
-  FROM {{ source('cdh_gwods', 'cdh_gw_bur') }}
+  FROM {{ ref('int_claims__cdh_gw_bur') }}
 ),
 
 exp_bur AS (

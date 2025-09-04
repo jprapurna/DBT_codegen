@@ -1,0 +1,121 @@
+version: 2
+
+sources:
+  - name: DBA_COMMON_UTILS
+    description: Source database for common utilities
+    database: DBA_COMMON_UTILS
+    schema: DBA
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Table containing policy state and source information
+        identifier: SQ_CDH_GW_BUR
+
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+            tests:
+              - not_null
+              - unique
+          - name: BUR
+            description: Business unit reference
+            tests:
+              - not_null
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for claim codes and business unit references
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: LKP_ROW_WID
+            description: Row identifier for lookup
+            tests:
+              - not_null
+              - unique
+          - name: LKP_INTEGRATION_ID
+            description: Integration ID for lookup
+            tests:
+              - not_null
+          - name: LKP_NEW_BUR
+            description: New business unit reference
+            tests:
+              - not_null
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row identifiers
+        identifier: LKP_MAX_ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Row identifier
+            tests:
+              - not_null
+              - unique
+          - name: TABLE_NAME
+            description: Name of the table
+            tests:
+              - not_null
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup table for batch control IDs
+        identifier: LKP_CDM_BATCH_CTRLID
+
+        columns:
+          - name: SOURCE_NAME
+            description: Name of the source
+            tests:
+              - not_null
+          - name: BATCH_ID
+            description: Batch identifier
+            tests:
+              - not_null
+          - name: STATUS
+            description: Status of the batch
+            tests:
+              - not_null
+
+      - name: CDH_GW_BUR
+        description: Table does not exist or not authorized
+        identifier: CDH_GW_BUR
+
+        columns: []
+
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Table does not exist or not authorized
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+        columns: []
+
+      - name: CDM_BATCH_CTRLID
+        description: Table does not exist or not authorized
+        identifier: CDM_BATCH_CTRLID
+
+        columns: []
+
+      - name: CDM_ROW_WID
+        description: Table does not exist or not authorized
+        identifier: CDM_ROW_WID
+
+        columns: []
+
+      - name: DEV_CLM_BI
+        description: Table does not exist or not authorized
+        identifier: DEV_CLM_BI
+
+        columns: []
+
+      - name: CDM
+        description: Table does not exist or not authorized
+        identifier: CDM
+
+        columns: []
+
+      - name: CDH_GWODS
+        description: Table does not exist or not authorized
+        identifier: CDH_GWODS
+
+        columns: []

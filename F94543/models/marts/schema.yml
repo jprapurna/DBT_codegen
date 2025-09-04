@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: fct_cdh_gw__bur
+    description: "Fact table for CDH Gateway BUR data, providing policy state, BUR, source name, and integration ID."
+    meta:
+      owner: "data_team"
+      domain: "insurance"
+    config:
+      materialized: table
+    tags: ["insurance", "gateway", "bur"]
+    columns:
+      - name: POLICY_STATE
+        description: "State of the policy associated with the BUR."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive', 'pending']
+      - name: BUR
+        description: "BUR identifier for the gateway."
+        tests:
+          - not_null
+          - unique
+      - name: SOURCE_NAME
+        description: "Name of the source system providing the data."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50
+      - name: INTEGRATION_ID
+        description: "Unique identifier for the integration process."
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_cdm__batch_ctrlid
+    description: "Fact table for CDM batch control ID data, providing batch ID and source name."
+    meta:
+      owner: "data_team"
+      domain: "batch_processing"
+    config:
+      materialized: table
+    tags: ["batch", "control_id"]
+    columns:
+      - name: BATCH_ID
+        description: "Unique identifier for the batch process."
+        tests:
+          - not_null
+          - unique
+      - name: SOURCE_NAME
+        description: "Name of the source system providing the batch data."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50
+
+  - name: fct_cdm__max_row_wid
+    description: "Fact table for CDM maximum row width data, providing row width and table name."
+    meta:
+      owner: "data_team"
+      domain: "data_modeling"
+    config:
+      materialized: table
+    tags: ["data_modeling", "row_width"]
+    columns:
+      - name: ROW_WID
+        description: "Maximum row width for the table."
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000000
+      - name: TABLE_NAME
+        description: "Name of the table associated with the row width."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50

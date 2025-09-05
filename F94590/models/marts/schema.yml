@@ -1,0 +1,24 @@
+Based on the provided SQL files, only the `fct_w_claim_cd_bur_scd3_u.sql` file qualifies as a mart model because it has a clear final SELECT statement and is materialized as a table. The `fct_w_claim_cd_bur_scd3_i.sql` file appears to be intermediate and will not be included in the schema.yml generation.
+
+Here is the generated `schema.yml` for the `fct_w_claim_cd_bur_scd3_u.sql` file:
+
+```yaml
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3_u  # Required
+    description: This model selects rows from the `int_cdm__w_claim_cd_bur_scd3` table where the `o_Flag` is 'U'. It represents a filtered view of claims data based on update flags.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims_processing
+    config:
+      materialized: table
+    tags: [claims, updates]  # Optional tags
+    columns:
+      - name: ROW_WID
+        description: The unique identifier for each row in the claims data. This column serves as the primary key for the model.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+          - dbt_expectations.expect_column_values_to_not_be_null

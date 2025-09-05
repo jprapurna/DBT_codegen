@@ -1,0 +1,83 @@
+version: 2
+
+sources:
+  - name: cdh_gwods
+    description: Source tables from the CDH_GWODS database schema.
+    database: CDH_GWODS
+    schema: CDH_GWODS
+
+    tables:
+      - name: integration_ids
+        description: Table containing integration IDs.
+        identifier: integration IDs
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+          - name: Mapplet_TGT_TABLE_NAME
+            description: Target table name for mapplet.
+            tests:
+              - not_null
+
+      - name: business_unit_relationships
+        description: Table containing business unit relationships.
+        identifier: business unit relationships
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+          - name: Mapplet_TGT_TABLE_NAME
+            description: Target table name for mapplet.
+            tests:
+              - not_null
+
+      - name: batch_ids
+        description: Table containing batch IDs.
+        identifier: batch IDs
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+          - name: Mapplet_TGT_TABLE_NAME
+            description: Target table name for mapplet.
+            tests:
+              - not_null
+
+      - name: row_wid
+        description: Table containing row identifiers.
+        identifier: ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+          - name: Mapplet_TGT_TABLE_NAME
+            description: Target table name for mapplet.
+            tests:
+              - not_null
+
+      - name: mapplet_tgt_table_name
+        description: Table containing mapplet target table names.
+        identifier: Mapplet_TGT_TABLE_NAME
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+          - name: Mapplet_TGT_TABLE_NAME
+            description: Target table name for mapplet.
+            tests:
+              - not_null

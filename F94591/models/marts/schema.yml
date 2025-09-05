@@ -1,0 +1,38 @@
+Based on the provided SQL files, both models are referencing intermediate models (`int_cdh_gwods__cdh_gw_bur` and `int_cdm__w_claim_cd_bur_scd3`) and selecting all columns (`SELECT *`). Since no specific columns or transformations are explicitly defined in the SQL, it is not possible to extract detailed metadata or apply specific tests to individual columns. However, I can generate a basic `schema.yml` file for each model with placeholders for future column definitions.
+
+### `schema.yml` for `fct_cdh_gwods__cdh_gw_bur.sql`
+```yaml
+version: 2
+
+models:
+  - name: fct_cdh_gwods__cdh_gw_bur  # Required
+    description: Fact table for CDH GWODS CDH GW BUR. This model references the intermediate model `int_cdh_gwods__cdh_gw_bur`.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: cdh_gwods
+    config:
+      materialized: table
+    tags: [cdh, gwods, bur]  # Optional tags
+    columns: []  # No columns explicitly defined in the SQL
+```
+
+### `schema.yml` for `fct_cdm__w_claim_cd_bur_scd3.sql`
+```yaml
+version: 2
+
+models:
+  - name: fct_cdm__w_claim_cd_bur_scd3  # Required
+    description: Fact table for CDM W Claim CD BUR SCD3. This model references the intermediate model `int_cdm__w_claim_cd_bur_scd3`.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: cdm_claims
+    config:
+      materialized: table
+    tags: [cdm, claims, bur, scd3]  # Optional tags
+    columns: []  # No columns explicitly defined in the SQL
+```
+
+### Notes:
+- Since the SQL files use `SELECT *`, no specific columns or transformations are visible, so column-level metadata and tests cannot be inferred.
+- The descriptions are generic and based on the model names and references.
+- You may need to revisit these models once the intermediate models (`int_cdh_gwods__cdh_gw_bur` and `int_cdm__w_claim_cd_bur_scd3`) are defined with explicit column details.

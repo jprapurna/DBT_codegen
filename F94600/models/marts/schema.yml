@@ -1,0 +1,70 @@
+Based on the provided SQL files, all models are directly selecting all columns (`SELECT *`) from intermediate models (`int_*`). Since no specific columns or transformations are defined in the SQL, it is not possible to extract column-level metadata or apply specific tests. However, I will generate `schema.yml` files for each model with basic metadata and configuration.
+
+### `schema.yml` for `fct_cdh_gwods__cdh_gw_bur.sql`
+```yaml
+version: 2
+
+models:
+  - name: fct_cdh_gwods__cdh_gw_bur
+    description: This model represents the final table for CDH Gateway Burden data, sourced from the intermediate model `int_cdh_gwods__cdh_gw_bur`.
+    meta:
+      owner: data_team
+      domain: cdh_gateway
+    config:
+      materialized: table
+    tags: [cdh, gateway, burden]
+    columns: []
+```
+
+### `schema.yml` for `fct_cdm__w_claim_cd_bur_scd3.sql`
+```yaml
+version: 2
+
+models:
+  - name: fct_cdm__w_claim_cd_bur_scd3
+    description: This model represents the final table for CDM Claim Code Burden data (SCD3), sourced from the intermediate model `int_cdm__w_claim_cd_bur_scd3`.
+    meta:
+      owner: data_team
+      domain: cdm_claims
+    config:
+      materialized: table
+    tags: [cdm, claims, scd3]
+    columns: []
+```
+
+### `schema.yml` for `fct_cdm__batch_ctrlid.sql`
+```yaml
+version: 2
+
+models:
+  - name: fct_cdm__batch_ctrlid
+    description: This model represents the final table for CDM Batch Control ID data, sourced from the intermediate model `int_cdm__batch_ctrlid`.
+    meta:
+      owner: data_team
+      domain: cdm_batch
+    config:
+      materialized: table
+    tags: [cdm, batch, control_id]
+    columns: []
+```
+
+### `schema.yml` for `fct_cdm__max_row_wid.sql`
+```yaml
+version: 2
+
+models:
+  - name: fct_cdm__max_row_wid
+    description: This model represents the final table for CDM Maximum Row Width data, sourced from the intermediate model `int_cdm__max_row_wid`.
+    meta:
+      owner: data_team
+      domain: cdm_row_width
+    config:
+      materialized: table
+    tags: [cdm, row_width, max]
+    columns: []
+```
+
+### Notes:
+- Since the SQL files use `SELECT *`, no specific columns are defined, and therefore no column-level metadata or tests can be applied.
+- The descriptions are inferred based on the file names and intermediate model references.
+- Basic metadata (`owner`, `domain`) and tags are added for organizational purposes.

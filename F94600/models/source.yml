@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: Snowflake_Cloud_Data_Warehouse
+    description: Source data from Snowflake Cloud Data Warehouse
+    database: Snowflake Cloud Data Warehouse
+    schema: CDH_GWODS
+
+    tables:
+      - name: CDM
+        description: Table CDM from schema CDH_GWODS
+        identifier: CDM
+        columns: []
+
+      - name: ROW_WID
+        description: Table ROW_WID from schema CDH_GWODS
+        identifier: ROW_WID
+        columns: []
+
+      - name: Mapplet_TGT_TABLE_NAME
+        description: Table Mapplet_TGT_TABLE_NAME from schema CDH_GWODS
+        identifier: Mapplet_TGT_TABLE_NAME
+        columns: []
+
+      - name: SCHEMA_CDH_GWODS
+        description: Table SCHEMA_CDH_GWODS from schema CDH_GWODS
+        identifier: SCHEMA_CDH_GWODS
+        columns: []
+
+      - name: SOURCE_NAME_GWCDM
+        description: Table SOURCE_NAME_GWCDM from schema CDH_GWODS
+        identifier: SOURCE_NAME_GWCDM
+        columns: []
+
+      - name: wf_W_CLAIM_CD_SCD3_IU
+        description: Table wf_W_CLAIM_CD_SCD3_IU from schema CDH_GWODS
+        identifier: wf_W_CLAIM_CD_SCD3_IU
+        columns: []

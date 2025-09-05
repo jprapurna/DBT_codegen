@@ -1,0 +1,80 @@
+version: 2
+
+sources:
+  - name: CDH_GW_BUR
+    description: Source database for claim and integration data
+    database: CDH_GW_BUR
+    schema: SCHEMA_CDH_GWODS
+
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Table containing claim code burden data
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier
+            tests:
+              - not_null
+              - unique
+          - name: INTEGRATION_ID
+            description: Integration identifier for claims
+            tests:
+              - not_null
+              - unique
+          - name: NEW_BUR
+            description: New burden data
+            tests:
+              - not_null
+
+      - name: DEV_CLM_BI/CDM/W_CLAIM_CD_BUR_SCD3
+        description: Development claim BI table
+        identifier: DEV_CLM_BI/CDM/W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier
+            tests:
+              - not_null
+              - unique
+          - name: INTEGRATION_ID
+            description: Integration identifier for claims
+            tests:
+              - not_null
+              - unique
+          - name: NEW_BUR
+            description: New burden data
+            tests:
+              - not_null
+
+      - name: ROW_WID
+        description: Table containing row identifiers
+        identifier: ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier
+            tests:
+              - not_null
+              - unique
+
+      - name: INTEGRATION_ID
+        description: Table containing integration identifiers
+        identifier: INTEGRATION_ID
+
+        columns:
+          - name: INTEGRATION_ID
+            description: Integration identifier for claims
+            tests:
+              - not_null
+              - unique
+
+      - name: NEW_BUR
+        description: Table containing new burden data
+        identifier: NEW_BUR
+
+        columns:
+          - name: NEW_BUR
+            description: New burden data
+            tests:
+              - not_null

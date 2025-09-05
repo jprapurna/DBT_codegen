@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fct_cdm_claim_bur  # Derived from the file name
+    description: This model represents the final table for claim burden data in the CDM (Common Data Model) structure. It combines flag logic and row-wide logic to produce the final dataset.
+    meta:
+      owner: data_team
+      domain: healthcare
+    config:
+      materialized: table
+    tags: [healthcare, cdm]
+    columns:
+      - name: ROW_WID
+        description: The unique identifier for rows in the claim burden table.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: TGT_TABLE_NAME
+        description: The target table name associated with the flag logic.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: other_columns
+        description: Additional columns inherited from the flag logic table.
+        tests: []

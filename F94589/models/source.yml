@@ -1,0 +1,74 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source data from GENAI_POWER_BI schema in Snowflake Cloud Data Warehouse.
+    database: Snowflake Cloud Data Warehouse
+    schema: CDH_GWODS
+
+    tables:
+      - name: claims_data
+        description: Table containing claims data.
+        identifier: claims_data
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+
+      - name: integration_IDs
+        description: Table containing integration IDs.
+        identifier: integration_IDs
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+
+      - name: business_unit_relationships
+        description: Table containing business unit relationships.
+        identifier: business_unit_relationships
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+
+      - name: batch_IDs
+        description: Table containing batch IDs.
+        identifier: batch_IDs
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+
+      - name: ROW_WID
+        description: Table containing row-wide data.
+        identifier: ROW_WID
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique
+
+      - name: target_table
+        description: Table containing target data.
+        identifier: target_table
+
+        columns:
+          - name: ROW_WID
+            description: Unique row identifier.
+            tests:
+              - not_null
+              - unique

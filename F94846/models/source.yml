@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: DUMMY_SQ_CDH_GW_BUR
+    description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+    database: Snowflake
+    schema: CDM
+    tables:
+      - name: DUMMY_SQ_CDH_GW_BUR
+        description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: DUMMY_SQ_CDH_GW_BUR
+        columns: []
+
+  - name: DUMMY_LKP_W_CLAIM_CD_BUR_SCD3
+    description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+    database: Snowflake
+    schema: CDM
+    tables:
+      - name: DUMMY_LKP_W_CLAIM_CD_BUR_SCD3
+        description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: DUMMY_LKP_W_CLAIM_CD_BUR_SCD3
+        columns: []
+
+  - name: DEV_CLM_BI/CDM/W_CLAIM_CD_BUR_SCD3
+    description: Syntax error line 1 at position 42 unexpected '/'.
+    database: Snowflake
+    schema: CDM
+    tables:
+      - name: DEV_CLM_BI/CDM/W_CLAIM_CD_BUR_SCD3
+        description: Syntax error line 1 at position 42 unexpected '/'.
+        identifier: DEV_CLM_BI/CDM/W_CLAIM_CD_BUR_SCD3
+        columns: []
+
+  - name: CDH_GW_BUR
+    description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+    database: Snowflake
+    schema: CDM
+    tables:
+      - name: CDH_GW_BUR
+        description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: CDH_GW_BUR
+        columns: []
+
+  - name: W_CLAIM_CD_BUR_SCD3
+    description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+    database: Snowflake
+    schema: CDM
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
+        identifier: W_CLAIM_CD_BUR_SCD3
+        columns: []

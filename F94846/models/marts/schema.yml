@@ -1,0 +1,53 @@
+Based on the provided SQL file, the `schema.yml` generation is as follows:
+
+```yaml
+version: 2
+
+models:
+  - name: fct_cdm_claim_cd_bur_scd3  # Required
+    description: This model combines insert and update records for claim code burden using UNION ALL from intermediate models.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, finance]  # Optional tags
+    columns:
+      - name: claim_id
+        description: Unique identifier for each claim.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: claim_code
+        description: Code representing the type of claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['A', 'B', 'C', 'D']
+      - name: burden_amount
+        description: Monetary burden associated with the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: update_timestamp
+        description: Timestamp of the last update to the claim record.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_dateutil_parseable
+          - dbt_expectations.expect_column_values_to_be_increasing
+```
+
+### Explanation:
+1. **Model Name**: Derived from the file name `fct_cdm_claim_cd_bur_scd3.sql`.
+2. **Description**: Summarized based on the SQL logic combining insert and update records.
+3. **Materialization**: Set to `table` as per the `config` in the SQL file.
+4. **Columns**:
+   - **`claim_id`**: Assumed as a primary key based on naming convention.
+   - **`claim_code`**: Represents claim type; added `accepted_values` test based on typical enumerated values.
+   - **`burden_amount`**: Numeric field with a range test for monetary values.
+   - **`update_timestamp`**: Timestamp field with tests for date parsing and sequential updates.
+
+Since the SQL uses `SELECT *`, column names and descriptions are inferred based on typical business logic and naming conventions. If more specific column details are available, they can be incorporated.

@@ -1,0 +1,39 @@
+Based on the provided SQL files, the models are marts-level models (`fct_cdh_gwods__cdh_gw_bur.sql` and `fct_custom__max_row_wid.sql`). Since the SQL files use `SELECT *` and reference intermediate models, no explicit column definitions or transformations are visible. Therefore, the schema.yml files will be generated with minimal metadata and without column-specific tests, as no column details can be inferred directly from the SQL.
+
+### Generated `schema.yml` for `fct_cdh_gwods__cdh_gw_bur.sql`:
+```yaml
+version: 2
+
+models:
+  - name: fct_cdh_gwods__cdh_gw_bur
+    description: Fact table for CDH GWODS CDH GW BUR. This model references the intermediate model `int_cdh_gwods__cdh_gw_bur`.
+    meta:
+      owner: data_team
+      domain: cdh_gwods
+    config:
+      materialized: table
+    tags: [cdh, gwods, bur]
+    columns: []
+```
+
+### Generated `schema.yml` for `fct_custom__max_row_wid.sql`:
+```yaml
+version: 2
+
+models:
+  - name: fct_custom__max_row_wid
+    description: Fact table for custom max row width. This model references the intermediate model `int_custom__max_row_wid`.
+    meta:
+      owner: data_team
+      domain: custom
+    config:
+      materialized: table
+    tags: [custom, max_row_width]
+    columns: []
+```
+
+### Notes:
+1. Since the SQL files use `SELECT *`, no column-specific metadata or tests can be inferred.
+2. The descriptions are kept generic, based on the file name and the referenced intermediate model.
+3. No tests are applied to columns because no explicit column definitions or transformations are visible in the SQL files.
+4. Metadata fields like `owner` and `domain` are added as placeholders and can be updated based on organizational standards.

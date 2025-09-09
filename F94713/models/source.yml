@@ -1,0 +1,74 @@
+version: 2
+
+sources:
+  - name: Snowflake_Cloud_Data_Warehouse
+    description: Source data from Snowflake Cloud Data Warehouse
+    database: Snowflake Cloud Data Warehouse
+    schema: CDH_GWODS
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Error: 001003 (42000): 01beef45-0003-79c5-0017-750326c64c5b: SQL compilation error: syntax error line 1 at position 28 unexpected '['.
+        identifier: SQ_CDH_GW_BUR
+
+        columns:
+          - name: column_name_1
+            description: Description for column_name_1
+            tests:
+              - not_null
+              - unique
+          - name: column_name_2
+            description: Description for column_name_2
+            tests:
+              - not_null
+
+  - name: Snowflake_Cloud_Data_Warehouse
+    description: Source data from Snowflake Cloud Data Warehouse
+    database: Snowflake Cloud Data Warehouse
+    schema: CDM
+
+    tables:
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Error: 001003 (42000): 01beef45-0003-79bd-0017-750326c63d0b: SQL compilation error: syntax error line 1 at position 28 unexpected '['.
+        identifier: LKP_CDM_BATCH_CTRLID
+
+        columns:
+          - name: column_name_1
+            description: Description for column_name_1
+            tests:
+              - not_null
+              - unique
+          - name: column_name_2
+            description: Description for column_name_2
+            tests:
+              - not_null
+
+      - name: LKP_MAX_ROW_WID
+        description: Error: 001003 (42000): 01beef45-0003-79c5-0017-750326c64c9b: SQL compilation error: syntax error line 1 at position 28 unexpected '['.
+        identifier: LKP_MAX_ROW_WID
+
+        columns:
+          - name: column_name_1
+            description: Description for column_name_1
+            tests:
+              - not_null
+              - unique
+          - name: column_name_2
+            description: Description for column_name_2
+            tests:
+              - not_null
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Error: 001003 (42000): 01beef45-0003-79be-0017-750326c66237: SQL compilation error: syntax error line 1 at position 28 unexpected '['.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns:
+          - name: column_name_1
+            description: Description for column_name_1
+            tests:
+              - not_null
+              - unique
+          - name: column_name_2
+            description: Description for column_name_2
+            tests:
+              - not_null

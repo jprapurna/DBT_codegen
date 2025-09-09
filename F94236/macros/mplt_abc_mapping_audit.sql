@@ -1,59 +1,44 @@
 {% macro mplt_abc_mapping_audit(mapping_name, folder_name, workflow_name) %}
-WITH input_data AS (
+WITH lkp_map_id AS (
   SELECT
-    '{{ mapping_name }}' AS MAPPING_NAME,
-    '{{ folder_name }}' AS FOLDER_NAME,
-    '{{ workflow_name }}' AS WORKFLOW_NAME,
-    0 AS v_RECORD_NUM
+    mapping_id
+  FROM {{ source('schema', 'table') }}
+  WHERE mapping_name = {{ mapping_name }}
+    AND folder_name = {{ folder_name }}
 ),
-
-intermediate_data AS (
+lkp_workflow_run_id_abc AS (
   SELECT
-    MAPPING_NAME,
-    FOLDER_NAME,
-    WORKFLOW_NAME,
-    v_RECORD_NUM + 1 AS v_RECORD_NUM,
-    CASE 
-      WHEN v_RECORD_NUM = 1 THEN (
-        SELECT MAP_ID 
-        FROM {{ source('schema', 'table') }} 
-        WHERE MAPPING_NAME = '{{ mapping_name }}' AND FOLDER_NAME = '{{ folder_name }}'
-      )
-      ELSE v_MAPNG_ID
-    END AS v_MAPNG_ID,
-    CASE 
-      WHEN v_RECORD_NUM = 1 THEN (
-        CASE 
-          WHEN (
-            SELECT WORKFLOW_RUN_ID 
-            FROM {{ source('schema', 'table') }} 
-            WHERE WORKFLOW_NAME = '{{ workflow_name }}'
-          ) IS NULL THEN (
-            SELECT WORKFLOW_RUN_ID 
-            FROM {{ source('schema', 'table') }} 
-            WHERE WORKFLOW_NAME = '{{ workflow_name }}'
-          )
-          ELSE (
-            SELECT WORKFLOW_RUN_ID 
-            FROM {{ source('schema', 'table') }} 
-            WHERE WORKFLOW_NAME = '{{ workflow_name }}'
-          )
-        END
-      )
-      ELSE v_WRK_FLOW_RUN_ID
-    END AS v_WRK_FLOW_RUN_ID
-  FROM input_data
+    workflow_run_id
+  FROM {{ source('schema', 'table') }}
+  WHERE workflow_name = {{ workflow_name }}
 ),
-
-final_output AS (
+lkp_workflow_run_id AS (
+  SELECT
+    workflow_run_id
+  FROM {{ source('schema', 'table') }}
+  WHERE workflow_name = {{ workflow_name }}
+),
+step1 AS (
+  SELECT
+    IIF(v_RECORD_NUM = 1, lkp_map_id.mapping_id, v_MAPNG_ID) AS v_MAPNG_ID,
+    IIF(v_RECORD_NUM = 1,
+        IIF(ISNULL(lkp_workflow_run_id_abc.workflow_run_id),
+            lkp_workflow_run_id.workflow_run_id,
+            lkp_workflow_run_id_abc.workflow_run_id),
+        v_WRK_FLOW_RUN_ID) AS v_WRK_FLOW_RUN_ID
+  FROM lkp_map_id
+  CROSS JOIN lkp_workflow_run_id_abc
+  CROSS JOIN lkp_workflow_run_id
+),
+final AS (
   SELECT
     v_MAPNG_ID AS CR_BY_MAPNG_ID,
-    CURRENT_TIMESTAMP AS DW_CR_TMSP,
+    SESSSTARTTIME AS DW_CR_TMSP,
     v_MAPNG_ID AS UPD_BY_MAPNG_ID,
-    CURRENT_TIMESTAMP AS DW_UPD_TMSP,
+    SESSSTARTTIME AS DW_UPD_TMSP,
     v_WRK_FLOW_RUN_ID AS WRK_FLOW_RUN_ID
-  FROM intermediate_data
+  FROM step1
 )
-
-SELECT * FROM final_output
+SELECT *
+FROM final
 {% endmacro %}

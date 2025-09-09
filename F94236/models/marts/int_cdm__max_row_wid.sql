@@ -1,7 +1,13 @@
-{{ config(materialized='ephemeral') }}
+{{
+  config(materialized='ephemeral')
+}}
 
-WITH source_data AS (
-  SELECT * FROM {{ source('cdm', 'custom_table') }}
+WITH lookup_data AS (
+  SELECT 
+    ROW_WID, 
+    TABLE_NAME
+  FROM {{ mplt_lkp_max_row_wid('TGT_TABLE_NAME') }}
 )
 
-SELECT * FROM source_data
+SELECT * 
+FROM lookup_data

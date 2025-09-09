@@ -1,12 +1,36 @@
 version: 2
 
 models:
-  - name: fct_cdm__w_claim_cd_bur_scd3  # Required
-    description: This model represents the fact table for claim code burden data, sourced from the intermediate model `int_cdm__w_claim_cd_bur_scd3`. It is materialized as a table for optimized querying and analysis.
+  - name: fct_cdm__claim_cd_bur  # Required
+    description: This model aggregates BUR-related data from multiple sources, combining historical and new BUR values for claims processing.
     meta:
-      owner: data_team  # Optional metadata
+      owner: data_engineering_team
       domain: claims
     config:
       materialized: table
-    tags: [claims, fact_table]
-    columns: []  # No columns explicitly defined in the SELECT clause
+    tags: [claims, bur, pii]
+    columns:
+      - name: ROW_WID
+        description: Unique identifier for each row in the BUR claims data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: BUR
+        description: Current BUR value associated with the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BUR1', 'BUR2', 'BUR3', 'BUR4']  # Example values inferred from BUR context
+      - name: NEW_BUR
+        description: New BUR value for the claim, reflecting updates or changes.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BUR1', 'BUR2', 'BUR3', 'BUR4']  # Example values inferred from BUR context
+      - name: OLD_BUR
+        description: Historical BUR value for the claim, representing previous state.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BUR1', 'BUR2', 'BUR3', 'BUR4']  # Example values inferred from BUR context

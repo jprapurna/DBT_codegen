@@ -1,81 +1,36 @@
 version: 2
 
 sources:
-  - name: GENAI_POWER_BI_CDM
-    description: Source tables from GENAI_POWER_BI database in CDM schema
+  - name: GENAI_POWER_BI
+    description: Data source for GENAI Power BI reporting
     database: GENAI_POWER_BI
     schema: CDM
 
     tables:
       - name: SQ_CDH_GW_BUR
-        description: Table containing policy state, BUR, and source name information
+        description: Error: 002003 (02000): 01bef1d1-0003-79c5-0017-75032766b84b: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
         identifier: SQ_CDH_GW_BUR
 
-        columns:
-          - name: POLICY_STATE
-            description: State associated with the policy
-            tests:
-              - not_null
-          - name: BUR
-            description: BUR identifier
-            tests:
-              - not_null
-          - name: SOURCE_NAME
-            description: Name of the source system
-            tests:
-              - not_null
+        columns: []
 
       - name: LKP_W_CLAIM_CD_BUR_SCD3
-        description: Lookup table for claim codes and BUR mappings
+        description: Error: 002003 (02000): 01bef1d1-0003-79be-0017-75032767324b: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
         identifier: LKP_W_CLAIM_CD_BUR_SCD3
 
-        columns:
-          - name: LKP_ROW_WID
-            description: Row identifier for the lookup table
-            tests:
-              - not_null
-              - unique
-          - name: LKP_INTEGRATION_ID
-            description: Integration ID for the lookup entry
-            tests:
-              - not_null
-          - name: LKP_NEW_BUR
-            description: New BUR value for the lookup entry
-            tests:
-              - not_null
+        columns: []
 
       - name: LKP_MAX_ROW_WID
-        description: Lookup table for maximum row identifiers
+        description: Error: 002003 (02000): 01bef1d1-0003-79bd-0017-750327669f1f: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
         identifier: LKP_MAX_ROW_WID
 
-        columns:
-          - name: ROW_WID
-            description: Maximum row identifier
-            tests:
-              - not_null
-              - unique
-          - name: TABLE_NAME
-            description: Name of the table associated with the row identifier
-            tests:
-              - not_null
+        columns: []
 
       - name: LKP_CDM_BATCH_CTRLID
-        description: Lookup table for batch control IDs
+        description: Error: 002003 (02000): 01bef1d1-0003-79c5-0017-75032766b853: SQL compilation error:
+Schema 'DBA_COMMON_UTILS.CDM' does not exist or not authorized.
         identifier: LKP_CDM_BATCH_CTRLID
 
-        columns:
-          - name: SOURCE_NAME
-            description: Name of the source system
-            tests:
-              - not_null
-          - name: BATCH_ID
-            description: Batch identifier
-            tests:
-              - not_null
-              - unique
-          - name: STATUS
-            description: Status of the batch process
-            tests:
-              - not_null
-              - accepted_values:
-                  values: ['SUCCESS', 'FAILURE', 'PENDING']
+        columns: []

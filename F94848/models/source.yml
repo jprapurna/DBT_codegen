@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: CDH_GW_BUR
+    description: Schema 'DBA_COMMON_UTILS.SCHEMA_CDH_GWODS' does not exist or not authorized.
+    database: Snowflake
+    schema: SCHEMA_CDH_GWODS
+
+    tables:
+      - name: CDH_GW_BUR
+        description: Schema 'DBA_COMMON_UTILS.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: CDH_GW_BUR
+        columns: []
+
+  - name: W_CLAIM_CD_BUR_SCD3
+    description: Schema 'DBA_COMMON_UTILS.SCHEMA_CDH_GWODS' does not exist or not authorized.
+    database: Snowflake
+    schema: SCHEMA_CDH_GWODS
+
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Schema 'DBA_COMMON_UTILS.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: W_CLAIM_CD_BUR_SCD3
+        columns: []
+
+  - name: CDM_BATCH_CTRLID
+    description: Schema 'DBA_COMMON_UTILS.SCHEMA_CDH_GWODS' does not exist or not authorized.
+    database: Snowflake
+    schema: SCHEMA_CDH_GWODS
+
+    tables:
+      - name: CDM_BATCH_CTRLID
+        description: Schema 'DBA_COMMON_UTILS.SCHEMA_CDH_GWODS' does not exist or not authorized.
+        identifier: CDM_BATCH_CTRLID
+        columns: []

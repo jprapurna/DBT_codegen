@@ -1,0 +1,134 @@
+version: 2
+
+sources:
+  - name: Snowflake_CDM
+    description: Source tables from the CDM schema in Snowflake database.
+    database: Snowflake
+    schema: CDM
+
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3_I
+        description: Table for claim code burden SCD3 insert operations.
+        identifier: W_CLAIM_CD_BUR_SCD3_I
+        columns: []
+
+      - name: W_CLAIM_CD_BUR_SCD3_U
+        description: Table for claim code burden SCD3 update operations.
+        identifier: W_CLAIM_CD_BUR_SCD3_U
+        columns: []
+
+      - name: POLICY_STATE
+        description: Table for policy state information.
+        identifier: POLICY_STATE
+        columns: []
+
+      - name: BUR
+        description: Table for burden information.
+        identifier: BUR
+        columns: []
+
+      - name: SOURCE_NAME
+        description: Table for source name details.
+        identifier: SOURCE_NAME
+        columns: []
+
+      - name: ROW_WID
+        description: Table for row-wide identifiers.
+        identifier: ROW_WID
+        columns: []
+
+      - name: INTEGRATION_ID
+        description: Table for integration identifiers.
+        identifier: INTEGRATION_ID
+        columns: []
+
+      - name: NEW_BUR
+        description: Table for new burden information.
+        identifier: NEW_BUR
+        columns: []
+
+      - name: Mapplet_TGT_TABLE_NAME
+        description: Table for mapplet target table names.
+        identifier: Mapplet_TGT_TABLE_NAME
+        columns: []
+
+      - name: SOURCE_NAME_GWCDM
+        description: Table for source name in GWCDM.
+        identifier: SOURCE_NAME_GWCDM
+        columns: []
+
+      - name: s_m_W_CLAIM_CD_SCD3_IU
+        description: Table for claim code SCD3 insert/update operations.
+        identifier: s_m_W_CLAIM_CD_SCD3_IU
+        columns: []
+
+      - name: PMError
+        description: Table for PM error information.
+        identifier: PMError
+        columns: []
+
+  - name: Snowflake_CDH_GWODS
+    description: Source tables from the CDH_GWODS schema in Snowflake database.
+    database: Snowflake
+    schema: CDH_GWODS
+
+    tables:
+      - name: W_CLAIM_CD_BUR_SCD3_I
+        description: Table for claim code burden SCD3 insert operations.
+        identifier: W_CLAIM_CD_BUR_SCD3_I
+        columns: []
+
+      - name: W_CLAIM_CD_BUR_SCD3_U
+        description: Table for claim code burden SCD3 update operations.
+        identifier: W_CLAIM_CD_BUR_SCD3_U
+        columns: []
+
+      - name: POLICY_STATE
+        description: Table for policy state information.
+        identifier: POLICY_STATE
+        columns: []
+
+      - name: BUR
+        description: Table for burden information.
+        identifier: BUR
+        columns: []
+
+      - name: SOURCE_NAME
+        description: Table for source name details.
+        identifier: SOURCE_NAME
+        columns: []
+
+      - name: ROW_WID
+        description: Table for row-wide identifiers.
+        identifier: ROW_WID
+        columns: []
+
+      - name: INTEGRATION_ID
+        description: Table for integration identifiers.
+        identifier: INTEGRATION_ID
+        columns: []
+
+      - name: NEW_BUR
+        description: Table for new burden information.
+        identifier: NEW_BUR
+        columns: []
+
+      - name: Mapplet_TGT_TABLE_NAME
+        description: Table for mapplet target table names.
+        identifier: Mapplet_TGT_TABLE_NAME
+        columns: []
+
+      - name: SOURCE_NAME_GWCDM
+        description: Table for source name in GWCDM.
+        identifier: SOURCE_NAME_GWCDM
+        columns: []
+
+      - name: s_m_W_CLAIM_CD_SCD3_IU
+        description: Table for claim code SCD3 insert/update operations.
+        identifier: s_m_W_CLAIM_CD_SCD3_IU
+        columns: []
+
+      - name: PMError
+        description: Table for PM error information.
+        identifier: PMError
+        columns: []

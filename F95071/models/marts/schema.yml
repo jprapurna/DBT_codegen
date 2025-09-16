@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: fct_claim__scd3  # Required
+    description: A fact table that applies SCD3 logic to claims data, extracting relevant fields for analysis.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, scd3]
+    columns:
+      - name: lkp_ROW_WID
+        description: The unique identifier for the row in the claims data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: lkp_INTEGRATION_ID
+        description: The integration ID associated with the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: lkp_NEW_BUR
+        description: The new BUR (Business Unit Responsibility) value for the claim after SCD3 logic is applied.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BUR1', 'BUR2', 'BUR3']  # Example values inferred from business logic
+
+  - name: fct_claim__bur  # Required
+    description: A fact table that provides claims data with Business Unit Responsibility (BUR) information.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, bur]
+    columns:
+      - name: ROW_WID
+        description: The unique identifier for the row in the claims data.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: INTEGRATION_ID
+        description: The integration ID associated with the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 1
+              max_value: 255
+      - name: BUR
+        description: The Business Unit Responsibility (BUR) value for the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['BUR1', 'BUR2', 'BUR3']  # Example values inferred from business logic

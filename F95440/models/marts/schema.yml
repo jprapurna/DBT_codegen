@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3  # Derived from the file name
+    description: Fact table for claim data with cleaned BUR values and associated assignment statuses.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, fact_table]
+    columns:
+      - name: POLICY_STATE
+        description: State associated with the policy.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['CA', 'NY', 'TX', 'FL', 'WA']  # Example states
+      - name: BUR_CLEANED
+        description: Cleaned BUR value for claims.
+        tests:
+          - not_null
+          - unique
+      - name: SOURCE_NAME
+        description: Name of the source system for the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_value_lengths_to_be_between:
+              min_value: 3
+              max_value: 50
+      - name: STATE_FLAG
+        description: Flag indicating the state of the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['active', 'inactive', 'pending']
+      - name: ACTION
+        description: Action taken on the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['approve', 'reject', 'review']
+      - name: ASSIGNMENT_STATUS
+        description: Status of the assignment related to the claim.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['assigned', 'unassigned', 'in_progress']
+      - name: ROW_WID
+        description: Row identifier from the external data source.
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('int_exp_row_wid')
+              field: ROW_WID

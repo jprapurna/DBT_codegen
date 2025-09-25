@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fct_m_FDR_FIRE_PLCY_TRANS_RSLT_PL  # Required
+    description: This model represents the final fact table for fire policy transaction results, pulling data from the intermediate model `int_m_FDR_FIRE_PLCY_TRANS_RSLT_PL`.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: insurance
+    config:
+      materialized: table
+    tags: [insurance, fire_policy, transactions]
+    columns: []
+``` 
+
+### Explanation:
+- The SQL file uses `SELECT *`, which means all columns are inherited from the referenced intermediate model `int_m_FDR_FIRE_PLCY_TRANS_RSLT_PL`. Since no explicit columns are defined in the `SELECT` clause, no column-specific metadata or tests can be extracted.
+- The model name is inferred from the file name.
+- A description is provided based on the context of the file name and the reference to the intermediate model.
+- No columns are explicitly listed, so the `columns` section is left empty.

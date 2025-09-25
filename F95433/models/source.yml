@@ -1,0 +1,68 @@
+version: 2
+
+sources:
+  - name: genai_power_bi
+    description: Source data from GENAI_POWER_BI schema in Snowflake
+    database: Snowflake
+    schema: None
+
+    tables:
+      - name: ABC_BAL_ROW_COUNTS
+        description: Table containing balance row counts
+        identifier: ABC_BAL_ROW_COUNTS
+        columns: []
+
+      - name: STG_TFPLCY_TRAN_RESULT
+        description: Staging table for policy transaction results
+        identifier: STG_TFPLCY_TRAN_RESULT
+        columns: []
+
+      - name: PRE_FDR_FIRE_PLCY_TRANS_RSLT
+        description: Pre-fire policy transaction results
+        identifier: PRE_FDR_FIRE_PLCY_TRANS_RSLT
+        columns: []
+
+      - name: TRANS_OPERTNG_COST
+        description: Table for transaction operating costs
+        identifier: TRANS_OPERTNG_COST
+        columns: []
+
+      - name: TRN_BILLED_TAX_AMT
+        description: Table for billed tax amounts
+        identifier: TRN_BILLED_TAX_AMT
+        columns: []
+
+      - name: TRN_POLICY_FEE_AMT
+        description: Table for policy fee amounts
+        identifier: TRN_POLICY_FEE_AMT
+        columns: []
+
+      - name: TRN_REINST_FEE_AMT
+        description: Table for reinstatement fee amounts
+        identifier: TRN_REINST_FEE_AMT
+        columns: []
+
+      - name: TRANS_PRORT_FCTR
+        description: Table for transaction prorate factors
+        identifier: TRANS_PRORT_FCTR
+        columns: []
+
+      - name: HAZARD_DIS_PCT
+        description: Table for hazard discount percentages
+        identifier: HAZARD_DIS_PCT
+        columns: []
+
+      - name: ALT_PRORATE_FCTR
+        description: Table for alternate prorate factors
+        identifier: ALT_PRORATE_FCTR
+        columns: []
+
+      - name: ACS_NB_CITY_TX_AMT
+        description: Table for ACS non-business city tax amounts
+        identifier: ACS_NB_CITY_TX_AMT
+        columns: []
+
+      - name: ACS_RN_CITY_TX_AMT
+        description: Table for ACS residential city tax amounts
+        identifier: ACS_RN_CITY_TX_AMT
+        columns: []

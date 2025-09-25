@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: Snowflake_Cloud_Data_Warehouse_V2
+    description: Source data from Snowflake Cloud Data Warehouse (V2)
+    database: Snowflake Cloud Data Warehouse (V2)
+    schema: SCHEMA_CDH_GWODS
+
+    tables:
+      - name: CDH_GW_BUR
+        description: Table CDH_GW_BUR from SCHEMA_CDH_GWODS
+        identifier: CDH_GW_BUR
+
+        columns: []
+
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Table W_CLAIM_CD_BUR_SCD3 from SCHEMA_CDH_GWODS
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+        columns: []
+
+      - name: W_CLAIM_CD_BUR_SCD3_I
+        description: Table W_CLAIM_CD_BUR_SCD3_I from SCHEMA_CDH_GWODS
+        identifier: W_CLAIM_CD_BUR_SCD3_I
+
+        columns: []
+
+      - name: W_CLAIM_CD_BUR_SCD3_U
+        description: Table W_CLAIM_CD_BUR_SCD3_U from SCHEMA_CDH_GWODS
+        identifier: W_CLAIM_CD_BUR_SCD3_U
+
+        columns: []
+
+      - name: CDM_BATCH_CTRLID
+        description: Table CDM_BATCH_CTRLID from SCHEMA_CDH_GWODS
+        identifier: CDM_BATCH_CTRLID
+
+        columns: []

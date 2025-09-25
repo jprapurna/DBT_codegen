@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fct_claim_cd_bur  # Required
+    description: A fact table for claim CD BUR data, sourced from the intermediate model `int_claim_cd_bur__exp_row_wid`.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, fact_table]
+    columns: []
+``` 
+
+### Explanation:
+- Since the SQL uses `SELECT *`, no explicit columns are defined in the final SELECT clause, so no column-level metadata or tests can be extracted.
+- The model name is inferred from the file name `fct_claim_cd_bur.sql`.
+- The description provides a high-level summary of the model's purpose based on the context of the SQL file.
+- No column-specific tests or descriptions are included because the SQL does not specify any columns explicitly.

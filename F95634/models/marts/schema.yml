@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: fct_w_claim_cd_bur_scd3_u
+    description: Fact table for claim code burden data with SCD3 updates.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, scd3]
+    columns: []
+
+  - name: fct_w_claim_cd_bur_scd3_i
+    description: Fact table for claim code burden data with SCD3 inserts.
+    meta:
+      owner: data_team
+      domain: claims
+    config:
+      materialized: table
+    tags: [claims, scd3]
+    columns: []
+
+  - name: fct_output
+    description: Fact table output based on row-wide lookup with maximum row-wide values.
+    meta:
+      owner: data_team
+      domain: output
+    config:
+      materialized: table
+    tags: [output, lookup]
+    columns: []

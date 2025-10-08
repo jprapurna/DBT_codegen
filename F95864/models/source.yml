@@ -1,0 +1,62 @@
+version: 2
+
+sources:
+  - name: GENAI_POWER_BI
+    description: Source data from GENAI_POWER_BI database
+    database: GENAI_POWER_BI
+    schema: CDM
+
+    tables:
+      - name: CDH_GW_BUR
+        description: Table 'CDH_GW_BUR' does not exist or not authorized
+        identifier: CDH_GW_BUR
+
+      - name: W_CLAIM_CD_BUR_SCD3
+        description: Table 'W_CLAIM_CD_BUR_SCD3' does not exist or not authorized
+        identifier: W_CLAIM_CD_BUR_SCD3
+
+      - name: CDM_BATCH_CTRLID
+        description: Table 'CDM_BATCH_CTRLID' does not exist or not authorized
+        identifier: CDM_BATCH_CTRLID
+
+      - name: SQ_CDH_GW_BUR
+        description: Table containing source query data for CDH_GW_BUR
+        identifier: SQ_CDH_GW_BUR
+        columns:
+          - name: POLICY_STATE
+            description: State of the policy
+          - name: BUR
+            description: Business unit region
+          - name: SOURCE_NAME
+            description: Name of the source system
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Lookup table for W_CLAIM_CD_BUR_SCD3
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+        columns:
+          - name: LKP_ROW_WID
+            description: Lookup row unique identifier
+          - name: LKP_INTEGRATION_ID
+            description: Lookup integration ID
+          - name: LKP_NEW_BUR
+            description: Lookup new business unit region
+
+      - name: LKP_MAX_ROW_WID
+        description: Lookup table for maximum row width
+        identifier: LKP_MAX_ROW_WID
+        columns:
+          - name: ROW_WID
+            description: Row unique identifier
+          - name: TABLE_NAME
+            description: Name of the table
+
+      - name: LKP_CDM_BATCH_CTRLID
+        description: Lookup table for CDM batch control ID
+        identifier: LKP_CDM_BATCH_CTRLID
+        columns:
+          - name: SOURCE_NAME
+            description: Name of the source system
+          - name: BATCH_ID
+            description: Batch identifier
+          - name: STATUS
+            description: Status of the batch process

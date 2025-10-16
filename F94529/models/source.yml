@@ -1,81 +1,43 @@
 version: 2
 
 sources:
-  - name: GENAI_POWER_BI_CDM
-    description: Source tables from GENAI_POWER_BI database in CDM schema
-    database: GENAI_POWER_BI
-    schema: CDM
+  - name: cdh_gwods
+    description: Source tables from the CDH_GWODS schema in Snowflake.
+    database: Snowflake
+    schema: CDH_GWODS
 
     tables:
-      - name: SQ_CDH_GW_BUR
-        description: Table containing policy state, BUR, and source name information
-        identifier: SQ_CDH_GW_BUR
+      - name: sq_cdh_gw_bur
+        description: Table $SQ_CDH_GW_BUR$ encountered a SQL compilation error.
+        identifier: $SQ_CDH_GW_BUR$
+        columns: []
 
-        columns:
-          - name: POLICY_STATE
-            description: State associated with the policy
-            tests:
-              - not_null
-          - name: BUR
-            description: BUR information
-            tests:
-              - not_null
-          - name: SOURCE_NAME
-            description: Name of the source
-            tests:
-              - not_null
+      - name: w_claim_cd_bur_scd3_i
+        description: Table $W_CLAIM_CD_BUR_SCD3_I$ encountered a SQL compilation error.
+        identifier: $W_CLAIM_CD_BUR_SCD3_I$
+        columns: []
 
-      - name: LKP_W_CLAIM_CD_BUR_SCD3
-        description: Lookup table for claim codes and BUR information
-        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+      - name: w_claim_cd_bur_scd3_u
+        description: Table $W_CLAIM_CD_BUR_SCD3_U$ encountered a SQL compilation error.
+        identifier: $W_CLAIM_CD_BUR_SCD3_U$
+        columns: []
 
-        columns:
-          - name: LKP_ROW_WID
-            description: Row identifier for the lookup table
-            tests:
-              - not_null
-              - unique
-          - name: LKP_INTEGRATION_ID
-            description: Integration ID for the lookup table
-            tests:
-              - not_null
-          - name: LKP_NEW_BUR
-            description: New BUR value in the lookup table
-            tests:
-              - not_null
+      - name: dev_clm_bi_cdm_w_claim_cd_bur_scd3
+        description: Table DEV_CLM_BI/CDM/W_CLAIM_CD_BUR_SCD3 encountered a SQL compilation error.
+        identifier: DEV_CLM_BI/CDM/W_CLAIM_CD_BUR_SCD3
+        columns: []
 
-      - name: LKP_MAX_ROW_WID
-        description: Lookup table for maximum row identifiers
-        identifier: LKP_MAX_ROW_WID
+      - name: lkp_w_claim_cd_bur_scd3
+        description: Table $LKP_W_CLAIM_CD_BUR_SCD3$ encountered a SQL compilation error.
+        identifier: $LKP_W_CLAIM_CD_BUR_SCD3$
+        columns: []
 
-        columns:
-          - name: ROW_WID
-            description: Row identifier
-            tests:
-              - not_null
-              - unique
-          - name: TABLE_NAME
-            description: Name of the table
-            tests:
-              - not_null
+      - name: mplt_cdm_batch_id_lkp_cdm_batch_ctrlid
+        description: Table $MPLT_CDM_BATCH_ID_LKP_CDM_BATCH_CTRLID$ encountered a SQL compilation error.
+        identifier: $MPLT_CDM_BATCH_ID_LKP_CDM_BATCH_CTRLID$
+        columns: []
 
-      - name: LKP_CDM_BATCH_CTRLID
-        description: Lookup table for batch control IDs
-        identifier: LKP_CDM_BATCH_CTRLID
-
-        columns:
-          - name: SOURCE_NAME
-            description: Name of the source
-            tests:
-              - not_null
-          - name: BATCH_ID
-            description: Batch identifier
-            tests:
-              - not_null
-              - unique
-          - name: STATUS
-            description: Status of the batch
-            tests:
-              - not_null
-              - accepted_values:
-                  values: ['SUCCESS', 'FAILURE', 'PENDING']
+      - name: mplt_cdm_row_wid_lkp_max_row_wid
+        description: Table $MPLT_CDM_ROW_WID_LKP_MAX_ROW_WID$ encountered a SQL compilation error.
+        identifier: $MPLT_CDM_ROW_WID_LKP_MAX_ROW_WID$
+        columns: []

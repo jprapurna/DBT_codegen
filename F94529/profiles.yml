@@ -8,6 +8,6 @@ snowflake:
       role: ACCOUNTADMIN
       database: GENAI_POWER_BI
       warehouse: GENAI_WH
-      schema: POWER_CENTER
+      schema: PUBLIC
       threads: 4
   target: dev

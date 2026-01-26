@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: CDH_GWODS_CDM
+    description: Source data from CDH_GWODS database and CDM schema.
+    database: CDH_GWODS
+    schema: CDM
+
+    tables:
+      - name: SQ_CDH_GW_BUR
+        description: Table SQ_CDH_GW_BUR from CDH_GWODS.CDM.
+        identifier: SQ_CDH_GW_BUR
+
+        columns: []
+
+      - name: LKP_W_CLAIM_CD_BUR_SCD3
+        description: Table LKP_W_CLAIM_CD_BUR_SCD3 from CDH_GWODS.CDM.
+        identifier: LKP_W_CLAIM_CD_BUR_SCD3
+
+        columns: []
+
+      - name: lkp_CDM_BATCH_CTRLID
+        description: Table lkp_CDM_BATCH_CTRLID from CDH_GWODS.CDM.
+        identifier: lkp_CDM_BATCH_CTRLID
+
+        columns: []
+
+      - name: lkp_MAX_ROW_WID
+        description: Table lkp_MAX_ROW_WID from CDH_GWODS.CDM.
+        identifier: lkp_MAX_ROW_WID
+
+        columns: []

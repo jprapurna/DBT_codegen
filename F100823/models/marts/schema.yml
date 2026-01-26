@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: fct_cdm_final  # Required
+    description: This model represents the final fact table for the CDM (Common Data Model) containing aggregated and processed data from the intermediate CDM model.
+    meta:
+      owner: data_team  # Optional metadata
+      domain: cdm  # Common Data Model domain
+    config:
+      materialized: table
+    tags: [cdm, fact_table]  # Optional tags
+    columns:
+      - name: row_wid
+        description: The unique identifier for each row in the CDM fact table.
+        tests:
+          - unique
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_unique
+      - name: other_column_1
+        description: Description inferred from the intermediate model or transformations.
+        tests:
+          - not_null
+      - name: other_column_2
+        description: Description inferred from the intermediate model or transformations.
+        tests:
+          - not_null
+      - name: other_column_3
+        description: Description inferred from the intermediate model or transformations.
+        tests:
+          - not_null
+```
+
+### Notes:
+1. Since the SQL uses `SELECT *`, the column definitions and descriptions are inferred from the referenced intermediate model (`int_cdm__row_wid_expression`).
+2. The `row_wid` column is treated as the primary key based on its name and role, and appropriate tests (`unique`, `not_null`, `dbt_expectations.expect_column_values_to_be_unique`) are applied.
+3. Other columns are included with generic descriptions and `not_null` tests, assuming they are essential fields in the fact table.
+4. No additional tests like `accepted_values` or `relationships` are applied due to lack of explicit patterns or foreign key references in the SQL.

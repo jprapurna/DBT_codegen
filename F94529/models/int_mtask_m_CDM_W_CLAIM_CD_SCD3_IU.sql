@@ -4,50 +4,57 @@ WITH SQ_CDH_GW_BUR AS (
         POLICY_STATE AS POLICY_STATE, -- string
         BUR AS BUR,                   -- string
         'GWCDH' AS SOURCE_NAME        -- string
-    FROM {{ source('snowflake_cloud_data_warehouse', 'CDH_GW_BUR') }}
-)
-
-
--- Lookup node: LKP_W_CLAIM_CD_BUR_SCD3
-, LKP_W_CLAIM_CD_BUR_SCD3 AS (
-    SELECT 
-        LKP_INTEGRATION_ID,
-        LKP_NEW_BUR,
-        SOURCE_NAME,
-        o_BATCH_ID,
-        INTEGRATION_ID,
-        BUR
-    FROM {{ source('snowflake_cloud_data_warehouse', 'LKP_W_CLAIM_CD_BUR_SCD3') }}
-)
-
-
--- Transformation node: EXP_BUR
-, EXP_BUR AS (
-    SELECT 
-        POLICY_STATE AS INTEGRATION_ID, -- Maps POLICY_STATE to INTEGRATION_ID
-        BUR, -- Passes BUR without transformation
-        SOURCE_NAME, -- Passes SOURCE_NAME without transformation
-        LKP_ROW_WID, -- Derived or passed from previous node
-        LKP_INTEGRATION_ID, -- Derived or passed from previous node
-        o_BATCH_ID, -- Derived or passed from previous node
-        LKP_NEW_BUR, -- Derived or passed from previous node
-        ROW_ID -- Derived or passed from previous node
-    FROM 6 -- References the previous node by its ID
+    FROM {{ source('SCHEMA_CDH_GWODS', 'CDH_GW_BUR') }}
 )
 
 
 -- Lookup transformation node: LKP_W_CLAIM_CD_BUR_SCD3
 , LKP_W_CLAIM_CD_BUR_SCD3 AS (
     SELECT 
-        LKP_ROW_WID,
         LKP_INTEGRATION_ID,
         LKP_NEW_BUR,
         SOURCE_NAME,
         o_BATCH_ID,
         INTEGRATION_ID,
         BUR
-    FROM {{ source('snowflake_cloud_data_warehouse', '$LKP_W_CLAIM_CD_BUR_SCD3') }}
-    WHERE LKP_INTEGRATION_ID = in_INTEGRATION_ID
+    FROM {{ source('CDM', 'W_CLAIM_CD_BUR_SCD3') }}
+    WHERE INTEGRATION_ID = LKP_INTEGRATION_ID
+)
+
+
+-- Transformation node: EXP_BUR
+, EXP_BUR AS (
+    SELECT 
+        -- Derived field: POLICY_STATE mapped to INTEGRATION_ID
+        POLICY_STATE AS INTEGRATION_ID,
+        
+        -- Passthrough fields: No transformation applied
+        BUR,
+        SOURCE_NAME,
+        
+        -- Fields derived or passed from previous node
+        LKP_ROW_WID,
+        LKP_INTEGRATION_ID,
+        o_BATCH_ID,
+        LKP_NEW_BUR,
+        ROW_ID
+    FROM 6 -- Reference to the previous node
+)
+
+
+-- Lookup transformation node: LKP_W_CLAIM_CD_BUR_SCD3
+, LKP_W_CLAIM_CD_BUR_SCD3 AS (
+    SELECT 
+        previous_node.INTEGRATION_ID,
+        previous_node.BUR,
+        lkp_table.LKP_ROW_WID,
+        lkp_table.LKP_INTEGRATION_ID,
+        lkp_table.LKP_NEW_BUR,
+        lkp_table.SOURCE_NAME,
+        lkp_table.o_BATCH_ID
+    FROM previous_node AS previous_node
+    LEFT JOIN {{ source('CDM', 'W_CLAIM_CD_BUR_SCD3') }} AS lkp_table
+        ON lkp_table.LKP_INTEGRATION_ID = previous_node.INTEGRATION_ID
 )
 
 
@@ -92,14 +99,15 @@ WITH SQ_CDH_GW_BUR AS (
         LKP_INTEGRATION_ID,
         in_INTEGRATION_ID,
         BATCH_ID
-    FROM rtr_CLM_INSERT_UPD
-    WHERE o_Flag = 'I' OR o_Flag = 'U'
+    FROM rtr_CLM_INSERT_UPD_cte
+    WHERE o_Flag IN ('I', 'U')
 )
 
 
 -- Transformation node: UPD_BUR
 , UPD_BUR AS (
     SELECT 
+        *,
         'DD_UPDATE' AS Update_Strategy_Expression_78066
     FROM 33
 )
@@ -116,8 +124,8 @@ WITH SQ_CDH_GW_BUR AS (
 
 final AS (
     SELECT
-        ROW_WID
-    FROM W_CLAIM_CD_BUR_SCD3_I
+        *
+    FROM 18
 )
 
 SELECT * FROM final
@@ -125,17 +133,17 @@ SELECT * FROM final
 
 {{ config(
     materialized='incremental',
-    alias='W_CLAIM_CD_BUR_SCD3_I',
-    unique_key='o_Flag',
+    alias='W_CLAIM_CD_BUR_SCD3',   -- Target table name
+    unique_key='o_Flag',           -- Unique key for incremental strategy
     incremental_strategy='merge',
     on_schema_change='append_new_columns',
-    merge_update_columns=['o_Flag']
+    merge_update_columns=['o_Flag'] -- Include all target fields
 ) }}
 
 final AS (
     SELECT
         *
-    FROM W_CLAIM_CD_BUR_SCD3_I
+    FROM 23, 33 -- Reference all previous nodes
 )
 
 SELECT * FROM final

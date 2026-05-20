@@ -11,21 +11,28 @@ with
             {{ in_table_name }} as IN_TABLE_NAME
     ),
 
-    /* 2) Lookup transformation to retrieve maximum ROW_WID */
+    /* 2) Lookup transformation to retrieve maximum ROW_WID and associated TABLE_NAME */
     lkp_max_row_wid as (
         select
-            nvl(max(row_wid), 0) as ROW_WID
-        from {{ var('schema_cdm') }}.{{ var('tgt_table_name') }}
+            coalesce(max(row_wid), 0) as ROW_WID,
+            table_name as TABLE_NAME
+        from {{ source('$$SCHEMA_CDM', '$$TGT_TABLE_NAME') }}
         where table_name = (select IN_TABLE_NAME from input_data)
     ),
 
-    /* 3) Expression transformation to calculate ROW_WID */
+    /* 3) Expression transformation to calculate ROW_WID using lookup and conditional logic */
     exp_row_wid as (
         select
-            iif(v2 = 0, (select ROW_WID from lkp_max_row_wid), v2) as V1,
+            case 
+                when v2 = 0 then (select ROW_WID from lkp_max_row_wid)
+                else v2
+            end as V1,
             V1 + 1 as V2,
             V2 as ROW_WID
-        from input_data
+        from (
+            select 
+                0 as v2 -- Initialize v2 for conditional logic
+            ) as base
     )
 
 select

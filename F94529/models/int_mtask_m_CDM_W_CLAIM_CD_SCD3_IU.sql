@@ -1,10 +1,11 @@
 -- Source node: SQ_CDH_GW_BUR
 WITH SQ_CDH_GW_BUR AS (
     SELECT 
-        POLICY_STATE AS POLICY_STATE, -- string
-        BUR AS BUR,                   -- string
-        'GWCDH' AS SOURCE_NAME        -- string
-    FROM {{ source('SCHEMA_CDH_GWODS', 'CDH_GW_BUR') }}
+        CDH_GW_BUR.POLICY_STATE AS POLICY_STATE, -- string
+        CDH_GW_BUR.BUR AS BUR, -- string
+        'GWCDH' AS SOURCE_NAME -- string
+    FROM 
+        {{ source('SCHEMA_CDH_GWODS', 'CDH_GW_BUR') }}
 )
 
 
@@ -25,20 +26,15 @@ WITH SQ_CDH_GW_BUR AS (
 -- Transformation node: EXP_BUR
 , EXP_BUR AS (
     SELECT 
-        -- Derived field: POLICY_STATE mapped to INTEGRATION_ID
-        POLICY_STATE AS INTEGRATION_ID,
-        
-        -- Passthrough fields: No transformation applied
-        BUR,
-        SOURCE_NAME,
-        
-        -- Fields derived or passed from previous node
-        LKP_ROW_WID,
-        LKP_INTEGRATION_ID,
-        o_BATCH_ID,
-        LKP_NEW_BUR,
-        ROW_ID
-    FROM 6 -- Reference to the previous node
+        POLICY_STATE AS INTEGRATION_ID, -- Maps POLICY_STATE to INTEGRATION_ID
+        BUR, -- Passes BUR without transformation
+        SOURCE_NAME, -- Passes SOURCE_NAME without transformation
+        LKP_ROW_WID, -- Derived or passed from previous node
+        LKP_INTEGRATION_ID, -- Derived or passed from previous node
+        o_BATCH_ID, -- Derived or passed from previous node
+        LKP_NEW_BUR, -- Derived or passed from previous node
+        ROW_ID -- Derived or passed from previous node
+    FROM 6 -- References the previous node
 )
 
 
@@ -63,7 +59,7 @@ WITH SQ_CDH_GW_BUR AS (
     SELECT 
         -- Derived fields with transformation expressions
         CASE 
-            WHEN LKP_ROW_WID IS NULL THEN 'I'
+            WHEN ISNULL(LKP_ROW_WID) THEN 'I'
             WHEN MD5(BUR) = MD5(LKP_NEW_BUR) THEN 'NC'
             ELSE 'U'
         END AS o_Flag,
@@ -73,6 +69,8 @@ WITH SQ_CDH_GW_BUR AS (
 
         -- Passthrough fields
         LKP_INTEGRATION_ID,
+        
+        -- Renamed fields
         INTEGRATION_ID AS in_INTEGRATION_ID,
         o_BATCH_ID AS BATCH_ID
     FROM EXP_BUR
@@ -100,7 +98,7 @@ WITH SQ_CDH_GW_BUR AS (
         in_INTEGRATION_ID,
         BATCH_ID
     FROM rtr_CLM_INSERT_UPD_cte
-    WHERE o_Flag IN ('I', 'U')
+    WHERE o_Flag = 'I' OR o_Flag = 'U'
 )
 
 
@@ -134,7 +132,7 @@ SELECT * FROM final
 {{ config(
     materialized='incremental',
     alias='W_CLAIM_CD_BUR_SCD3',   -- Target table name
-    unique_key='o_Flag',           -- Unique key for incremental strategy
+    unique_key='o_Flag',           -- Unique key for incremental merge
     incremental_strategy='merge',
     on_schema_change='append_new_columns',
     merge_update_columns=['o_Flag'] -- Include all target fields
@@ -143,7 +141,7 @@ SELECT * FROM final
 final AS (
     SELECT
         *
-    FROM 23, 33 -- Reference all previous nodes
+    FROM 23, 33 -- Previous nodes referenced
 )
 
 SELECT * FROM final

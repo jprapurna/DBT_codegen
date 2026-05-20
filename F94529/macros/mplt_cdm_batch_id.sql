@@ -10,7 +10,7 @@ with
             {{ source_name }} as SOURCE_NAME
     ),
 
-    /* 2) Lookup maximum batch ID from CDM_BATCH_CTRLID table */
+    /* 2) Perform lookup on CDM_BATCH_CTRLID table */
     lkp_cdm_batch_ctrlid as (
         select
             SOURCE_NAME,
